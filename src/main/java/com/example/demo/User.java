@@ -2,11 +2,15 @@ package com.example.demo;
 
 import lombok.Data;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 
 @Entity
@@ -20,6 +24,10 @@ public class User {
 	private String city;
 	
 	private Date birdth;
+	
+	@ManyToMany
+	@JoinTable(name="R_User_Registry", joinColumns = @JoinColumn(name = "Id_User", referencedColumnName= "id"), inverseJoinColumns = @JoinColumn(name = "id_Registry", referencedColumnName = "id"))
+	private List<Registry> registries;
 	
 	User() {};
 
