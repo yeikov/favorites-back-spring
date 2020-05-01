@@ -31,9 +31,9 @@ public class UserContoller {
 	    // @RequestParam means it is a parameter from the GET or POST request
 
 	    User u = new User();
-	    
 	    u.setName(name);
 	    u.setCity(city);
+	    
 	    userRepository.save(u);
 	    return "Saved";
 	}
@@ -47,7 +47,7 @@ public class UserContoller {
 	
 	//http://127.0.0.1:8080/backoffice/user/id?num=1
 	@GetMapping(path="/id")
-	public @ResponseBody Optional<User> getOneUser(@RequestParam Integer num) {
+	public @ResponseBody Optional<User> getOneUser(@RequestParam Long num) {
 		// This returns a JSON or XML with the users
 		return userRepository.findById(num);
 	}

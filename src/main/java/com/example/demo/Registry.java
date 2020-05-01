@@ -1,14 +1,17 @@
 package com.example.demo;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -18,33 +21,63 @@ import lombok.Data;
 public class Registry {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	//titulo | 
 	String title;
 	
 	//año prod 
-	Date productionDate;
+	LocalDateTime productionDate;
 	
 	//tipo prod
 	String media;
 	
 	//autor 
 	String autor;
-	
-	//comentarios 
-	String coment;
-	
-	//favorito
-	int favourite;
-	
-	//recomendable 
-	int recommendable;
-	
-	@ManyToMany(mappedBy="registries")
-	private List<User> users;
 
-	
+	@OneToMany(mappedBy="registry")
+	Set<User_Registry> registrations;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public LocalDateTime getProductionDate() {
+		return productionDate;
+	}
+
+	public void setProductionDate(LocalDateTime productionDate) {
+		this.productionDate = productionDate;
+	}
+
+	public String getMedia() {
+		return media;
+	}
+
+	public void setMedia(String media) {
+		this.media = media;
+	}
+
+	public String getAutor() {
+		return autor;
+	}
+
+	public void setAutor(String autor) {
+		this.autor = autor;
+	}
+
 
 }
 

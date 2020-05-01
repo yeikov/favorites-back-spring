@@ -3,6 +3,7 @@ package com.example.demo;
 import lombok.Data;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,13 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 
 @Entity
 public class User {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Integer id;
+	private Long id;
 	
 	private String name;
 	
@@ -25,9 +27,8 @@ public class User {
 	
 	private Date birdth;
 	
-	@ManyToMany
-	@JoinTable(name="R_User_Registry", joinColumns = @JoinColumn(name = "Id_User", referencedColumnName= "id"), inverseJoinColumns = @JoinColumn(name = "id_Registry", referencedColumnName = "id"))
-	private List<Registry> registries;
+	@OneToMany(mappedBy="user")
+	Set<User_Registry> registrations;
 	
 	User() {};
 
@@ -35,14 +36,16 @@ public class User {
 	    this.name = name;
 	    this.city = city;
 	}
+	
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
+
 
 	public String getName() {
 		return name;
@@ -67,6 +70,7 @@ public class User {
 	public void setBirdth(Date birdth) {
 		this.birdth = birdth;
 	}
+
 	
 
 }

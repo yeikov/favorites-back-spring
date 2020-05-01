@@ -20,3 +20,9 @@ curl localhost:8080/backoffice/user/add -d name=john -d city=barcelona
 http://127.0.0.1:8080/backoffice/user/all
 http://127.0.0.1:8080/backoffice/user/id?num=1
 http://127.0.0.1:8080/backoffice/user/name?nom=john
+
+Swagger
+
+http://localhost:8080/v2/api-docs
+	
+http://localhost:8080/swagger-ui.html
