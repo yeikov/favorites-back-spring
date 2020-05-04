@@ -19,7 +19,7 @@ public class User_RegistryController {
 	private User_RegistryUtils user_registryUtils;
 	
 	
-	//curl localhost:8080/backoffice/registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1
+	//curl localhost:8080/backoffice/user_registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1
 	@PostMapping(path= "/update")
 	public @ResponseBody User_Registry updateUserRegistry(@RequestParam User user, @RequestParam Registry registry, @RequestParam int fav, @RequestParam int rec ) {
 		
