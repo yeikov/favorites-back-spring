@@ -37,6 +37,8 @@ public class RegistryController {
 	@Autowired
 	private User_RegistryRepository user_registryRepository;
 	
+	private User_RegistryUtils user_registryUtils;
+	
 
 	@GetMapping(path="/id")
 	public @ResponseBody Optional<Registry> getOneRegistry(@RequestParam int num) {
@@ -103,7 +105,7 @@ public class RegistryController {
 		} else { //Si ya existe el registro
 			r = sondaRegistro;
 			//comprueba si el usuario ya lo ha vinculado (si existe el user_registry)
-			sondaUr = existsUserRegistry(u, r);
+			sondaUr = user_registryUtils.existsUserRegistry(u, r);
 			if (sondaUr != null) {//si existe se actualizan los parametros de favorito y recomendable
 				List<User_Registry> tal = (List) sondaUr;
 				for (int i = 0; i < tal.size(); i++) { 
@@ -136,17 +138,7 @@ public class RegistryController {
 		return title;
 	}
 	
-	private Iterable <User_Registry> existsUserRegistry(User u, Registry r) {
-
-		Iterable <User_Registry> response = null;
-		Iterable <User_Registry> request =  user_registryRepository.findAllByUserAndRegistry(u, r);
-		
-		response = request;
-		
-		System.out.println("RegistryController.existUserRegistry resp"+ response);
-		
-		return response;
-	}
+	
 
 	//http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit%20&media=book%20&autor=tolkien%20&year=1937
 	@GetMapping(path="/exists")
@@ -169,26 +161,7 @@ public class RegistryController {
 		
 	}
 	
-	//curl localhost:8080/backoffice/registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1
-	@PostMapping(path= "/update")
-	public @ResponseBody User_Registry updateUserRegistry(@RequestParam User user, @RequestParam Registry registry, @RequestParam int fav, @RequestParam int rec ) {
-		
-		List <User_Registry> urIte = (List) existsUserRegistry(user, registry);
-		
-		if (urIte.size()==0) {
-			return null;
-		}
-		
-		User_Registry ur = urIte.get(0);
-		
-		ur.setFavorito(fav); 
-		ur.setRecomendable(rec); 
-		
-		user_registryRepository.save(ur);
-		
-		return ur;
-	}
-
+	
 	
 
 }
