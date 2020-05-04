@@ -14,6 +14,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 
 @Entity
 public class User {
@@ -28,7 +31,7 @@ public class User {
 	private Date birdth;
 	
 	@OneToMany(mappedBy="user")
-	Set<User_Registry> registrations;
+	private Set<User_Registry> registrations;
 	
 	User() {};
 

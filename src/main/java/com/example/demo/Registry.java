@@ -13,10 +13,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
-@Data
+
 @Entity
 public class Registry {
 	@Id
@@ -24,19 +25,20 @@ public class Registry {
 	private Long id;
 	
 	//titulo | 
-	String title;
+	private String title;
 	
 	//año prod 
-	LocalDateTime productionDate;
+	private LocalDateTime productionDate;
 	
 	//tipo prod
-	String media;
+	@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
+	private String media;
 	
 	//autor 
-	String autor;
+	private String autor;
 
 	@OneToMany(mappedBy="registry")
-	Set<User_Registry> registrations;
+	private Set<User_Registry> registrations;
 
 	public Long getId() {
 		return id;

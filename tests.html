@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <style type="text/CSS">
+        div.row *{
+            margin:1rem
+        }
+        </style>
+
+    <title>Endpoints</title>
+
+    <script>
+
+
+        var app = angular.module("myApp", []);
+
+        app.controller("myCtrl", function ($scope) {
+
+
+            $scope.userEndPoints = [];
+            $scope.registryEndPoints = [];
+            $scope.iconoDefault = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACvUlEQVQ4jX3T20tUcRAH8O/8ztl117Pretk9665tZVtWW0lgtgRGmC9GBpFUQikUFBRFFyLozX+hG6J0D30wiHxR6CUTu1BtD9JNM0w0V9dbarqtnvObHkwpM+dtGD4MM/P7Ef6IyvqQddDu3U7gcoALAHh/l6IgaiFJ9xP+8ec1WyIzpxtXJ13d1TlNc/hMQ5FXCuMigAoG3Fg8YgBuSkm3ki32QihmHc1hU8xcB2gfAPoPBgBINg2fY+WHrYFi5fHnBwfUyvqQdUiYlwAqXQoyGFKacGt+ZW/oZK7XsTzRMRwJqzFN3ykkH17QBcw8nwtS2GF1IaSHuShYRlkpQfw0JpN8zmCBKpgrAGQAALOEIiwccOWw37kKLlsGklQ7Um06Aq41pGsBoQgVzBJWxYY0m2ezCkbBbFcJd7KP96w7xhu828iuaovuwmQDQ5NRU9eyFKc1NaAC0BkMzerkstwLvN6TL5baRe9Yp5wxE+R1BECkaGJu5pAnzGvdeUvi/h/d/D72mv0pQQIAUxrTAkA/GMhKCZKg//svI22yqeOu3OgNi2SLg2ZH6e1TCWgBUB43Jv9BDMb3eIxf9DRx+1CEd+ccoeWuHAKA4ako2ocjT1UQ3SMSxW39zzzhZcWcZtcxEh9Az1gHtw9F0P39E2c6VqBs03nhc2YTACSMOFq+Pur7MPC6Vs3Q0Dw4Lu78mB690PCxmicSIxhPjMCmapydvhGlG05RMD2XVGGhuDHJ/RNdeNr1UL6NNt8YN9+8JADYX5/pOZF/7bICcfDBuyuUbtdlml0nhzUNFsVKkiUSZpzH4oNicOqbOTU9UQuFzlaVtI7O3/pN3xN3Y8ftc7GJ7qPMnMmQf71GACBBUSFFjanIy1UlraPAgo9zvDrPovqcYUHyEEA7wPDPSvQSqJlI1qVr4lVlYbMxZ34BeHEn8QqSwzsAAAAASUVORK5CYII=";
+
+            var caso = {};
+
+            caso.name = 'userAll';
+            caso.link = 'http://127.0.0.1:8080/backoffice/user/all';
+            caso.method = 'GET';
+            caso.description =  'Todos los usuarios',
+            caso.result = '';
+            caso.in = false;
+            $scope.userEndPoints.push(caso);
+
+
+
+            caso = {};
+            caso.name = 'userById';
+            caso.method = 'GET';
+            caso.link = 'http://127.0.0.1:8080/backoffice/user/id?num=1';
+            caso.description =  'Un usuario a partir de su id',
+            $scope.userEndPoints.push(caso);
+
+
+            caso = {};
+            caso.name = 'userByname';
+            caso.method = 'GET';
+            caso.description =  'Un usuario a partir de su nombre',
+            caso.link = 'http://127.0.0.1:8080/backoffice/user/name?nom=john';
+
+            $scope.userEndPoints.push(caso);
+
+            var caso = {};
+
+            caso.name = 'all';
+            caso.method = 'GET';
+            caso.description =  'Todos los registros',
+            caso.link = 'http://127.0.0.1:8080/backoffice/registry/all';
+
+            $scope.registryEndPoints.push(caso);
+
+            var caso = {};
+
+            caso.name = 'user id';
+            caso.method = 'GET';
+            caso.description =  'Un registro a partir de su id',
+            caso.link = 'http://127.0.0.1:8080/backoffice/registry/user?id=1';
+            $scope.registryEndPoints.push(caso);
+
+            var caso = {};
+
+            caso.name = 'exists'
+            caso.method = 'GET';
+            caso.description =  'Un registro a partir de su titulo, tipo de medio, autor y año de produccion',
+            caso.link = 'http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit&media=book&autor=tolkien&year=1937';
+            $scope.registryEndPoints.push(caso);
+
+
+
+
+
+            function formateaTexto(txt) {
+                txt = txt.replace('\n', '');
+                total = 0;
+                white = '';
+                //trasnformedText = txt
+                for (var i = 0; i < txt.length; i++) {
+                    if (txt[i] === ' ') {
+                        total++;
+                        white += ' ';
+                    }
+                }
+                trasnformedText = txt.replace(white, ' ').trim().toLowerCase();
+
+
+                console.log('va', trasnformedText, total, white.length);
+                if (trasnformedText.indexOf('  ') >= 0) {
+                    //trasnformedText = formateaTexto(trasnformedText);
+                    console.log('trasnformedText.indexOf(  )', trasnformedText.indexOf('  '));
+                }
+                return trasnformedText;
+            }
+
+            //console.log($scope.userEndPoints);
+
+        });
+
+
+
+
+    </script>
+</head>
+
+
+<body>
+    <div ng-app="myApp" ng-controller="myCtrl" class="container-fluid">
+
+
+        <h2>user controller</h2>
+        <div ng-repeat="caso in userEndPoints" class=row>
+            <div class=col-6>
+                <div class=card>
+
+                    <h5 class="card-title" style="white-space: nowrap;text-overflow: ellipsis">{{caso.name}} <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{caso.method}})</span>
+                    </h5>
+                    <p style="margin: 0 1rem;">
+
+                        <a href="{{caso.link}}"
+                            style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                            title={{caso.link}}>{{caso.link}}</a>
+
+                        <a href="{{caso.link}}"
+                            style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0"
+                            title={{caso.link}} target="_blanck">new window</a>
+                    </p>
+                    <div>{{caso.description}}</div>
+                    <code id={{caso.name}} style=""></code>
+                    <!-- <input type="text" ng-model="caso.result" ng-if="caso.restult.in"> -->
+
+                    </area>
+                </div>
+            </div>
+        </div>
+
+
+        <h2>registry controller</h2>
+        <div ng-repeat="caso in registryEndPoints" class=row>
+            <div class=col-6>
+                <div class=card>
+
+                    <h5 class="card-title" style="white-space: nowrap;text-overflow: ellipsis">{{caso.name}} <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{caso.method}})</span>
+                    </h5>
+                    <p style="margin: 0 1rem;">
+
+                        <a href="{{caso.link}}"
+                            style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                            title={{caso.link}}>{{caso.link}}</a>
+
+                        <a href="{{caso.link}}"
+                            style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0"
+                            title={{caso.link}} target="_blanck">new window</a>
+                    </p>
+                    <div>{{caso.description}}</div>
+                    <code id={{caso.name}} style=""></code>
+                    <!-- <input type="text" ng-model="caso.result" ng-if="caso.restult.in"> -->
+
+                    </area>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script> -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+
+        <script>
+
+        </script>
+</body>
+
+</html>

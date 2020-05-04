@@ -2,11 +2,15 @@ package com.example.demo;
 
 import com.example.demo.User;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +43,7 @@ public class UserContoller {
 	}
 	
 	//http://127.0.0.1:8080/backoffice/user/all
+	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<User> getAllUsers() {
 		// This returns a JSON or XML with the users
@@ -46,6 +51,7 @@ public class UserContoller {
 	}
 	
 	//http://127.0.0.1:8080/backoffice/user/id?num=1
+	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/id")
 	public @ResponseBody Optional<User> getOneUser(@RequestParam Long num) {
 		// This returns a JSON or XML with the users
@@ -53,6 +59,7 @@ public class UserContoller {
 	}
 
 	//http://127.0.0.1:8080/backoffice/user/name?nom=john
+	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/name")
 	public @ResponseBody Optional<User> getOneUser(@RequestParam String nom) {
 		// This returns a JSON or XML with the users

@@ -10,26 +10,29 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import io.swagger.annotations.ApiModelProperty;
+
 @Entity
 public class User_Registry {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	Long id;
+	private Long id;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	User user;
+	private User user;
 	
 	@ManyToOne
 	@JoinColumn(name = "registry_id")
-	Registry registry;
+	private Registry registry;
 	
-	LocalDateTime registeredAt;
-		
-	int favorito;
+	private LocalDateTime registeredAt;
 	
-	int recomendable;
+	@ApiModelProperty(notes = "Posición en la lista", name="favorito", required=false, value="1")
+	private int favorito;
+	@ApiModelProperty(notes = "Posición en la lista", name="recomendable", required=false, value="1")
+	private int recomendable;
 
 	public Long getId() {
 		return id;
@@ -78,7 +81,5 @@ public class User_Registry {
 	public void setRecomendable(int recomendable) {
 		this.recomendable = recomendable;
 	}
-	
-	
 	
 }

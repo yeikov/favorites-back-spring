@@ -59,9 +59,8 @@ public class RegistryController {
 		
 		List <Registry> registros = new ArrayList<Registry>();
 		
-		
   		userRegistros.forEach(reg -> {
-			registros. add(reg.registry);
+			registros.add(reg.getRegistry());
 			
 		});
 		
@@ -69,7 +68,8 @@ public class RegistryController {
 		
 	}
 	
-	//curl localhost:8080/backoffice/registry/add -d userId=1 -d title=hobitt -d autor=tolkien -d media=book -d year=1937 -d fav=1 -d rec=1
+	//curl -X POST "http://localhost:8080/backoffice/registry/add?autor=David%20Simon&fav=1&media=serie&rec=1&title=The%20Wire&userId=1&year=2002" -H "accept: */*"
+	//curl -X POST "http://localhost:8080/backoffice/registry/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937" -H "accept: */*"
 	@PostMapping(path= "/add")
 	public @ResponseBody String addNewRegistry(
 			@RequestParam Long userId, 
@@ -82,72 +82,113 @@ public class RegistryController {
 		
 		User u = userRepository.findById(userId).orElse(null);
 		
-		Registry r = new Registry();
-		r.title = title;
-		r.autor = autor;
-		r.media = media;
-		r.productionDate=LocalDateTime.of(year, 1, 1, 0, 0);
+		Registry sondaRegistro = existsRegistry(title, media, autor, year);
+		
+		LocalDateTime now = LocalDateTime.now();
+		
+		Iterable <User_Registry> sondaUr;
 		
 		User_Registry ur = new User_Registry();
-		LocalDateTime now = LocalDateTime.now();
+		Registry r;
+		
+		//Si no existe el registro se guarda un nuevo
+		if (sondaRegistro == null) {
+			r = new Registry();
+			r.setTitle(title);
+			r.setAutor(autor);
+			r.setMedia(media);
+			r.setProductionDate(LocalDateTime.of(year, 1, 1, 0, 0));
+			registryRepository.save(r);
+			//ur.registry = r;
+		} else { //Si ya existe el registro
+			r = sondaRegistro;
+			//comprueba si el usuario ya lo ha vinculado (si existe el user_registry)
+			sondaUr = existsUserRegistry(u, r);
+			if (sondaUr != null) {//si existe se actualizan los parametros de favorito y recomendable
+				List<User_Registry> tal = (List) sondaUr;
+				for (int i = 0; i < tal.size(); i++) { 
+					if (i==0) {
+					tal.get(i).setFavorito(fav); 
+					tal.get(i).setRecomendable(rec); 
+					tal.get(i).setRegisteredAt(now);
+					user_registryRepository.save(tal.get(i));
+					} else {
+						user_registryRepository.delete(tal.get(i));
+					}
+				};
+				
+				System.out.println("actualiza un registro");
+				return title;
+			} 
+			
+			
+		}
+		
+		ur.setRegistry(r);;
 
-		ur.user=u;
-		ur.registry=r;
-		ur.favorito=1;
-		ur.favorito=fav;
-		ur.recomendable =rec;
+		ur.setUser(u);
+		ur.setFavorito(fav); 
+		ur.setRecomendable(rec); 
 		ur.setRegisteredAt(now);
 
-		registryRepository.save(r);
-	
 		user_registryRepository.save(ur);
-		
+		System.out.println("crea un registro");
 		return title;
 	}
 	
-	//curl localhost:8080/backoffice/registry/update -d id=1 -d userId=1 -d fav=1 -d rec=1
-	// param registryId, usuarioId, favoritoIndex, recomendableIndex 
-	@PostMapping(path= "/update")
-	public @ResponseBody String updateNewRegistry(@RequestParam int id, @RequestParam int userId, @RequestParam int fav, @RequestParam int rec ) {
-		
-		User u = userRepository.findById(userId).orElse(null);
-		
-		Registry r = new Registry();
-		
-		User_Registry ur = new User_Registry();
-		ur.user=u;
-		ur.favorito=fav;
-		ur.recomendable =rec;
+	private Iterable <User_Registry> existsUserRegistry(User u, Registry r) {
 
+		Iterable <User_Registry> response = null;
+		Iterable <User_Registry> request =  user_registryRepository.findAllByUserAndRegistry(u, r);
 		
-		user_registryRepository.save(ur);
-		return "updated";
+		response = request;
+		
+		System.out.println("RegistryController.existUserRegistry resp"+ response);
+		
+		return response;
 	}
 
 	//http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit%20&media=book%20&autor=tolkien%20&year=1937
 	@GetMapping(path="/exists")
-	public @ResponseBody Boolean exists (
+	public @ResponseBody Registry existsRegistry (
 			@RequestParam String title, 
 			@RequestParam String media, 
 			@RequestParam String autor, 
 			@RequestParam int year) 
 	{
 		
-		Boolean response = true;
+		Registry response = null;
 		LocalDateTime yearF = LocalDateTime.of(year, 1, 1, 0, 0);
 		List <Registry> request = 
 		registryRepository.findAllByTitleAndMediaAndAutorAndProductionDate(title, media, autor, yearF);
-		if (request.size()==0) {
-			response = false;
+		if (request.size()!=0) {
+			response = request.get(0);
 		}
 		System.out.println(request);
 		return response;
 		
 	}
 	
-	
-	
-	
+	//curl localhost:8080/backoffice/registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1
+	@PostMapping(path= "/update")
+	public @ResponseBody User_Registry updateUserRegistry(@RequestParam User user, @RequestParam Registry registry, @RequestParam int fav, @RequestParam int rec ) {
+		
+		List <User_Registry> urIte = (List) existsUserRegistry(user, registry);
+		
+		if (urIte.size()==0) {
+			return null;
+		}
+		
+		User_Registry ur = urIte.get(0);
+		
+		ur.setFavorito(fav); 
+		ur.setRecomendable(rec); 
+		
+		user_registryRepository.save(ur);
+		
+		return ur;
+	}
+
 	
 
 }
