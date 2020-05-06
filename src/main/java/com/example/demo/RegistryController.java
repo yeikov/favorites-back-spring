@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,18 +40,20 @@ public class RegistryController {
 	
 	private User_RegistryUtils user_registryUtils;
 	
-
+	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/id")
 	public @ResponseBody Optional<Registry> getOneRegistry(@RequestParam int num) {
 		return registryRepository.findById(num);
 	}
 	
+	@CrossOrigin //(origins="http://localhost:4200")
 	//http://127.0.0.1:8080/backoffice/registry/all
 	@GetMapping(path="/all")
 	public @ResponseBody Iterable<Registry> getAll() {
 		return registryRepository.findAll();
 	}
 	
+	@CrossOrigin //(origins="http://localhost:4200")
 	//http://127.0.0.1:8080/backoffice/registry/user?id=1
 	@GetMapping(path="/user")
 	public @ResponseBody Iterable<Registry> getAllUserRegistries(@RequestParam Long id){
@@ -72,6 +75,7 @@ public class RegistryController {
 	
 	//curl -X POST "http://localhost:8080/backoffice/registry/add?autor=David%20Simon&fav=1&media=serie&rec=1&title=The%20Wire&userId=1&year=2002" -H "accept: */*"
 	//curl -X POST "http://localhost:8080/backoffice/registry/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937" -H "accept: */*"
+	@CrossOrigin //(origins="http://localhost:4200")
 	@PostMapping(path= "/add")
 	public @ResponseBody String addNewRegistry(
 			@RequestParam Long userId, 
@@ -141,6 +145,7 @@ public class RegistryController {
 	
 
 	//http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit%20&media=book%20&autor=tolkien%20&year=1937
+	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/exists")
 	public @ResponseBody Registry existsRegistry (
 			@RequestParam String title, 

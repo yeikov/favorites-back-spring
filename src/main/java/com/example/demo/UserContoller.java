@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 
 import java.util.Optional;
 
+import javax.lang.model.type.ErrorType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,18 +30,32 @@ public class UserContoller {
 	private UserRepository userRepository;
 
 	//curl localhost:8080/backoffice/user/add -d name=john -d city=barcelona
+	@CrossOrigin
 	@PostMapping(path="/add") // Map ONLY POST Requests
-	public @ResponseBody String addNewUser (@RequestParam String name
-	      , @RequestParam String city) {
+	public @ResponseBody User addNewUser (@RequestParam String name
+	      , @RequestParam String city, @RequestParam String eMail) {
 	    // @ResponseBody means the returned String is the response, not a view name
 	    // @RequestParam means it is a parameter from the GET or POST request
-
+		
+		User response = new User();
+		response.setName("failed user");
 	    User u = new User();
 	    u.setName(name);
 	    u.setCity(city);
+	    u.seteMail(eMail);
 	    
-	    userRepository.save(u);
-	    return "Saved";
+	    try {
+	    response =userRepository.save(u);
+	    //response = "New user saved";
+	    } catch (Exception e) {
+	    	if (e.getCause().toString().indexOf("ConstraintViolationException")>0) {
+	    		//response = "E-mail duplicated";
+	    	} else {
+	    		//response = "User could not be added";
+	    	}
+	    	
+	    }
+	    return response;
 	}
 	
 	//http://127.0.0.1:8080/backoffice/user/all
