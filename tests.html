@@ -18,29 +18,24 @@
         div.card{
             padding:1rem
         }
-    .marginAbajo{
+        .marginAbajo{
             margin: 0 0 1rem 0 
         }
         .result{
             display: block;
-    position: sticky;
-    bottom: 0;
-    height: 30rem;
-    overflow: scroll;
-
+            position: sticky;
+            bottom: 0;
+            height: 30rem;
+            overflow: scroll;
         }
-        </style>
+    </style>
 
     <title>Endpoints</title>
 
     <script>
-
-
         var app = angular.module("myApp", []);
 
         app.controller("myCtrl", function ($scope, $http) {
-
-
 
             $scope.iconoDefault = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACvUlEQVQ4jX3T20tUcRAH8O/8ztl117Pretk9665tZVtWW0lgtgRGmC9GBpFUQikUFBRFFyLozX+hG6J0D30wiHxR6CUTu1BtD9JNM0w0V9dbarqtnvObHkwpM+dtGD4MM/P7Ef6IyvqQddDu3U7gcoALAHh/l6IgaiFJ9xP+8ec1WyIzpxtXJ13d1TlNc/hMQ5FXCuMigAoG3Fg8YgBuSkm3ki32QihmHc1hU8xcB2gfAPoPBgBINg2fY+WHrYFi5fHnBwfUyvqQdUiYlwAqXQoyGFKacGt+ZW/oZK7XsTzRMRwJqzFN3ykkH17QBcw8nwtS2GF1IaSHuShYRlkpQfw0JpN8zmCBKpgrAGQAALOEIiwccOWw37kKLlsGklQ7Um06Aq41pGsBoQgVzBJWxYY0m2ezCkbBbFcJd7KP96w7xhu828iuaovuwmQDQ5NRU9eyFKc1NaAC0BkMzerkstwLvN6TL5baRe9Yp5wxE+R1BECkaGJu5pAnzGvdeUvi/h/d/D72mv0pQQIAUxrTAkA/GMhKCZKg//svI22yqeOu3OgNi2SLg2ZH6e1TCWgBUB43Jv9BDMb3eIxf9DRx+1CEd+ccoeWuHAKA4ako2ocjT1UQ3SMSxW39zzzhZcWcZtcxEh9Az1gHtw9F0P39E2c6VqBs03nhc2YTACSMOFq+Pur7MPC6Vs3Q0Dw4Lu78mB690PCxmicSIxhPjMCmapydvhGlG05RMD2XVGGhuDHJ/RNdeNr1UL6NNt8YN9+8JADYX5/pOZF/7bICcfDBuyuUbtdlml0nhzUNFsVKkiUSZpzH4oNicOqbOTU9UQuFzlaVtI7O3/pN3xN3Y8ftc7GJ7qPMnMmQf71GACBBUSFFjanIy1UlraPAgo9zvDrPovqcYUHyEEA7wPDPSvQSqJlI1qVr4lVlYbMxZ34BeHEn8QqSwzsAAAAASUVORK5CYII=";
 
@@ -170,25 +165,23 @@
 
             };
 
-            $scope.endPoints.forEach(element => {
-                if (element.method == 'GET') {
-
-                    $scope.lanzaConsulta(element.method, element.url, element.params).then(
-                        (res) => { console.log(res); element.result = res.data },
-                        (err) => { console.log(err); if (err.status == -1) { element.result = 'status -1' } else { element.result = 'error' } }
-                    )
-                }
-
-            });
+            
 
             $scope.testea = function (element) {
-                console.log('testea', element)
+                console.log(element)
                 $scope.lanzaConsulta(element.method, element.url, element.params).then(
                     (res) => { console.log(res); element.result = res.data },
                     (err) => { console.log(err); if (err.status == -1) { element.result = 'status -1' } else { element.result = err } }
                 )
 
             }
+
+            $scope.endPoints.forEach(element => {
+                if (element.method == 'GET') {
+                    $scope.testea(element);
+                }
+
+            });
         });
     </script>
 </head>
@@ -238,9 +231,7 @@
 
             </div>
         </div>
-
     </div>
 
 </body>
-
 </html>
