@@ -5,6 +5,6 @@ import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-public interface RegistryRepository extends CrudRepository<Registry, Integer>{
+public interface RegistryRepository extends CrudRepository<Registry, Long>{
 	public List <Registry> findAllByTitleAndMediaAndAutorAndProductionDate(String title, String media,String autor, LocalDateTime year);
 }

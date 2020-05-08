@@ -42,7 +42,7 @@ public class RegistryController {
 	
 	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping(path="/id")
-	public @ResponseBody Optional<Registry> getOneRegistry(@RequestParam int num) {
+	public @ResponseBody Optional<Registry> getOneRegistry(@RequestParam Long num) {
 		return registryRepository.findById(num);
 	}
 	

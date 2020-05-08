@@ -39,6 +39,21 @@ public class User_RegistryController {
 		return ur;
 	}
 	
+	//curl localhost:8080/backoffice/user_registry/update -d registry=1
+	@PostMapping(path= "/delete")
+	public @ResponseBody User_Registry deleteUserRegistry(
+			@RequestParam User_Registry user_reg
+			) {
+		
+		//User_Registry ur = user_registryRepository.findById(user_reg.getId());
+		
+		user_registryRepository.delete(user_reg);
+		
+		return user_reg;
+	}
+		
+
+	
 	
 
 

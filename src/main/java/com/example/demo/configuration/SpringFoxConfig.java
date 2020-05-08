@@ -1,7 +1,14 @@
 package com.example.demo.configuration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.client.LinkDiscoverer;
+import org.springframework.hateoas.client.LinkDiscoverers;
+import org.springframework.hateoas.mediatype.collectionjson.CollectionJsonLinkDiscoverer;
+import org.springframework.plugin.core.SimplePluginRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 
@@ -33,5 +40,13 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+	
+	 @Bean
+	    public LinkDiscoverers discoverers() {
+	        List<LinkDiscoverer> plugins = new ArrayList<>();
+	        plugins.add(new CollectionJsonLinkDiscoverer());
+	        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+	
+	    }
 
 }
