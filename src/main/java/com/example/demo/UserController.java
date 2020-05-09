@@ -33,72 +33,64 @@ import org.springframework.web.bind.annotation.RestController;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.CollectionModel;
 
-
 @Controller
 @RequestMapping(path = DemoApplication.backOfficeUrl + "/users")
 public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private UserModelAssembler assembler;
-	
-	// http://127.0.0.1:8080/backoffice/users
+
 	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
-	@ResponseBody CollectionModel<EntityModel<User>> all() {
+	@ResponseBody
+	CollectionModel<EntityModel<User>> all() {
 
-		  List<EntityModel<User>> users = userRepository.findAll().stream()
-		    .map(assembler::toModel)
-		    .collect(Collectors.toList());
+		List<EntityModel<User>> users = userRepository.findAll().stream().map(assembler::toModel)
+				.collect(Collectors.toList());
 
-		  return new CollectionModel<>(users,
-		    linkTo(methodOn(UserController.class).all()).withSelfRel());
-		}
-
-	// http://127.0.0.1:8080/backoffice/users/1
-	@CrossOrigin // (origins="http://localhost:4200")
-	@GetMapping("/{id}")
-	@ResponseBody EntityModel <User> one(@PathVariable Long id) {
-		
-		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));		
-		
-		return assembler.toModel(user);
-				
+		return new CollectionModel<>(users, linkTo(methodOn(UserController.class).all()).withSelfRel());
 	}
 
-	// http://127.0.0.1:8080/backoffice/users/byName?name=john
-	@CrossOrigin // (origins="http://localhost:4200")
+	@CrossOrigin
+	@GetMapping("/{id}")
+	@ResponseBody
+	EntityModel<User> one(@PathVariable Long id) {
+
+		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+		return assembler.toModel(user);
+
+	}
+
+	@CrossOrigin
 	@GetMapping(path = "/byName")
-	@ResponseBody EntityModel <User> byName(@RequestParam String name) {
+	@ResponseBody
+	EntityModel<User> byName(@RequestParam String name) {
 
 		User user = userRepository.findByName(name).orElseThrow(() -> new UserNotFoundException(name));
-		
-		return new EntityModel<> (user,
-				linkTo(methodOn(UserController.class).byName(name)).withSelfRel(),
-			    linkTo(methodOn(UserController.class).all()).withRel("users"));
+
+		return new EntityModel<>(user, linkTo(methodOn(UserController.class).byName(name)).withSelfRel(),
+				linkTo(methodOn(UserController.class).all()).withRel("users"));
 	}
 
-	// curl -v -X POST localhost:8080/backoffice/users -H 'Content-Type:application/json' -d '{"name": "john", "city":"London", "eMail": "johnmail"}'
 	@CrossOrigin
-	@PostMapping 
-	@ResponseBody ResponseEntity<?> newUser(@RequestBody User newUser) throws URISyntaxException {
+	@PostMapping
+	@ResponseBody
+	ResponseEntity<?> newUser(@RequestBody User newUser) throws URISyntaxException {
 
-		EntityModel <User> entityModel = assembler.toModel(userRepository.save(newUser));
-		
-		return ResponseEntity
-			    .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-			    .body(entityModel);
+		EntityModel<User> entityModel = assembler.toModel(userRepository.save(newUser));
+
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 	}
 
-	//$ curl -v -X PUT localhost:8080/backoffice/user/3 -H 'Content-Type:application/json' -d '{"name": "johan", "city": "Bruselas", "eMail": "johanBruselas"}'
 	@CrossOrigin
-	@PutMapping(path = "/{id}") 
-	@ResponseBody ResponseEntity<?> updateUser(
-			@PathVariable Long id, 
-			@RequestBody User newUser) {
-		User updatedUser =  userRepository.findById(id).map(user -> {
+	@PutMapping(path = "/{id}")
+	@ResponseBody
+	ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User newUser) {
+		User updatedUser = userRepository.findById(id).map(user -> {
 			user.setName(newUser.getName());
 			user.setCity(newUser.getCity());
 			user.seteMail(newUser.geteMail());
@@ -107,18 +99,16 @@ public class UserController {
 			newUser.setId(id);
 			return userRepository.save(newUser);
 		});
-		
-		EntityModel <User> entityModel = assembler.toModel(updatedUser);
-		
-		return ResponseEntity
-			    .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-			    .body(entityModel);
+
+		EntityModel<User> entityModel = assembler.toModel(updatedUser);
+
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 	}
 
-	//$ curl -X DELETE localhost:8080/backoffice/user/1
 	@CrossOrigin
 	@DeleteMapping("/{id}")
-	@ResponseBody ResponseEntity<?> deleteUser(@PathVariable Long id) {
+	@ResponseBody
+	ResponseEntity<?> deleteUser(@PathVariable Long id) {
 		userRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}

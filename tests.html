@@ -110,8 +110,8 @@
                     result: '...',
                 },
                 {
-                    controller: 'regitry Controller',
-                    name: 'regitry/all',
+                    controller: 'registry Controller',
+                    name: 'registry/all',
                     method: 'GET',
                     description: 'Todos los registros',
                     link: 'http://127.0.0.1:8080/backoffice/registry/all',
@@ -120,8 +120,8 @@
                     result: '...',
                 },
                 {
-                    controller: 'regitry Controller',
-                    name: 'regitry/user',
+                    controller: 'registry Controller',
+                    name: 'registry/user',
                     method: 'GET',
                     description: 'Un registro a partir de su id',
                     link: 'http://127.0.0.1:8080/backoffice/registry/user?id=1',
@@ -131,8 +131,8 @@
 
                 },
                 {
-                    controller: 'regitry Controller',
-                    name: 'regitry/exists',
+                    controller: 'registry Controller',
+                    name: 'registry/exists',
                     method: 'GET',
                     description: 'Un registro a partir de su titulo, tipo de medio, autor y año de produccion',
                     link: 'http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit&media=book&autor=tolkien&year=1937',
@@ -141,8 +141,8 @@
                     result: '...',
                 },
                 {
-                    controller: 'regitry Controller',
-                    name: 'regitry/add',
+                    controller: 'registry Controller',
+                    name: 'registry/add',
                     method: 'POST',
                     description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion. Parametros: title , media, autor, fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
                     curl: 'curl -X POST http://localhost:8080/backoffice/registry/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937',
@@ -152,7 +152,7 @@
 
                 },
                 {
-                    controller: 'user_ regitry Controller',
+                    controller: 'user_ registry Controller',
                     name: 'user_registry/update',
                     method: 'POST',
                     description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
