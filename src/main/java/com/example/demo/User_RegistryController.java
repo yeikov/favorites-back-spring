@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Controller
-@RequestMapping(path=DemoApplication.backEndUrl + "/valorations")
+@RequestMapping(path=DemoApplication.backEndUrl + "/assessments")
 public class User_RegistryController {
 	
 	@Autowired
