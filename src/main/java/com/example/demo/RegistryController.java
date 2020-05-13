@@ -36,7 +36,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 
 @Controller
-@RequestMapping(path=DemoApplication.backOfficeUrl + "/registries")
+@RequestMapping(path=DemoApplication.backEndUrl + "/registries")
 public class RegistryController {
 
 	@Autowired
@@ -44,14 +44,6 @@ public class RegistryController {
 	
 	@Autowired
 	private RegistryModelAssembler assembler;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private User_RegistryRepository user_registryRepository;
-	
-	private User_RegistryUtils user_registryUtils;
 	
 	@CrossOrigin //(origins="http://localhost:4200")
 	@GetMapping

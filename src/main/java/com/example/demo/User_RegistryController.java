@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Controller
-@RequestMapping(path=DemoApplication.backOfficeUrl + "/valorations")
+@RequestMapping(path=DemoApplication.backEndUrl + "/valorations")
 public class User_RegistryController {
 	
 	@Autowired
@@ -53,13 +53,13 @@ public class User_RegistryController {
 	@ResponseBody 
 	ResponseEntity <?>  add (@RequestBody User_RegistryDto dto ) {
 	
-		User u = userRepository.findById(dto.getUserId()).orElse(null);
-		Registry r = registryRepository.findById(dto.getRegistryId()).orElse(null);
-		int f = dto.getFavorito();
-		int rc = dto.getRecomendable();
-		String n = dto.getNotes();
+		User user = userRepository.findById(dto.getUserId()).orElse(null);
+		Registry reg = registryRepository.findById(dto.getRegistryId()).orElse(null);
+		int favo = dto.getFavorito();
+		int recom = dto.getRecomendable();
+		String notes = dto.getNotes();
 		
-		User_Registry newValoration = new User_Registry(u, r, f, rc, n);
+		User_Registry newValoration = new User_Registry(user, reg, favo, recom, notes);
 		
 		EntityModel<User_Registry> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
 		
@@ -71,6 +71,7 @@ public class User_RegistryController {
 	@PutMapping("/{id}")
 	@ResponseBody 
 	User_Registry update(@PathVariable Long id, @RequestBody User_Registry valoration ) {
+		System.out.println("Update fn");
 		
 		User_Registry ur = user_registryRepository.findById(id).orElseThrow(() -> new User_RegistryNotFoundException(id));
 		

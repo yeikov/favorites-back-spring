@@ -34,7 +34,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.CollectionModel;
 
 @Controller
-@RequestMapping(path = DemoApplication.backOfficeUrl + "/users")
+@RequestMapping(path = DemoApplication.backEndUrl + "/users")
 public class UserController {
 
 	@Autowired

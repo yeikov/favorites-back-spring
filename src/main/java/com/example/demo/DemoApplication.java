@@ -9,7 +9,7 @@ public class DemoApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
-	public static final String backOfficeUrl = "/backend";
+	public static final String backEndUrl = "/backend";
 	
 	
 	

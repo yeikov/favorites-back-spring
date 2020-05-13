@@ -81,7 +81,7 @@
                     name: 'users/add',
                     method: 'POST',
                     description: 'Nuevo usuario',
-                    curl: 'curl -v -X POST localhost:8080/backend/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnmail"}\'',
+                    curl: 'curl -v -X POST localhost:8080/backend/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
                     url: 'http://localhost:8080/backend/users/',
                     data: { name: '', city: '', eMail: '' },
                     result: '...',
@@ -133,7 +133,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'POST',
-                    description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion. Parametros: title , media, autor, fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion.',
                     curl: 'curl -X POST http://localhost:8080/backend/registries/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937 RETOCAR',
                     url: 'http://127.0.0.1:8080/backend/registries/',
                     data: { title: '', media: '', autor: '', year: '' },
@@ -143,7 +143,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'PUT',
-                    description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion. Parametros: title , media, autor, fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    description: 'Modifica registro a partir de su id',
                     curl: 'curl -X PUT http://localhost:8080/backend/registries/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937 RETOCAR',
                     url: 'http://127.0.0.1:8080/backend/registries/',
                     
@@ -155,7 +155,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'DELETE',
-                    description: 'Un registro a partir de su id',
+                    description: 'Elimina registro a partir de su id',
                     link: 'http://127.0.0.1:8080/backend/registries/1',
                     url: 'http://127.0.0.1:8080/backend/registries/',
                     
@@ -188,27 +188,24 @@
                 },
                 {
                     controller: 'user_registry Controller',
-                    name: 'valorations',
+                    name: 'valorations/add',
                     method: 'POST',
                     description: 'Nueva valoración de un usuario para un registro. Parametros: registry, user,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl -v -X POST localhost:8080/backend/valorations -H "Content-Type:application/json" -d \'{"registry": {"id":79,"title":"Memorias","productionDate":[1999,1,1,0,0],"media":"comic","autor":"otomo"}, "user": {"id":1,"name":"mm","eMail":"mm","city":"mm","birdth":null}, "notes": "very good", "favorito": 1, "recomendable": 2}',
+                    curl: 'curl -v -X POST localhost:8080/backend/valorations -H "Content-Type:application/json" -d \'{"registry": 79, "user": 1, "notes": "Muy recomendable.", "favorito": 1, "recommend": 2}',
                     url: 'http://127.0.0.1:8080/backend/valorations',
-                    data: {  'userId': 1, 'registryId': 90, 'favorito': 4, 'recomendable': 4, 'notes': 'modificar registro'  },
+                    data: { userId: '1', registryId: '90', favourite: '4', recommend: '4', notes: 'Muy recomendable' },
                     result: '...',
                 },
-
-                
                 {
                     controller: 'user_registry Controller',
                     name: 'valorations/update',
                     method: 'PUT',
-                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl localhost:8080/backend/valorations/update -d userId=1 -d registry=1 -d fav=1 -d rec=1',
+                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
+                    curl: 'curl localhost:8080/backend/valorations/update -d userId=1 -d registry=1 -d favourite=1 -d recomend=1',
                     url: 'http://127.0.0.1:8080/backend/valorations/',
-                    data: { id: '', fav: '', rec: '', notes: '' },
+                    data: { id: '', favourite: '', recomend: '', notes: '' },
                     result: '...',
-                },
-        
+                }
                 
             ]
 
