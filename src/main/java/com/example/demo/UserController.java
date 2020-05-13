@@ -66,20 +66,9 @@ public class UserController {
 	}
 
 	@CrossOrigin
-	@GetMapping(path = "/byName")
-	@ResponseBody
-	EntityModel<User> byName(@RequestParam String name) {
-
-		User user = userRepository.findByName(name).orElseThrow(() -> new UserNotFoundException(name));
-
-		return new EntityModel<>(user, linkTo(methodOn(UserController.class).byName(name)).withSelfRel(),
-				linkTo(methodOn(UserController.class).all()).withRel("users"));
-	}
-
-	@CrossOrigin
 	@PostMapping
 	@ResponseBody
-	ResponseEntity<?> newUser(@RequestBody User newUser) throws URISyntaxException {
+	ResponseEntity<?> add(@RequestBody User newUser) throws URISyntaxException {
 
 		EntityModel<User> entityModel = assembler.toModel(userRepository.save(newUser));
 
@@ -89,7 +78,7 @@ public class UserController {
 	@CrossOrigin
 	@PutMapping(path = "/{id}")
 	@ResponseBody
-	ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User newUser) {
+	ResponseEntity<?> update(@PathVariable Long id, @RequestBody User newUser) {
 		User updatedUser = userRepository.findById(id).map(user -> {
 			user.setName(newUser.getName());
 			user.setCity(newUser.getCity());
@@ -108,9 +97,20 @@ public class UserController {
 	@CrossOrigin
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	ResponseEntity<?> deleteUser(@PathVariable Long id) {
+	ResponseEntity<?> delete(@PathVariable Long id) {
 		userRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@CrossOrigin
+	@GetMapping("/email/{eMail}")
+	@ResponseBody
+	EntityModel<User> oneByEMail(@PathVariable String eMail) {
+
+		User user = userRepository.findByeMail(eMail).orElseThrow(() -> new UserNotFoundException(eMail));
+
+		return new EntityModel<>(user, linkTo(methodOn(UserController.class).oneByEMail(eMail)).withSelfRel(),
+				linkTo(methodOn(UserController.class).all()).withRel("users"));
 	}
 
 }

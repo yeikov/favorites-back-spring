@@ -1,60 +1,107 @@
 package com.example.demo;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 @Controller
-@RequestMapping(path=DemoApplication.backOfficeUrl + "/user_registry")
+@RequestMapping(path=DemoApplication.backOfficeUrl + "/valorations")
 public class User_RegistryController {
 	
 	@Autowired
 	private User_RegistryRepository user_registryRepository;
 	
-	private User_RegistryUtils user_registryUtils;
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private RegistryRepository registryRepository;
+	
+	@Autowired
+	private User_RegistryModelAssembler assembler;
 	
 	
-	//curl localhost:8080/backoffice/user_registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1
-	@PostMapping(path= "/update")
-	public @ResponseBody User_Registry updateUserRegistry(@RequestParam User user, @RequestParam Registry registry, @RequestParam int fav, @RequestParam int rec ) {
+	@CrossOrigin
+	@GetMapping("/{id}")
+	@ResponseBody
+	EntityModel<User_Registry> one (@PathVariable Long id){
+		User_Registry ur = user_registryRepository.findById(id).orElseThrow(() -> new User_RegistryNotFoundException(id));
+		return assembler.toModel(ur);
+	}
+	
+	@CrossOrigin
+	@PostMapping
+	@ResponseBody 
+	ResponseEntity <?>  add (@RequestBody User_RegistryDto dto ) {
+	
+		User u = userRepository.findById(dto.getUserId()).orElse(null);
+		Registry r = registryRepository.findById(dto.getRegistryId()).orElse(null);
+		int f = dto.getFavorito();
+		int rc = dto.getRecomendable();
+		String n = dto.getNotes();
 		
-		List <User_Registry> urIte = (List) user_registryUtils.existsUserRegistry(user, registry);
+		User_Registry newValoration = new User_Registry(u, r, f, rc, n);
 		
-		if (urIte.size()==0) {
-			return null;
-		}
+		EntityModel<User_Registry> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
 		
-		User_Registry ur = urIte.get(0);
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 		
-		ur.setFavorito(fav); 
-		ur.setRecomendable(rec); 
+	}
+	
+	@CrossOrigin
+	@PutMapping("/{id}")
+	@ResponseBody 
+	User_Registry update(@PathVariable Long id, @RequestBody User_Registry valoration ) {
+		
+		User_Registry ur = user_registryRepository.findById(id).orElseThrow(() -> new User_RegistryNotFoundException(id));
+		
+		ur.setFavorito(valoration.getFavorito());
+		ur.setRecomendable(valoration.getRecomendable());
+		ur.setNotes(valoration.getNotes());
 		
 		user_registryRepository.save(ur);
 		
 		return ur;
 	}
 	
-	//curl localhost:8080/backoffice/user_registry/update -d registry=1
-	@PostMapping(path= "/delete")
-	public @ResponseBody User_Registry deleteUserRegistry(
-			@RequestParam User_Registry user_reg
+	@DeleteMapping("/{id}")
+	@ResponseBody void delete (
+			@PathVariable Long id
 			) {
-		
-		//User_Registry ur = user_registryRepository.findById(user_reg.getId());
-		
-		user_registryRepository.delete(user_reg);
-		
-		return user_reg;
+		user_registryRepository.deleteById(id);
+	
 	}
+	
+	@CrossOrigin
+	@GetMapping("/user/{id}")
+	@ResponseBody 
+	CollectionModel <EntityModel<User_Registry>> allByUser(@PathVariable Long id){
 		
-
+		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		
+		List<EntityModel<User_Registry>> valorations =  user_registryRepository.findAllByUser(user).stream().map(assembler::toModel).collect(Collectors.toList());
+		
+		return new CollectionModel<>(valorations, linkTo(methodOn(User_RegistryController.class).allByUser(id)).withSelfRel());
+		
+	}
 	
-	
-
-
 }

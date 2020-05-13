@@ -8,15 +8,14 @@ import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserModelAssembler implements RepresentationModelAssembler<User, EntityModel<User>>{
+public class RegistryModelAssembler implements RepresentationModelAssembler<Registry, EntityModel<Registry>>{
 
 	@Override
-	public EntityModel<User> toModel(User user) {
-
-		return new EntityModel<> (user,
-				linkTo(methodOn(UserController.class).one(user.getId())).withSelfRel(),
-			    linkTo(methodOn(UserController.class).all()).withRel("users"));
-		
+	public EntityModel<Registry> toModel(Registry registry) {
+		 
+		return new EntityModel<Registry> (registry, 
+				linkTo(methodOn(RegistryController.class).one(registry.getId())).withSelfRel(),
+			    linkTo(methodOn(RegistryController.class).all()).withRel("registries"));
 	}
 
 }

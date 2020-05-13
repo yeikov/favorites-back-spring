@@ -9,10 +9,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import io.swagger.annotations.ApiModelProperty;
 
 @Entity
+@Table(uniqueConstraints= {
+		@UniqueConstraint(columnNames = {"user_id", "registry_id"})
+})
 public class User_Registry {
 
 	@Id
@@ -29,10 +34,25 @@ public class User_Registry {
 	
 	private LocalDateTime registeredAt;
 	
-	@ApiModelProperty(notes = "Posición en la lista", name="favorito", required=false, value="1")
+	@ApiModelProperty(notes = "Posición en la lista de favoritos", name="favorito", required=false, value="1")
 	private int favorito;
-	@ApiModelProperty(notes = "Posición en la lista", name="recomendable", required=false, value="1")
+	@ApiModelProperty(notes = "Posición en la lista de recomendables", name="recomendable", required=false, value="1")
 	private int recomendable;
+	
+	private String notes;
+
+	public User_Registry() {
+		
+	}
+	
+	public User_Registry(User user, Registry registry, int favorito, int recomendable, String notes) {
+		super();
+		this.user = user;
+		this.registry = registry;
+		this.favorito = favorito;
+		this.recomendable = recomendable;
+		this.notes = notes;
+	}
 
 	public Long getId() {
 		return id;
@@ -81,5 +101,20 @@ public class User_Registry {
 	public void setRecomendable(int recomendable) {
 		this.recomendable = recomendable;
 	}
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
+	@Override
+	public String toString() {
+		return "User_Registry [id=" + id + ", user=" + user + ", registry=" + registry + ", registeredAt="
+				+ registeredAt + ", favorito=" + favorito + ", recomendable=" + recomendable + ", notes=" + notes + "]";
+	}
+	
 	
 }

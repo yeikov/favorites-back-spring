@@ -45,12 +45,12 @@
             $scope.endPoints = [
                 {
                     controller: 'user Controller',
-                    name: 'users/',
-                    link: 'http://127.0.0.1:8080/backoffice/users',
+                    name: 'users',
+                    link: 'http://127.0.0.1:8080/backend/users',
                     method: 'GET',
                     description: 'Todos los usuarios',
-                    url: 'http://localhost:8080/backoffice/users',
-                    params: {},
+                    url: 'http://localhost:8080/backend/users',
+                    data: {},
                     result: '...',
 
                 },
@@ -58,21 +58,21 @@
                     controller: 'user Controller',
                     name: 'users/{id}',
                     method: 'GET',
-                    link: 'http://127.0.0.1:8080/backoffice/users/1',
+                    link: 'http://127.0.0.1:8080/backend/users/1',
                     description: 'Un usuario a partir de su id',
-                    url: 'http://localhost:8080/backoffice/users/1',
-                    params: {},
+                    url: 'http://localhost:8080/backend/users/',
+                    data: {id: 1},
                     result: '...',
 
                 },
                 {
                     controller: 'user Controller',
-                    name: 'users/byName?name',
+                    name: 'users/email/{eMail}',
                     method: 'GET',
                     description: 'Un usuario a partir de su nombre',
-                    link: 'http://127.0.0.1:8080/backoffice/users/byName?name=john',
-                    url: 'http://localhost:8080/backoffice/users/byName',
-                    params: { name: 'john' },
+                    link: 'http://127.0.0.1:8080/backend/users/email/johnMail',
+                    url: 'http://localhost:8080/backend/users/email/',
+                    data: { email: 'johnmail' },
                     result: '...',
 
                 },
@@ -81,9 +81,9 @@
                     name: 'users/add',
                     method: 'POST',
                     description: 'Nuevo usuario',
-                    curl: 'curl -v -X POST localhost:8080/backoffice/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnmail"}\'',
-                    url: 'http://localhost:8080/backoffice/users/',
-                    params: { name: '', city: '', eMail: '' },
+                    curl: 'curl -v -X POST localhost:8080/backend/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnmail"}\'',
+                    url: 'http://localhost:8080/backend/users/',
+                    data: { name: '', city: '', eMail: '' },
                     result: '...',
                     todo: 'Respuesta en caso de eMail ya existente (ha de ser único)'
 
@@ -93,10 +93,9 @@
                     name: 'users/{id}',
                     method: 'PUT',
                     description: 'Actualiza usuario',
-                    curl: 'curl localhost:8080/backoffice/users/1 -d \'{"name": "john", "city":"London", "eMail": "johnmail"}\'',
-                    url: 'http://localhost:8080/backoffice/users/',
-                    params: { id: '', name: '', city: '', eMail: ''  },
-                    data: { name: '', city: '', eMail: '' },
+                    curl: 'curl -v -X PUT localhost:8080/backend/users/1 -d \'{"name": "john", "city":"London", "eMail": "johnmail"}\'',
+                    url: 'http://localhost:8080/backend/users/',
+                    data: { id: '', name: '', city: '', eMail: ''  },
                     result: '...',
                 },
                 {
@@ -104,76 +103,127 @@
                     name: 'users/{id}',
                     method: 'DELETE',
                     description: 'Borra usuario',
-                    curl: 'curl -v -X DELETE localhost:8080/backoffice/users/1',
-                    url: 'http://localhost:8080/backoffice/users/',
-                    params: { id: '' },
+                    curl: 'curl -v -X DELETE localhost:8080/backend/users/1',
+                    url: 'http://localhost:8080/backend/users/',
+                    data: { id: '' },
                     result: '...',
                 },
                 {
                     controller: 'registry Controller',
-                    name: 'registry/all',
+                    name: 'registries',
                     method: 'GET',
                     description: 'Todos los registros',
-                    link: 'http://127.0.0.1:8080/backoffice/registry/all',
-                    url: 'http://127.0.0.1:8080/backoffice/registry/all',
-                    params: {},
+                    link: 'http://127.0.0.1:8080/backend/registries',
+                    url: 'http://127.0.0.1:8080/backend/registries',
+                    data: {},
                     result: '...',
                 },
                 {
                     controller: 'registry Controller',
-                    name: 'registry/user',
+                    name: 'registries/{id}',
                     method: 'GET',
                     description: 'Un registro a partir de su id',
-                    link: 'http://127.0.0.1:8080/backoffice/registry/user?id=1',
-                    url: 'http://127.0.0.1:8080/backoffice/registry/user',
-                    params: { id: '1' },
+                    link: 'http://127.0.0.1:8080/backend/registries/1',
+                    url: 'http://127.0.0.1:8080/backend/registries/',
+                    data: { id: '1' },
                     result: '...',
 
                 },
                 {
                     controller: 'registry Controller',
-                    name: 'registry/exists',
-                    method: 'GET',
-                    description: 'Un registro a partir de su titulo, tipo de medio, autor y año de produccion',
-                    link: 'http://127.0.0.1:8080/backoffice/registry/exists?title=hobbit&media=book&autor=tolkien&year=1937',
-                    url: 'http://127.0.0.1:8080/backoffice/registry/exists',
-                    params: { title: 'hobbit', media: 'book', autor: 'tolkien', year: '1937' },
-                    result: '...',
-                },
-                {
-                    controller: 'registry Controller',
-                    name: 'registry/add',
+                    name: 'registries/{id}',
                     method: 'POST',
                     description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion. Parametros: title , media, autor, fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl -X POST http://localhost:8080/backoffice/registry/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937',
-                    url: 'http://127.0.0.1:8080/backoffice/registry/add',
-                    params: { title: '', media: '', autor: '', year: '', userId: '', fav: '', rec: '' },
+                    curl: 'curl -X POST http://localhost:8080/backend/registries/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937 RETOCAR',
+                    url: 'http://127.0.0.1:8080/backend/registries/',
+                    data: { title: '', media: '', autor: '', year: '' },
+                    result: '...',
+                },
+                {
+                    controller: 'registry Controller',
+                    name: 'registries/{id}',
+                    method: 'PUT',
+                    description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion. Parametros: title , media, autor, fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    curl: 'curl -X PUT http://localhost:8080/backend/registries/add?autor=tolkien&fav=1&media=book&rec=1&title=hobbit&userId=1&year=1937 RETOCAR',
+                    url: 'http://127.0.0.1:8080/backend/registries/',
+                    
+                    data: { id: '', title: '', media: '', autor: '', year: '' },
                     result: '...',
 
                 },
                 {
-                    controller: 'user_ registry Controller',
-                    name: 'user_registry/update',
-                    method: 'POST',
-                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl localhost:8080/backoffice/user_registry/update -d userId=1 -d registry=1 -d fav=1 -d rec=1',
-                    url: 'http://127.0.0.1:8080/backoffice/user_registry/add',
-                    params: { registry: '', userId: '', fav: '', rec: '' },
+                    controller: 'registry Controller',
+                    name: 'registries/{id}',
+                    method: 'DELETE',
+                    description: 'Un registro a partir de su id',
+                    link: 'http://127.0.0.1:8080/backend/registries/1',
+                    url: 'http://127.0.0.1:8080/backend/registries/',
+                    
+                    data: { id: '' },
                     result: '...',
-                }
+
+                },
+
+
+                {
+                    controller: 'user_registry Controller',
+                    name: 'valorations/user/{id}',
+                    method: 'GET',
+                    description: 'Lista de valoraciones de un usuario',
+                    link: 'http://127.0.0.1:8080/backend/valorations/user/1',
+                    url: 'http://127.0.0.1:8080/backend/valorations/user/',
+                    data:{id: 1},
+                    result: '...',
+                },
+                {
+                    controller: 'user_registry Controller',
+                    name: 'valorations/{1}',
+                    method: 'GET',
+                    description: 'Una valoración a partir de su id',
+                    link: 'http://127.0.0.1:8080/backend/valorations/1',
+                    url: 'http://127.0.0.1:8080/backend/valorations/',
+                    
+                    data: { id: '1' },
+                    result: '...',
+                },
+                {
+                    controller: 'user_registry Controller',
+                    name: 'valorations',
+                    method: 'POST',
+                    description: 'Nueva valoración de un usuario para un registro. Parametros: registry, user,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    curl: 'curl -v -X POST localhost:8080/backend/valorations -H "Content-Type:application/json" -d \'{"registry": {"id":79,"title":"Memorias","productionDate":[1999,1,1,0,0],"media":"comic","autor":"otomo"}, "user": {"id":1,"name":"mm","eMail":"mm","city":"mm","birdth":null}, "notes": "very good", "favorito": 1, "recomendable": 2}',
+                    url: 'http://127.0.0.1:8080/backend/valorations',
+                    data: {  'userId': 1, 'registryId': 90, 'favorito': 4, 'recomendable': 4, 'notes': 'modificar registro'  },
+                    result: '...',
+                },
+
+                
+                {
+                    controller: 'user_registry Controller',
+                    name: 'valorations/update',
+                    method: 'PUT',
+                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    curl: 'curl localhost:8080/backend/valorations/update -d userId=1 -d registry=1 -d fav=1 -d rec=1',
+                    url: 'http://127.0.0.1:8080/backend/valorations/',
+                    data: { id: '', fav: '', rec: '', notes: '' },
+                    result: '...',
+                },
+        
+                
             ]
 
            
 
-            $scope.lanzaConsulta = (metodo, url, datos) => {
+            $scope.lanzaConsulta = (element) => {
 
                     return $http({
-                        method: metodo,
-                        url: metodo=='DELETE' || metodo=='PUT'?url+datos.id: url,
+                        method: element.method,
+                        url: element.data.id?element.url+element.data.id: element.data.email?element.url+element.data.email: element.url,
+                        
                         //headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         transformRequest: function (obj) { return obj; },
-                        params: metodo=='GET'?datos: '',
-                        data: metodo=='GET'?'': JSON.stringify(datos)
+                        //data: element.method == 'GET'? element.data: JSON.stringify(element.data)
+                        data: JSON.stringify(element.data)
                     });
 
                
@@ -181,7 +231,7 @@
 
             $scope.testea = function (element) {
                 console.log(element)
-                $scope.lanzaConsulta(element.method, element.url, element.params).then(
+                $scope.lanzaConsulta(element).then(
                     (res) => { console.log(res); element.result = res.data },
                     (err) => { console.log(err); if (err.status == -1) { element.result = 'status -1' } else { element.result = err } }
                 )
@@ -208,7 +258,7 @@
                 <div class=col-12>
                     <div class=card>
                         <h5 class="card-title" style="white-space: nowrap;text-overflow: ellipsis">
-                            {{caso.name}}
+                            {{ caso.name }}
                             <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{caso.method}})</span>
                             <span
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0">{{caso.controller.toUpperCase()}}</span>
@@ -227,12 +277,12 @@
                             <a ng-if="caso.curl"
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0; color: green">{{caso.curl}}</a>
                         </p>
-                        <div class=marginAbajo>{{caso.description}}</div>
+                        <div class=marginAbajo>{{ caso.description }}</div>
 
                         <div ng-if="caso.method!='GET'" class="row">
-                            <div ng-repeat='(key, value) in caso.params' class='marginAbajo col-4'
+                            <div ng-repeat='(key, value) in caso.data' class='marginAbajo col-4'
                                 style='overflow: hidden; display: inline;'>
-                                {{key}}: <input ng-model='caso.params[key]' style="width: auto; float: right;" />
+                                {{key}}: <input ng-model='caso.data[key]' style="width: auto; float: right;" />
                             </div>
                         </div>
 
@@ -240,7 +290,7 @@
                             value="test"></input>
                         <code>{{caso.result}}</code>
 
-                        <p ng-if=caso.todo class=todo>TODO: {{caso.todo}}</p>
+                        <p ng-if=caso.todo class=todo>TODO: {{ caso.todo }}</p>
 
                     </div>
                 </div>

@@ -24,17 +24,13 @@ public class Registry {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
 	
-	//titulo | 
 	private String title;
 	
-	//año prod 
 	private LocalDateTime productionDate;
 	
-	//tipo prod
 	@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
 	private String media;
 	
-	//autor 
 	private String autor;
 
 	@OneToMany(mappedBy="registry")

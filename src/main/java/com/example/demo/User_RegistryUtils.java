@@ -6,7 +6,6 @@ public class User_RegistryUtils {
 	@Autowired
 	private User_RegistryRepository user_registryRepository;
 	
-	
 	Iterable <User_Registry> existsUserRegistry(User u, Registry r) {
 
 		Iterable <User_Registry> response = null;
