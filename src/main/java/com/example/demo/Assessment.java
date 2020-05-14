@@ -12,13 +12,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(uniqueConstraints= {
 		@UniqueConstraint(columnNames = {"user_id", "registry_id"})
 })
-public class User_Registry {
+public class Assessment {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -34,23 +34,23 @@ public class User_Registry {
 	
 	private LocalDateTime registeredAt;
 	
-	@ApiModelProperty(notes = "Posición en la lista de favoritos", name="favourite", required=false, value="1")
+	//@ApiModelProperty(notes = "Posición en la lista de favoritos", name="favourite", required=false, value="1")
 	private int favourite;
-	@ApiModelProperty(notes = "Posición en la lista de recomendables", name="recommnend", required=false, value="1")
+	//@ApiModelProperty(notes = "Posición en la lista de recomendables", name="recommend", required=false, value="1")
 	private int recommend;
 	
 	private String notes;
 
-	public User_Registry() {
+	public Assessment() {
 		
 	}
 	
-	public User_Registry(User user, Registry registry, int favorito, int recomendable, String notes) {
+	public Assessment(User user, Registry registry, int favourite, int recommend, String notes) {
 		super();
 		this.user = user;
 		this.registry = registry;
-		this.favourite = favorito;
-		this.recommend = recomendable;
+		this.favourite = favourite;
+		this.recommend = recommend;
 		this.notes = notes;
 	}
 
@@ -86,20 +86,20 @@ public class User_Registry {
 		this.registeredAt = registeredAt;
 	}
 
-	public int getFavorito() {
+	public int getFavourite() {
 		return favourite;
 	}
 
-	public void setFavorito(int favorito) {
-		this.favourite = favorito;
+	public void setFavourite(int favourite) {
+		this.favourite = favourite;
 	}
 
-	public int getRecomendable() {
+	public int getRecommend() {
 		return recommend;
 	}
 
-	public void setRecomendable(int recomendable) {
-		this.recommend = recomendable;
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
 	}
 
 	public String getNotes() {

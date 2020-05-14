@@ -3,15 +3,15 @@ package com.example.demo;
 import lombok.Data;
 
 @Data
-public class User_RegistryDto {
+public class AssessmentDto {
 	
 	private Long userId;
 	
 	private Long registryId;
 	
-	private int favorito;
+	private int favourite;
 	
-	private int recomendable;
+	private int recommend;
 	
 	private String notes;
 
@@ -41,26 +41,27 @@ public class User_RegistryDto {
 
 
 
-	public int getFavorito() {
-		return favorito;
+
+	public int getFavourite() {
+		return favourite;
 	}
 
 
 
-	public void setFavorito(int favorito) {
-		this.favorito = favorito;
+	public void setFavourite(int favourite) {
+		this.favourite = favourite;
 	}
 
 
 
-	public int getRecomendable() {
-		return recomendable;
+	public int getRecommend() {
+		return recommend;
 	}
 
 
 
-	public void setRecomendable(int recomendable) {
-		this.recomendable = recomendable;
+	public void setRecommend(int recommend) {
+		this.recommend = recommend;
 	}
 
 
@@ -79,8 +80,8 @@ public class User_RegistryDto {
 
 	@Override
 	public String toString() {
-		return "User_RegistryDto [userId=" + userId + ", registryId=" + registryId + ", favorito=" + favorito
-				+ ", recomendable=" + recomendable + ", notes=" + notes + "]";
+		return "User_RegistryDto [userId=" + userId + ", registryId=" + registryId + ", favorito=" + favourite
+				+ ", recomendable=" + recommend + ", notes=" + notes + "]";
 	}
 	
 	

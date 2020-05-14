@@ -6,15 +6,19 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+
 @ControllerAdvice
-public class UserNotFoundAdvice {
+public class UserExistsAdvice {
 	
 	@ResponseBody
 	@ExceptionHandler(UserNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	Exception userNotFoundHandler(UserNotFoundException ex) {
 	    return ex; //.getMessage();
 	}
 	
+
+	
+
 
 }

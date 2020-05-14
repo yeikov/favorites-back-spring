@@ -1,10 +1,11 @@
 package com.example.demo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RegistryRepository extends JpaRepository<Registry, Long>{
-	public List <Registry> findAllByTitleAndMediaAndAutorAndProductionDate(String title, String media,String autor, LocalDateTime year);
+	public List <Registry> findAllByTitleAndMediaAndAutorAndProductionDate(String title, String media,String autor, LocalDate year);
 }

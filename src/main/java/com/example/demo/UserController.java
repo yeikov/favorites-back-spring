@@ -2,8 +2,8 @@ package com.example.demo;
 
 import com.example.demo.User;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 
 import java.net.URISyntaxException;
 import java.util.List;
@@ -69,10 +69,18 @@ public class UserController {
 	@PostMapping
 	@ResponseBody
 	ResponseEntity<?> add(@RequestBody User newUser) throws URISyntaxException {
-
-		EntityModel<User> entityModel = assembler.toModel(userRepository.save(newUser));
-
-		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+		
+		User doexists = userRepository.findByeMail(newUser.geteMail()).orElse(null);
+		
+		EntityModel<User> entityModel;
+		if(doexists!=null) {
+			throw new UserExistsException(newUser.geteMail());
+//			return (ResponseEntity<?>) ResponseEntity.badRequest();
+		} else {
+			entityModel = assembler.toModel(userRepository.save(newUser));
+			return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+		}
+	
 	}
 
 	@CrossOrigin
@@ -98,8 +106,15 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	ResponseEntity<?> delete(@PathVariable Long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		
+		user.setId(null);
+		user.setName(null);
+		user.setCity(null);
+		user.setBirdth(null);
+		user.seteMail(null);
 		userRepository.deleteById(id);
-		return ResponseEntity.noContent().build();
+		return ResponseEntity.ok().body(user);
 	}
 	
 	@CrossOrigin

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.hateoas.client.LinkDiscoverer;
 import org.springframework.hateoas.client.LinkDiscoverers;
 import org.springframework.hateoas.mediatype.collectionjson.CollectionJsonLinkDiscoverer;
@@ -24,6 +25,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SpringFoxConfig extends WebMvcConfigurationSupport {
 	
 	@Bean
+	public LinkDiscoverers discoverers() {
+	    List<LinkDiscoverer> plugins = new ArrayList<>();
+	    plugins.add(new CollectionJsonLinkDiscoverer());
+	    return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
+	
+	}
+
+	@Bean
     public Docket api() { 
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                                  
@@ -41,12 +50,5 @@ public class SpringFoxConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
 	
-	 @Bean
-	    public LinkDiscoverers discoverers() {
-	        List<LinkDiscoverer> plugins = new ArrayList<>();
-	        plugins.add(new CollectionJsonLinkDiscoverer());
-	        return new LinkDiscoverers(SimplePluginRegistry.create(plugins));
 	
-	    }
-
 }

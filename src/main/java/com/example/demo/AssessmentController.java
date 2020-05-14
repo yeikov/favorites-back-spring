@@ -25,10 +25,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Controller
 @RequestMapping(path=DemoApplication.backEndUrl + "/assessments")
-public class User_RegistryController {
+public class AssessmentController {
 	
 	@Autowired
-	private User_RegistryRepository user_registryRepository;
+	private AssessmentRepository user_registryRepository;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -37,31 +37,31 @@ public class User_RegistryController {
 	private RegistryRepository registryRepository;
 	
 	@Autowired
-	private User_RegistryModelAssembler assembler;
+	private AssessmentModelAssembler assembler;
 	
 	
 	@CrossOrigin
 	@GetMapping("/{id}")
 	@ResponseBody
-	EntityModel<User_Registry> one (@PathVariable Long id){
-		User_Registry ur = user_registryRepository.findById(id).orElseThrow(() -> new User_RegistryNotFoundException(id));
+	EntityModel<Assessment> one (@PathVariable Long id){
+		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 		return assembler.toModel(ur);
 	}
 	
 	@CrossOrigin
 	@PostMapping
 	@ResponseBody 
-	ResponseEntity <?>  add (@RequestBody User_RegistryDto dto ) {
+	ResponseEntity <?>  add (@RequestBody AssessmentDto dto ) {
 	
 		User user = userRepository.findById(dto.getUserId()).orElse(null);
 		Registry reg = registryRepository.findById(dto.getRegistryId()).orElse(null);
-		int favo = dto.getFavorito();
-		int recom = dto.getRecomendable();
+		int favo = dto.getFavourite();
+		int recom = dto.getRecommend();
 		String notes = dto.getNotes();
 		
-		User_Registry newValoration = new User_Registry(user, reg, favo, recom, notes);
+		Assessment newValoration = new Assessment(user, reg, favo, recom, notes);
 		
-		EntityModel<User_Registry> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
+		EntityModel<Assessment> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
 		
 		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 		
@@ -70,38 +70,39 @@ public class User_RegistryController {
 	@CrossOrigin
 	@PutMapping("/{id}")
 	@ResponseBody 
-	User_Registry update(@PathVariable Long id, @RequestBody User_Registry valoration ) {
-		System.out.println("Update fn");
+	ResponseEntity <?> update(@PathVariable Long id, @RequestBody Assessment valoration ) {
 		
-		User_Registry ur = user_registryRepository.findById(id).orElseThrow(() -> new User_RegistryNotFoundException(id));
+		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 		
-		ur.setFavorito(valoration.getFavorito());
-		ur.setRecomendable(valoration.getRecomendable());
+		ur.setFavourite(valoration.getFavourite());
+		ur.setRecommend(valoration.getRecommend());
 		ur.setNotes(valoration.getNotes());
 		
-		user_registryRepository.save(ur);
+		EntityModel<Assessment> entityModel = assembler.toModel(user_registryRepository.save(ur));
 		
-		return ur;
+		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 	}
 	
 	@DeleteMapping("/{id}")
-	@ResponseBody void delete (
+	@ResponseBody 
+	ResponseEntity <?> delete (
 			@PathVariable Long id
 			) {
 		user_registryRepository.deleteById(id);
-	
+		
+		return ResponseEntity.noContent().build();
 	}
 	
 	@CrossOrigin
 	@GetMapping("/user/{id}")
 	@ResponseBody 
-	CollectionModel <EntityModel<User_Registry>> allByUser(@PathVariable Long id){
+	CollectionModel <EntityModel<Assessment>> allByUser(@PathVariable Long id){
 		
 		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 		
-		List<EntityModel<User_Registry>> valorations =  user_registryRepository.findAllByUser(user).stream().map(assembler::toModel).collect(Collectors.toList());
+		List<EntityModel<Assessment>> assessments =  user_registryRepository.findAllByUser(user).stream().map(assembler::toModel).collect(Collectors.toList());
 		
-		return new CollectionModel<>(valorations, linkTo(methodOn(User_RegistryController.class).allByUser(id)).withSelfRel());
+		return new CollectionModel<>(assessments, linkTo(methodOn(AssessmentController.class).allByUser(id)).withSelfRel());
 		
 	}
 	

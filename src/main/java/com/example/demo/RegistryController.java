@@ -2,6 +2,7 @@ package com.example.demo;
 
 
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,21 +71,29 @@ public class RegistryController {
 	@CrossOrigin
 	@PostMapping
 	@ResponseBody 
-	ResponseEntity<?> add(@RequestBody Registry newRegistry) throws URISyntaxException {
+	ResponseEntity<?> add(@RequestBody RegistryDto newRegistry) throws URISyntaxException {
 		
-		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(), newRegistry.getMedia(), newRegistry.getAutor(), newRegistry.getProductionDate());
-
+		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(), newRegistry.getMedia(), newRegistry.getAuthor(), CommonUtilities.year2LocalDate(newRegistry.getYear()));
+		
 		EntityModel<Registry> entityModel;
 		
 		if (sondaRegistro == null) {
-			entityModel = assembler.toModel(registryRepository.save(newRegistry));
-
+			System.out.println("a");
+			sondaRegistro=new Registry();
+			sondaRegistro.setTitle(newRegistry.getTitle());
+			sondaRegistro.setAutor(newRegistry.getAuthor());
+			sondaRegistro.setMedia(newRegistry.getMedia());
+			sondaRegistro.setProductionDate(CommonUtilities.year2LocalDate(newRegistry.getYear()));
+			
+			entityModel = assembler.toModel(registryRepository.save(sondaRegistro));
+			return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 		} else { 
+			System.out.println("b");
 			entityModel = null; 
-			new RegistryNotFoundException(null);
+			throw new RegistryExistsException(sondaRegistro);
+			
 		}
-		
-		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);		
+	
 		
 	}
 	
@@ -125,7 +134,7 @@ public class RegistryController {
 			String title, 
 			String media, 
 			String autor, 
-			LocalDateTime year) 
+			LocalDate year) 
 	{
 		Registry response = null;
 		

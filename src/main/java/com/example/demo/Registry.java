@@ -1,6 +1,6 @@
 package com.example.demo;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,8 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
+//import io.swagger.annotations.ApiModelProperty;
+
 
 
 
@@ -26,15 +26,15 @@ public class Registry {
 	
 	private String title;
 	
-	private LocalDateTime productionDate;
+	private LocalDate productionDate;
 	
-	@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
+	//@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
 	private String media;
 	
 	private String autor;
 
 	@OneToMany(mappedBy="registry")
-	private Set<User_Registry> registrations;
+	private Set<Assessment> registrations;
 
 	public Long getId() {
 		return id;
@@ -52,11 +52,11 @@ public class Registry {
 		this.title = title;
 	}
 
-	public LocalDateTime getProductionDate() {
+	public LocalDate getProductionDate() {
 		return productionDate;
 	}
 
-	public void setProductionDate(LocalDateTime productionDate) {
+	public void setProductionDate(LocalDate productionDate) {
 		this.productionDate = productionDate;
 	}
 

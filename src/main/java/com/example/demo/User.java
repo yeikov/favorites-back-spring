@@ -1,6 +1,8 @@
 package com.example.demo;
 
 import lombok.Data;
+
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -17,8 +19,8 @@ import javax.persistence.OneToMany;
 
 import com.sun.istack.NotNull;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+//import io.swagger.annotations.Api;
+//import io.swagger.annotations.ApiOperation;
 
 
 @Entity
@@ -35,10 +37,10 @@ public class User {
 	
 	private String city;
 	
-	private Date birdth;
+	private LocalDate birdth;
 	
 	@OneToMany(mappedBy="user")
-	private Set<User_Registry> registrations;
+	private Set<Assessment> registrations;
 	
 	User() {};
 
@@ -81,11 +83,11 @@ public class User {
 		this.city = city;
 	}
 
-	public Date getBirdth() {
+	public LocalDate getBirdth() {
 		return birdth;
 	}
 
-	public void setBirdth(Date birdth) {
+	public void setBirdth(LocalDate birdth) {
 		this.birdth = birdth;
 	}
 
