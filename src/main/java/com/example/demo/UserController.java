@@ -75,7 +75,7 @@ public class UserController {
 		EntityModel<User> entityModel;
 		if(doexists!=null) {
 			throw new UserExistsException(newUser.geteMail());
-//			return (ResponseEntity<?>) ResponseEntity.badRequest();
+
 		} else {
 			entityModel = assembler.toModel(userRepository.save(newUser));
 			return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
@@ -105,16 +105,16 @@ public class UserController {
 	@CrossOrigin
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	ResponseEntity<?> delete(@PathVariable Long id) {
+	ResponseEntity<?> delete(@PathVariable Long id) throws Exception {
 		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-		
-		user.setId(null);
-		user.setName(null);
-		user.setCity(null);
-		user.setBirdth(null);
-		user.seteMail(null);
-		userRepository.deleteById(id);
-		return ResponseEntity.ok().body(user);
+
+		try {
+			userRepository.deleteById(id);
+			return ResponseEntity.noContent().build();
+		} catch (Exception e) {
+			throw new Exception();
+		}
+
 	}
 	
 	@CrossOrigin
@@ -129,3 +129,4 @@ public class UserController {
 	}
 
 }
+

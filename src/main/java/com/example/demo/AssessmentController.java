@@ -53,17 +53,23 @@ public class AssessmentController {
 	@ResponseBody 
 	ResponseEntity <?>  add (@RequestBody AssessmentDto dto ) {
 	
-		User user = userRepository.findById(dto.getUserId()).orElse(null);
-		Registry reg = registryRepository.findById(dto.getRegistryId()).orElse(null);
+		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new UserNotFoundException(dto.getUserId())); //.orElse(null);
+		Registry reg = registryRepository.findById(dto.getRegistryId()).orElseThrow(() -> new RegistryNotFoundException(dto.getRegistryId()));
 		int favo = dto.getFavourite();
 		int recom = dto.getRecommend();
 		String notes = dto.getNotes();
 		
 		Assessment newValoration = new Assessment(user, reg, favo, recom, notes);
 		
+		try {
+		
 		EntityModel<Assessment> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
 		
 		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+		} catch(Exception e) {
+			//throw e;
+			throw new AssessmentExistsException();
+		}
 		
 	}
 	

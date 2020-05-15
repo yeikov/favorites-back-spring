@@ -125,7 +125,7 @@ public class RegistryController {
 	@CrossOrigin
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	ResponseEntity<?> deleteUser(@PathVariable Long id) {
+	ResponseEntity<?> delete(@PathVariable Long id) {
 		registryRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 	}
