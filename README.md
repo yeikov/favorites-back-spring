@@ -21,7 +21,7 @@ http://127.0.0.1:8080/backoffice/user/all
 http://127.0.0.1:8080/backoffice/user/id?num=1
 http://127.0.0.1:8080/backoffice/user/name?nom=john
 
-más ejemplos en test.html 
+más ejemplos en tests.html 
 
 Swagger
 
