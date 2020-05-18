@@ -55,7 +55,7 @@ public class AssessmentController {
 	
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new UserNotFoundException(dto.getUserId())); //.orElse(null);
 		Registry reg = registryRepository.findById(dto.getRegistryId()).orElseThrow(() -> new RegistryNotFoundException(dto.getRegistryId()));
-		int favo = dto.getFavourite();
+		int favo = dto.getFavorite();
 		int recom = dto.getRecommend();
 		String notes = dto.getNotes();
 		
@@ -80,7 +80,7 @@ public class AssessmentController {
 		
 		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 		
-		ur.setFavourite(valoration.getFavourite());
+		ur.setFavorite(valoration.getFavorite());
 		ur.setRecommend(valoration.getRecommend());
 		ur.setNotes(valoration.getNotes());
 		

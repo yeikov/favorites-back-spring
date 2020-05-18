@@ -34,8 +34,8 @@ public class Assessment {
 	
 	private LocalDateTime registeredAt;
 	
-	//@ApiModelProperty(notes = "Posición en la lista de favoritos", name="favourite", required=false, value="1")
-	private int favourite;
+	//@ApiModelProperty(notes = "Posición en la lista de favoritos", name="favorite", required=false, value="1")
+	private int favorite;
 	//@ApiModelProperty(notes = "Posición en la lista de recomendables", name="recommend", required=false, value="1")
 	private int recommend;
 	
@@ -45,11 +45,11 @@ public class Assessment {
 		
 	}
 	
-	public Assessment(User user, Registry registry, int favourite, int recommend, String notes) {
+	public Assessment(User user, Registry registry, int favorite, int recommend, String notes) {
 		super();
 		this.user = user;
 		this.registry = registry;
-		this.favourite = favourite;
+		this.favorite = favorite;
 		this.recommend = recommend;
 		this.notes = notes;
 	}
@@ -86,12 +86,12 @@ public class Assessment {
 		this.registeredAt = registeredAt;
 	}
 
-	public int getFavourite() {
-		return favourite;
+	public int getFavorite() {
+		return favorite;
 	}
 
-	public void setFavourite(int favourite) {
-		this.favourite = favourite;
+	public void setFavorite(int favorite) {
+		this.favorite = favorite;
 	}
 
 	public int getRecommend() {
@@ -113,7 +113,7 @@ public class Assessment {
 	@Override
 	public String toString() {
 		return "User_Registry [id=" + id + ", user=" + user + ", registry=" + registry + ", registeredAt="
-				+ registeredAt + ", favorito=" + favourite + ", recomendable=" + recommend + ", notes=" + notes + "]";
+				+ registeredAt + ", favorito=" + favorite + ", recomendable=" + recommend + ", notes=" + notes + "]";
 	}
 	
 	

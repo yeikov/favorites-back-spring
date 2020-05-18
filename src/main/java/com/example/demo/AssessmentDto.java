@@ -9,7 +9,7 @@ public class AssessmentDto {
 	
 	private Long registryId;
 	
-	private int favourite;
+	private int favorite;
 	
 	private int recommend;
 	
@@ -42,14 +42,14 @@ public class AssessmentDto {
 
 
 
-	public int getFavourite() {
-		return favourite;
+	public int getFavorite() {
+		return favorite;
 	}
 
 
 
-	public void setFavourite(int favourite) {
-		this.favourite = favourite;
+	public void setFavorite(int favorite) {
+		this.favorite = favorite;
 	}
 
 
@@ -80,7 +80,7 @@ public class AssessmentDto {
 
 	@Override
 	public String toString() {
-		return "User_RegistryDto [userId=" + userId + ", registryId=" + registryId + ", favorito=" + favourite
+		return "User_RegistryDto [userId=" + userId + ", registryId=" + registryId + ", favorito=" + favorite
 				+ ", recomendable=" + recommend + ", notes=" + notes + "]";
 	}
 	
