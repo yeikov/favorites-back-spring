@@ -167,7 +167,7 @@
 
                 },
                 {
-                    controller: 'user_registry Controller',
+                    controller: '(user_registry) assessment Controller Controller',
                     name: 'assessments/user/{id}',
                     method: 'GET',
                     description: 'Lista de valoraciones de un usuario',
@@ -177,8 +177,8 @@
                     result: '...',
                 },
                 {
-                    controller: 'user_registry Controller',
-                    name: 'assessments/{1}',
+                    controller: '(user_registry) assessment Controller Controller',
+                    name: 'assessments/{id}',
                     method: 'GET',
                     description: 'Una valoración a partir de su id',
                     link: $scope.backurl + '/backend/assessments/1',
@@ -187,7 +187,7 @@
                     result: '...',
                 },
                 {
-                    controller: 'user_registry Controller',
+                    controller: '(user_registry) assessment Controller Controller',
                     name: 'assessments/add',
                     method: 'POST',
                     description: 'Nueva valoración de un usuario para un registro. Parametros: registry, user,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
@@ -197,7 +197,7 @@
                     result: '...',
                 },
                 {
-                    controller: 'user_registry Controller',
+                    controller: '(user_registry) assessment Controller Controller',
                     name: 'assessments/update',
                     method: 'PUT',
                     description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
