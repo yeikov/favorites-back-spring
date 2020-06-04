@@ -31,7 +31,7 @@ public class Registry {
 	//@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
 	private String media;
 	
-	private String autor;
+	private String author;
 
 	@OneToMany(mappedBy="registry")
 	private Set<Assessment> registrations;
@@ -68,12 +68,12 @@ public class Registry {
 		this.media = media;
 	}
 
-	public String getAutor() {
-		return autor;
+	public String getAuthor() {
+		return author;
 	}
 
-	public void setAutor(String autor) {
-		this.autor = autor;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 

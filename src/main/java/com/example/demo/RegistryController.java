@@ -81,7 +81,7 @@ public class RegistryController {
 			System.out.println("a");
 			sondaRegistro=new Registry();
 			sondaRegistro.setTitle(newRegistry.getTitle());
-			sondaRegistro.setAutor(newRegistry.getAuthor());
+			sondaRegistro.setAuthor(newRegistry.getAuthor());
 			sondaRegistro.setMedia(newRegistry.getMedia());
 			sondaRegistro.setProductionDate(CommonUtilities.year2LocalDate(newRegistry.getYear()));
 			
@@ -105,7 +105,7 @@ public class RegistryController {
 		Registry updateRegistro = registryRepository.findById(id).map(registry -> {
 			registry.setTitle(newRegistry.getTitle());	
 			registry.setProductionDate(newRegistry.getProductionDate());
-			registry.setAutor(newRegistry.getAutor());
+			registry.setAuthor(newRegistry.getAuthor());
 			registry.setMedia(newRegistry.getMedia());
 			return registryRepository.save(registry);
 		}).orElseGet(() -> {
@@ -133,12 +133,12 @@ public class RegistryController {
 	Registry existsRegistry (
 			String title, 
 			String media, 
-			String autor, 
+			String author, 
 			LocalDate year) 
 	{
 		Registry response = null;
 		
-		List <Registry> request = registryRepository.findAllByTitleAndMediaAndAutorAndProductionDate(title, media, autor, year);
+		List <Registry> request = registryRepository.findAllByTitleAndMediaAndAuthorAndProductionDate(title, media, author, year);
 		if (request.size()!=0) {
 			response = request.get(0);
 		}
