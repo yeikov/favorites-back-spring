@@ -1,5 +1,6 @@
 1. bbdd mysql 'db_favorites' utf8_unicode_ci
 
+
 create database db_favorites; -- Creates the new database
 
 create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
@@ -26,3 +27,5 @@ http://localhost:8080/swagger-ui.html
 docs:
 
 https://spring.io/guides/tutorials/rest/
+
+https://spring.io/guides/tutorials/spring-security-and-angular-js/
