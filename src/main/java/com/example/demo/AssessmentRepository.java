@@ -12,5 +12,7 @@ public interface AssessmentRepository extends JpaRepository <Assessment, Long>{
 	
 	public Iterable <Assessment> findAllByUserAndRegistry(User user, Registry registry);
 	
-	public Optional<Assessment> findById(Long id);
+	public Optional <Assessment> findById(Long id);
+	
+	public List <Assessment> findAllByRegistryMedia(String media);
 }
