@@ -127,6 +127,19 @@ public class UserController {
 		return new EntityModel<>(user, linkTo(methodOn(UserController.class).oneByEMail(eMail)).withSelfRel(),
 				linkTo(methodOn(UserController.class).all()).withRel("users"));
 	}
+	
+	@CrossOrigin
+	@GetMapping("/recent/{criterio}")
+	@ResponseBody
+	CollectionModel <EntityModel<User>> recent(@PathVariable String criterio) {
+
+		
+		List<EntityModel<User>> users = userRepository.recent(criterio).stream().map(assembler::toModel)
+				.collect(Collectors.toList());
+
+		return new CollectionModel<>(users, linkTo(methodOn(UserController.class).recent(criterio)).withSelfRel());
+		
+	}
 
 }
 

@@ -52,6 +52,7 @@ public class Assessment {
 		this.favorite = favorite;
 		this.recommend = recommend;
 		this.notes = notes;
+		this.registeredAt = LocalDateTime.now();
 	}
 
 	public Long getId() {

@@ -119,7 +119,19 @@ public class AssessmentController {
 	@ResponseBody
 	CollectionModel<EntityModel<Assessment>> allByMedia(@PathVariable String media) {
 
-		List<EntityModel<Assessment>> assessments = user_registryRepository.findAllByRegistryMedia(media).stream()
+		List<EntityModel<Assessment>> assessments = user_registryRepository.findM(media).stream()
+				.map(assembler::toModel).collect(Collectors.toList());
+
+		return new CollectionModel<>(assessments,
+				linkTo(methodOn(AssessmentController.class).allByMedia(media)).withSelfRel());
+	}
+	
+	@CrossOrigin
+	@GetMapping("user/{id}/{media}")
+	@ResponseBody
+	CollectionModel<EntityModel<Assessment>> allUserByMedia(@PathVariable Long id,@PathVariable String media) {
+
+		List<EntityModel<Assessment>> assessments = user_registryRepository.findUM(id, media).stream()
 				.map(assembler::toModel).collect(Collectors.toList());
 
 		return new CollectionModel<>(assessments,
