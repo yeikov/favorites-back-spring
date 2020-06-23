@@ -78,7 +78,7 @@ public class RegistryController {
 		EntityModel<Registry> entityModel;
 		
 		if (sondaRegistro == null) {
-			System.out.println("a");
+			
 			sondaRegistro=new Registry();
 			sondaRegistro.setTitle(newRegistry.getTitle());
 			sondaRegistro.setAuthor(newRegistry.getAuthor());
@@ -88,7 +88,7 @@ public class RegistryController {
 			entityModel = assembler.toModel(registryRepository.save(sondaRegistro));
 			return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
 		} else { 
-			System.out.println("b");
+			
 			entityModel = null; 
 			throw new RegistryExistsException(sondaRegistro);
 			

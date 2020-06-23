@@ -135,7 +135,7 @@ public class AssessmentController {
 				.map(assembler::toModel).collect(Collectors.toList());
 
 		return new CollectionModel<>(assessments,
-				linkTo(methodOn(AssessmentController.class).allByMedia(media)).withSelfRel());
+				linkTo(methodOn(AssessmentController.class).allUserByMedia(id, media)).withSelfRel());
 	}
 
 }

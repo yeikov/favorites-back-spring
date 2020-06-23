@@ -356,7 +356,7 @@
                         if (index == ($scope.juegoDeDatosUsers.length - 1)) {
                             $scope.usersIn = true;
                             console.log('Generada la serie de usuarios en bbdd.');
-                            
+
                             $scope.rellenaRegistros()
                         }
                     })
@@ -383,34 +383,44 @@
 
             //se rellenan las tablas 4/4 (valoraciones)
             $scope.rellenaValoraciones = function () {
-                totalValoraciones = $scope.juegoDeDatosRegistries.length * $scope.juegoDeDatosUsers.length;
-                console.log('Generando ' + totalValoraciones + ' valoraciones de las obras en bbdd.');
+                let _totalValoraciones = $scope.juegoDeDatosRegistries.length * $scope.juegoDeDatosUsers.length;
+                
+                console.log('Generando ' + _totalValoraciones + ' valoraciones de las obras en bbdd.');
                 $scope.juegoDeDatosUsers.forEach(usuario => {
 
+
                     $scope.juegoDeDatosRegistries.forEach(registro => {
+                        
                         //console.log("rellenaValoraciones juegoDeDatosRegistries[0?]", registro.id, registro.title);
+                        //no todos los usuarios opinan sobre todos los registros
+                        if (Math.random() > .2) {
+                            
+                            
+                            //fav = Number(registro.id.toString()[registro.id.toString().length - 1]);
+                            let fav = Math.ceil(Math.random() * 10);
+                            rec = 10 - fav;
+                            $scope.lanzaConsulta({
+                                method: 'POST', url: $scope.backurl + '/backend/assessments',
+                                data: {
+                                    registryId: registro.id,
+                                    userId: usuario.id,
+                                    favorite: fav,
+                                    recommend: rec,
+                                    notes: 'Great!'
+                                }
+                            }).then((res) => {
+                                //console.log("--[0?]", res.data.registry.id, res.data.registry.title);
 
-                        fav = Number(registro.id.toString()[registro.id.toString().length - 1]);
-                        rec = 10 - fav;
-                        $scope.lanzaConsulta({
-                            method: 'POST', url: $scope.backurl + '/backend/assessments',
-                            data: {
-                                registryId: registro.id,
-                                userId: usuario.id,
-                                favorite: fav,
-                                recommend: rec,
-                                notes: 'Great!'
-                            }
-                        }).then((res) => {
-                            //console.log("--[0?]", res.data.registry.id, res.data.registry.title);
+                                //if (res.data.id >= _totalValoraciones - 10) {
+                                if (res.data.registryId * res.data.userId == _totalValoraciones) {
+                                    console.log("--[0?]", res);
+                                    $scope.dbState = 'completed';
+                                }
+                            })
 
-                            if (res.data.id >= totalValoraciones - 10) {
-                                $scope.dbState = 'completed';
-                            }
-                        })
+                        }
                     })
                 });
-
 
             }
 
