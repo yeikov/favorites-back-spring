@@ -19,7 +19,8 @@ public interface AssessmentRepository extends JpaRepository <Assessment, Long>{
 	public List <Assessment> findAllByRegistryMedia(String media);
 	
 	@Query(
-			value = "SELECT * FROM ASSESSMENT a INNER JOIN REGISTRY r ON a.registry_id=r.id AND r.media=:media order by a.favorite desc LIMIT 8", 
+			value = "SELECT * FROM ASSESSMENT a INNER JOIN REGISTRY r ON a.registry_id=r.id AND r.media=:media order by a.favorite desc LIMIT 8",
+			
 			nativeQuery = true
 			)
 	public List <Assessment> findM(String media);

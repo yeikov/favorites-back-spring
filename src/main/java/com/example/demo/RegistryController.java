@@ -56,6 +56,7 @@ public class RegistryController {
 		
 		return new CollectionModel<>(registries, linkTo(methodOn(RegistryController.class).all()).withSelfRel());
 	}
+
 	
 	@CrossOrigin 
 	@GetMapping("/{id}")
@@ -144,6 +145,32 @@ public class RegistryController {
 		}
 
 		return response;
+	}
+	
+	@CrossOrigin
+	@GetMapping("/topFavorite/{media}")
+	@ResponseBody
+	CollectionModel<EntityModel<Registry>> findTopFavoritesByMedia (@PathVariable String media){
+		
+		List<EntityModel<Registry>> registries = registryRepository.findTopFavoriteByMedia(media).stream().map(assembler::toModel)
+		.collect(Collectors.toList());
+
+		return new CollectionModel<>(registries,
+				linkTo(methodOn(RegistryController.class).findTopFavoritesByMedia(media)).withSelfRel());
+		
+	}
+
+	@CrossOrigin
+	@GetMapping("/topRecommend/{media}")
+	@ResponseBody
+	CollectionModel<EntityModel<Registry>> findTopRecommendByMedia (@PathVariable String media){
+		
+		List<EntityModel<Registry>> registries = registryRepository.findTopRecommendByMedia(media).stream().map(assembler::toModel)
+		.collect(Collectors.toList());
+
+		return new CollectionModel<>(registries,
+				linkTo(methodOn(RegistryController.class).findTopRecommendByMedia (media)).withSelfRel());
+		
 	}
 
 }

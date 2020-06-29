@@ -12,9 +12,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public Optional<User> findByeMail(String eMail);
 	
 	@Query(
-			  //value = "SELECT * FROM user ORDER by user.name LIMIT 14",
-			value = "select * from  user where user.id= any (select distinct user_id from  assessment inner join user on user.id=assessment.user_id )  limit 10",
-			  nativeQuery = true)
+			value = "select * from  user where user.id= any (select distinct user_id from  assessment inner join user on user.id=assessment.user_id order by assessment.registered_at desc)  limit 10",
+			nativeQuery = true)
 	public List <User> recent(String criterio);
 	
 }
