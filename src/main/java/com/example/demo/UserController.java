@@ -118,13 +118,13 @@ public class UserController {
 	}
 	
 	@CrossOrigin
-	@GetMapping("/email/{eMail}")
+	@PostMapping("/email")
 	@ResponseBody
-	EntityModel<User> oneByEMail(@PathVariable String eMail) {
+	EntityModel<User> oneByEMail(@RequestBody User search) {
 
-		User user = userRepository.findByeMail(eMail).orElseThrow(() -> new UserNotFoundException(eMail));
+		User user = userRepository.findByeMail(search.geteMail()).orElseThrow(() -> new UserNotFoundException(search.geteMail()));
 
-		return new EntityModel<>(user, linkTo(methodOn(UserController.class).oneByEMail(eMail)).withSelfRel(),
+		return new EntityModel<>(user, linkTo(methodOn(UserController.class).oneByEMail(user)).withSelfRel(),
 				linkTo(methodOn(UserController.class).all()).withRel("users"));
 	}
 	
