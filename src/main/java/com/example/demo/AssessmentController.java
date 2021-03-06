@@ -137,5 +137,19 @@ public class AssessmentController {
 		return new CollectionModel<>(assessments,
 				linkTo(methodOn(AssessmentController.class).allUserByMedia(id, media)).withSelfRel());
 	}
+	@CrossOrigin
+	@GetMapping("registry/{id}")
+	@ResponseBody
+	CollectionModel<EntityModel<Assessment>> allByRegistry(@PathVariable Long id) {
+		
+		Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
+
+		List<EntityModel<Assessment>> assessments = user_registryRepository.findAllByRegistry(registry).stream()
+				.map(assembler::toModel).collect(Collectors.toList());
+
+		return new CollectionModel<>(assessments,
+				linkTo(methodOn(AssessmentController.class).allByRegistry(id)).withSelfRel());
+		
+	}
 
 }
