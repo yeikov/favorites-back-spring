@@ -1,35 +1,40 @@
-1. bbdd mysql 'db_favorites' utf8_unicode_ci
-eg xammp
+# 'Favorites' spring back-app
 
+- Se requiere una base de datos: 
+ 
+	bbdd mysql 'db_favorites' utf8_unicode_ci  
+e.g. xammp  
 
-  create database db_favorites; -- Creates the new database
+	create database db_favorites; -- Creates the new database  
+create user in db
 
-2. create user in db
-  create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
+	create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user  
+	grant all on db_favorites.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database
 
-  grant all on db_favorites.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database
-
-
+- Configuración  
 'application.properties'
 
-  spring.jpa.hibernate.ddl-auto=create-drop -- update para conservar los datos
+	spring.jpa.hibernate.ddl-auto=create-drop -- update para conservar los datos
 
 arrancar app
-2. Run as > Spring Boot app
-/ o en DemoApplication, run as java app 
+
+	Run as > Spring Boot app
+
+	/ o en DemoApplication, > run as java app 
+
+3. Visitar despliegue  
+
+	http://localhost:8080/backend
 
 
-http://localhost:8080/backend
+###Swagger
 
-
-Swagger
-
-http://localhost:8080/v2/api-docs
-	
-http://localhost:8080/swagger-ui.html
+	http://localhost:8080/v2/api-docs
+		
+	http://localhost:8080/swagger-ui.html
 
 
 
-docs:
+###docs:
 
-https://spring.io/guides/tutorials/rest/
+	https://spring.io/guides/tutorials/rest/
