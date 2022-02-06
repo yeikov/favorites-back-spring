@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.registry;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -6,19 +6,13 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-
 @ControllerAdvice
-public class UserExistsAdvice {
-	
+public class RegistryNotFoundAdvice {
+
 	@ResponseBody
-	@ExceptionHandler(UserNotFoundException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	Exception userNotFoundHandler(UserNotFoundException ex) {
-	    return ex; //.getMessage();
+	@ExceptionHandler(RegistryNotFoundException.class)
+	@ResponseStatus(HttpStatus.NOT_FOUND)
+	Exception registryNotFoundHandler(RegistryNotFoundException ex) {
+		return ex;
 	}
-	
-
-	
-
-
 }

@@ -1,10 +1,13 @@
-package com.example.demo;
+package com.example.demo.entities.assesment;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import com.example.demo.entities.registry.Registry;
+import com.example.demo.entities.user.User;
 
 public interface AssessmentRepository extends JpaRepository <Assessment, Long>{
 	

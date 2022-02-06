@@ -1,6 +1,4 @@
-package com.example.demo;
-
-import com.example.demo.User;
+package com.example.demo.entities.user;
 
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
@@ -29,6 +27,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.DemoApplication;
+import com.example.demo.entities.user.User;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.CollectionModel;

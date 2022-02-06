@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.registry;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+
+import com.example.demo.entities.assesment.Assessment;
 
 //import io.swagger.annotations.ApiModelProperty;
 

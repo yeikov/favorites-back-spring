@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.registry;
 
 
 import java.net.URISyntaxException;
@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.example.demo.CommonUtilities;
+import com.example.demo.DemoApplication;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;

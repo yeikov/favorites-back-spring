@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.registry;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -8,6 +8,8 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.entities.assesment.AssessmentRepository;
 
 @Component
 public class RegistryModelAssembler implements RepresentationModelAssembler<Registry, EntityModel<Registry>>{

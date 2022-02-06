@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.assesment;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +11,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.example.demo.entities.registry.Registry;
+import com.example.demo.entities.user.User;
 
 //import io.swagger.annotations.ApiModelProperty;
 

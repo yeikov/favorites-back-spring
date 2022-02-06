@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.user;
 
 import lombok.Data;
 
@@ -17,6 +17,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.example.demo.entities.assesment.Assessment;
 import com.sun.istack.NotNull;
 
 //import io.swagger.annotations.Api;
@@ -57,7 +58,6 @@ public class User {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getName() {
 		return name;

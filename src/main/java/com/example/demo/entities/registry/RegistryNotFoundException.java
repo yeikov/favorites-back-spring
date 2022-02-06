@@ -1,7 +1,7 @@
-package com.example.demo;
+package com.example.demo.entities.registry;
 
 public class RegistryNotFoundException extends RuntimeException {
-	RegistryNotFoundException (Long id){
+	public RegistryNotFoundException (Long id){
 		super ("Could not find Registry " + id);
 	}
 

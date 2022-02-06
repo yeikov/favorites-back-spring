@@ -1,6 +1,9 @@
-package com.example.demo;
+package com.example.demo.entities.assesment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.example.demo.entities.registry.Registry;
+import com.example.demo.entities.user.User;
 
 public class AssessmentUtils {
 	@Autowired

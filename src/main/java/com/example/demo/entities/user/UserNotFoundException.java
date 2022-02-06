@@ -1,8 +1,8 @@
-package com.example.demo;
+package com.example.demo.entities.user;
 
 public class UserNotFoundException extends RuntimeException {
 	
-	UserNotFoundException (Long id){
+	public UserNotFoundException (Long id){
 		super ("Could not find User "+id);
 	}
 	

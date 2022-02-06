@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.entities.user;
 
 public class UserExistsException extends RuntimeException {
 
