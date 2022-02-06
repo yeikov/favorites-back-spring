@@ -1,9 +1,9 @@
 # 'Favorites' spring back-app
 
 - Se requiere una base de datos: 
+e.g. xammp  
  
 	bbdd mysql 'db_favorites' utf8_unicode_ci  
-e.g. xammp  
 
 	create database db_favorites; -- Creates the new database  
 create user in db
