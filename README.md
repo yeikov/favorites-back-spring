@@ -2,17 +2,17 @@
 eg xammp
 
 
-create database db_favorites; -- Creates the new database
+  create database db_favorites; -- Creates the new database
 
 2. create user in db
-create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
+  create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
 
-grant all on db_favorites.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database
+  grant all on db_favorites.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database
 
 
 'application.properties'
 
-spring.jpa.hibernate.ddl-auto=create-drop -- update para conservar los datos
+  spring.jpa.hibernate.ddl-auto=create-drop -- update para conservar los datos
 
 arrancar app
 2. Run as > Spring Boot app
