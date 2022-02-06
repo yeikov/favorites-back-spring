@@ -34,7 +34,6 @@ arrancar app
 	http://localhost:8080/swagger-ui.html
 
 
-
 ###docs:
 
 	https://spring.io/guides/tutorials/rest/
