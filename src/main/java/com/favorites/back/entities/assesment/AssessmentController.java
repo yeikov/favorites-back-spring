@@ -1,15 +1,9 @@
 package com.favorites.back.entities.assesment;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.ResolvableType;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.mediatype.hal.CollectionModelMixin;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.favorites.back.BackApplication;
@@ -30,11 +23,6 @@ import com.favorites.back.entities.registry.RegistryRepository;
 import com.favorites.back.entities.user.User;
 import com.favorites.back.entities.user.UserNotFoundException;
 import com.favorites.back.entities.user.UserRepository;
-
-import io.micrometer.common.lang.Nullable;
-
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @Controller
 @RequestMapping(path = BackApplication.backEndUrl + "/assessments")

@@ -5,11 +5,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
 import com.favorites.back.entities.assesment.AssessmentRepository;
+
+import jakarta.annotation.Nonnull;
 
 @Component
 public class RegistryModelAssembler implements RepresentationModelAssembler<Registry, EntityModel<Registry>>{
@@ -17,7 +18,9 @@ public class RegistryModelAssembler implements RepresentationModelAssembler<Regi
 	@Autowired
 	private AssessmentRepository assessmentRepository;
 	
+	@SuppressWarnings("null")
 	@Override
+	@Nonnull
 	public EntityModel<Registry> toModel(Registry registry) {
 		 
 		EntityModel <Registry> registryModel = EntityModel.of(registry, 

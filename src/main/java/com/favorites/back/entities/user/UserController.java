@@ -5,7 +5,6 @@ package com.favorites.back.entities.user;
 
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -14,7 +13,6 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +21,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.favorites.back.BackApplication;
-import com.favorites.back.entities.user.User;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.CollectionModel;
 
@@ -106,7 +99,7 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	ResponseEntity<?> delete(@PathVariable Long id) throws Exception {
-		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
 		try {
 			userRepository.deleteById(id);

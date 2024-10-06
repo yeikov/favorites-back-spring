@@ -1,6 +1,5 @@
 package com.favorites.back.entities.registry;
 
-import java.time.LocalDateTime;
 
 public class RegistryExistsException extends RuntimeException {
 	
