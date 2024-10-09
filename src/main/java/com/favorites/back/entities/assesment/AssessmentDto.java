@@ -1,8 +1,5 @@
 package com.favorites.back.entities.assesment;
 
-import lombok.Data;
-
-@Data
 public class AssessmentDto {
 	
 	private Long userId;
