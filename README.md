@@ -1,31 +1,22 @@
-1. bbdd mysql 'db_favorites' utf8_unicode_ci
+# 'Favorites' spring back-app
+
+## Previous configuration
+This spring app is accessing data with MySQL. 
+A prerequisite to build this application is that your development machine has a Docker environment, such as Docker Desktop, available. 
+
+## Back
+
+Gradle tasks application bootRun
+
+	http://localhost:8080/backend
+
+## Front-end
+
+favorites-front-ng Angular project
+
+[https://github.com/yeikov/favorites-front-ng](https://github.com/yeikov/favorites-front-ng)
 
 
-create database db_favorites; -- Creates the new database
-
-create user 'springuser'@'%' identified by 'ThePassword'; -- Creates the user
-
-grant all on db_favorites.* to 'springuser'@'%'; -- Gives all privileges to the new user on the newly created database
-
-
-'application.properties'
-
-spring.jpa.hibernate.ddl-auto=create-drop -- update para conservar los datos
-
-
-2. Run as > Spring Boot app
- 
-
-Swagger
-
-http://localhost:8080/v2/api-docs
-	
-http://localhost:8080/swagger-ui.html
-
-
-
-docs:
+### Docs:
 
 https://spring.io/guides/tutorials/rest/
-
-https://spring.io/guides/tutorials/spring-security-and-angular-js/

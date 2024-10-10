@@ -8,8 +8,8 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
-     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script> 
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <!-- 
     
 
@@ -57,7 +57,7 @@
             $scope.dbState = 'initial'; //'working' //'completed'
 
             $scope.endPoints = [
-            	{
+                {
                     controller: 'user Controller',
                     name: 'users',
                     link: $scope.backurl + '/backend/users',
@@ -288,6 +288,7 @@
             $scope.juegoDeDatosRegistries = [];
 
             $scope.usersIn = false;
+            $scope.usersLastId = 0;
             $scope.registriesIn = false;
             $scope.assessmentsIn = false;
 
@@ -355,8 +356,10 @@
                         element.id = res.data.id;
                         if (index == ($scope.juegoDeDatosUsers.length - 1)) {
                             $scope.usersIn = true;
+                            $scope.usersLastId = res.data.id;
+
                             console.log('Generada la serie de usuarios en bbdd.');
-                            
+
                             $scope.rellenaRegistros()
                         }
                     })
@@ -383,44 +386,164 @@
 
             //se rellenan las tablas 4/4 (valoraciones)
             $scope.rellenaValoraciones = function () {
-                totalValoraciones = $scope.juegoDeDatosRegistries.length * $scope.juegoDeDatosUsers.length;
-                console.log('Generando ' + totalValoraciones + ' valoraciones de las obras en bbdd.');
+                let _totalValoraciones = $scope.juegoDeDatos_fuentes.length * $scope.juegoDeDatosUsers.length;
+
+                let notas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+
+
+
+                console.log('Generando ' + _totalValoraciones + ' valoraciones de las obras en bbdd.');
+
+                let cuentaU = 0;
+                let cuentaR = 0;
                 $scope.juegoDeDatosUsers.forEach(usuario => {
 
-                    $scope.juegoDeDatosRegistries.forEach(registro => {
-                        //console.log("rellenaValoraciones juegoDeDatosRegistries[0?]", registro.id, registro.title);
+                    cuentaU++;
+                    let indiceActuacion = Math.random() - .2;
 
-                        fav = Number(registro.id.toString()[registro.id.toString().length - 1]);
-                        rec = 10 - fav;
-                        $scope.lanzaConsulta({
-                            method: 'POST', url: $scope.backurl + '/backend/assessments',
-                            data: {
-                                registryId: registro.id,
-                                userId: usuario.id,
-                                favorite: fav,
-                                recommend: rec,
-                                notes: 'Great!'
-                            }
-                        }).then((res) => {
-                            //console.log("--[0?]", res.data.registry.id, res.data.registry.title);
+                    //cada usuario valorará entre 0 y todos los registros
+                    let registrosAValorar = [];
 
-                            if (res.data.id >= totalValoraciones - 10) {
-                                $scope.dbState = 'completed';
-                            }
-                        })
-                    })
+                    for (let r in $scope.juegoDeDatosRegistries) {
+                        if (Math.random() > indiceActuacion)// para cada usuario un valor de .0 a 1.0 que reduce las posiblidades de se inserten casos a valorar 
+                            registrosAValorar.push(r);
+                    }//[1,5,11,20]
+
+                    
+                    let notasFilm = [];
+                    let notasBook = [];
+                    let notasSerie = [];
+                    let notasComic = [];
+                    let notasAlbum = [];
+
+                    let notasFilmR = [];
+                    let notasBookR = [];
+                    let notasSerieR = [];
+                    let notasComicR = [];
+                    let notasAlbumR = [];
+
+                    function puntua(media) {
+                        if (media == 'film')
+                            return notasFilm.shift();
+                        if (media == 'book')
+                            return notasBook.shift();
+                        if (media == 'serie')
+                            return notasSerie.shift();
+                        if (media == 'comic')
+                            return notasComic.shift();
+                        if (media == 'album')
+                            return notasAlbum.shift();
+                    }
+                    function puntuaR(media) {
+                        if (media == 'film')
+                            return notasFilmR.shift();
+                        if (media == 'book')
+                            return notasBookR.shift();
+                        if (media == 'serie')
+                            return notasSerieR.shift();
+                        if (media == 'comic')
+                            return notasComicR.shift();
+                        if (media == 'album')
+                            return notasAlbumR.shift();
+                    }
+
+                    let f = 0;
+                    let b = 0;
+                    let s = 0;
+                    let c = 0;
+                    let a = 0;
+
+                    for (let n of registrosAValorar) {
+                        //rellena con [1, 2, 3, 4 ...]
+
+                        let registro = $scope.juegoDeDatosRegistries[n];
+
+
+
+                        if (registro.media == 'film') {
+                            notasFilm.push(f);
+                            notasFilmR.push(f);
+                            f++;
+                        }
+                        if (registro.media == 'book') {
+                            notasBook.push(b);
+                            notasBookR.push(b);
+                            b++;
+                        }
+                        if (registro.media == 'serie') {
+                            notasSerie.push(s);
+                            notasSerieR.push(s);
+                            s++;
+                        }
+                        if (registro.media == 'comic') {
+                            notasComic.push(c);
+                            notasComicR.push(c);
+                            c++;
+                        }
+                        if (registro.media == 'album') {
+                            notasAlbum.push(a);
+                            notasAlbumR.push(a);
+                            a++;
+                        }
+
+                    }
+
+                    notasFilm.sort(() => { return (Math.random() - 0.5) });
+                    notasBook.sort(() => { return (Math.random() - 0.5) });
+                    notasSerie.sort(() => { return (Math.random() - 0.5) });
+                    notasComic.sort(() => { return (Math.random() - 0.5) });
+                    notasAlbum.sort(() => { return (Math.random() - 0.5) });
+
+                    notasFilmR.sort(() => { return (Math.random() - 0.5) });
+                    notasBookR.sort(() => { return (Math.random() - 0.5) });
+                    notasSerieR.sort(() => { return (Math.random() - 0.5) });
+                    notasComicR.sort(() => { return (Math.random() - 0.5) });
+                    notasAlbumR.sort(() => { return (Math.random() - 0.5) });
+
+                    //reordena [3, 2, 4, 1]
+
+                    for (let n of registrosAValorar) {
+
+
+                        let registro = $scope.juegoDeDatosRegistries[n];
+    
+                        if (registro != undefined) {
+
+                            $scope.lanzaConsulta({
+                                method: 'POST', url: $scope.backurl + '/backend/assessments',
+                                data: {
+                                    registryId: registro.id,
+                                    userId: usuario.id,
+                                    favorite: puntua(registro.media),
+                                    recommend: puntuaR(registro.media),
+                                    notes: 'Great!'
+                                }
+                            }).then((res) => {
+
+                                if (res.data.user.id >= $scope.usersLastId && $scope.dbState != 'completed') {
+                                    console.log("finalizado");
+                                    $scope.dbState = 'completed';
+                                }
+                            })
+
+                        } else {
+                            console.log('registro undefined');
+                        }
+
+                    }
+
                 });
-
 
             }
 
 
             //comprueba si hay conexion y si hay juego de datos. si no, se ofrece la acción de inicar las tablas
             $scope.sondeaTabla = function (element) {
-                console.log(element)
+                
                 $scope.lanzaConsultaSinData(element).then(
                     (res) => {
-                        console.log(res);
+                //        console.log(res);
                         $scope.connected = true;
                         res.data.content.length == 0 ? $scope.dbState = 'initial' : $scope.dbState = 'completed';
 
@@ -448,6 +571,17 @@
     <div ng-app="myApp" ng-controller="myCtrl" class="container-fluid">
 
         <div class=container ng-if="connected && dbState=='completed'">
+        <p>
+        	<a href="http://localhost:8080/v2/api-docs"
+                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                                title=http://localhost:8080/v2/api-docs>http://localhost:8080/v2/api-docs</a>
+        </p>
+        <p>                        
+        	<a href="http://localhost:8080/swagger-ui.html"
+                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                                title=http://localhost:8080/swagger-ui.html>http://localhost:8080/swagger-ui.html</a>
+    	</p>
+
             <div ng-repeat="caso in endPoints" class=row>
                 <h2>{{caso.nom}}</h2>
                 <div class=col-12>
