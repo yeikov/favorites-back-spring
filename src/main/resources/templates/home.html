@@ -410,7 +410,7 @@
                             registrosAValorar.push(r);
                     }//[1,5,11,20]
 
-                    
+
                     let notasFilm = [];
                     let notasBook = [];
                     let notasSerie = [];
@@ -507,7 +507,7 @@
 
 
                         let registro = $scope.juegoDeDatosRegistries[n];
-    
+
                         if (registro != undefined) {
 
                             $scope.lanzaConsulta({
@@ -540,12 +540,17 @@
 
             //comprueba si hay conexion y si hay juego de datos. si no, se ofrece la acción de inicar las tablas
             $scope.sondeaTabla = function (element) {
-                
+
                 $scope.lanzaConsultaSinData(element).then(
                     (res) => {
-                //        console.log(res);
+                        //        console.log(res);
                         $scope.connected = true;
-                        res.data.content.length == 0 ? $scope.dbState = 'initial' : $scope.dbState = 'completed';
+                        if (res['data']['_embedded']['users'].length > 0) {
+                            $scope.dbState = 'completed';
+                        } else {
+                            $scope.dbState = 'initial'
+                        }
+                        //res._embedded[this.entityListName] == 0 ? $scope.dbState = 'initial' : $scope.dbState = 'completed';
 
                     },
                     (err) => {
@@ -571,16 +576,16 @@
     <div ng-app="myApp" ng-controller="myCtrl" class="container-fluid">
 
         <div class=container ng-if="connected && dbState=='completed'">
-        <p>
-        	<a href="http://localhost:8080/v2/api-docs"
-                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
-                                title=http://localhost:8080/v2/api-docs>http://localhost:8080/v2/api-docs</a>
-        </p>
-        <p>                        
-        	<a href="http://localhost:8080/swagger-ui.html"
-                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
-                                title=http://localhost:8080/swagger-ui.html>http://localhost:8080/swagger-ui.html</a>
-    	</p>
+            <p>
+                <a href="http://localhost:8080/v2/api-docs"
+                    style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                    title=http://localhost:8080/v2/api-docs>http://localhost:8080/v2/api-docs</a>
+            </p>
+            <p>
+                <a href="http://localhost:8080/swagger-ui.html"
+                    style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
+                    title=http://localhost:8080/swagger-ui.html>http://localhost:8080/swagger-ui.html</a>
+            </p>
 
             <div ng-repeat="caso in endPoints" class=row>
                 <h2>{{caso.nom}}</h2>
