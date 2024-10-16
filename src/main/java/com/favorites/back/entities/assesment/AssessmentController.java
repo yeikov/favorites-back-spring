@@ -1,16 +1,7 @@
 package com.favorites.back.entities.assesment;
 
-import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,22 +33,16 @@ public class AssessmentController {
 	@Autowired
 	private RegistryRepository registryRepository;
 
-	@Autowired
-	private AssessmentModelAssembler assembler;
-
 	@CrossOrigin
 	@GetMapping("/{id}")
-	@ResponseBody
-	EntityModel<Assessment> one(@PathVariable Long id) {
-		System.out.println("asdf");
-		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
-		return assembler.toModel(ur);
+	public @ResponseBody Assessment one(@PathVariable Long id) {
+		return user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
+
 	}
 
 	@CrossOrigin
 	@PostMapping
-	@ResponseBody
-	ResponseEntity<?> add(@RequestBody AssessmentDto dto) {
+	public @ResponseBody Assessment add(@RequestBody AssessmentDto dto) {
 
 		User user = userRepository.findById(dto.getUserId())
 				.orElseThrow(() -> new UserNotFoundException(dto.getUserId())); // .orElse(null);
@@ -71,10 +56,8 @@ public class AssessmentController {
 
 		try {
 
-			EntityModel<Assessment> entityModel = assembler.toModel(user_registryRepository.save(newValoration));
+			return user_registryRepository.save(newValoration);
 
-			return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-					.body(entityModel);
 		} catch (Exception e) {
 			// throw e;
 			throw new AssessmentExistsException();
@@ -84,8 +67,7 @@ public class AssessmentController {
 
 	@CrossOrigin
 	@PutMapping("/{id}")
-	@ResponseBody
-	ResponseEntity<?> update(@PathVariable Long id, @RequestBody Assessment valoration) {
+	public @ResponseBody Assessment update(@PathVariable Long id, @RequestBody Assessment valoration) {
 
 		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 
@@ -93,67 +75,52 @@ public class AssessmentController {
 		ur.setRecommend(valoration.getRecommend());
 		ur.setNotes(valoration.getNotes());
 
-		EntityModel<Assessment> entityModel = assembler.toModel(user_registryRepository.save(ur));
-
-		return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
+		return user_registryRepository.save(ur);
 	}
 
 	@DeleteMapping("/{id}")
-	@ResponseBody
-	ResponseEntity<?> delete(@PathVariable Long id) {
+	public @ResponseBody Long delete(@PathVariable Long id) {
 		user_registryRepository.deleteById(id);
 
-		return ResponseEntity.noContent().build();
+		return id;
 	}
 
 	@CrossOrigin
 	@GetMapping("/user/{id}")
-	@ResponseBody
-	CollectionModel<EntityModel<Assessment>> allByUser(@PathVariable Long id) {
+	public @ResponseBody Iterable<Assessment> allByUser(@PathVariable Long id) {
 
 		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-		List<EntityModel<Assessment>> assessments = user_registryRepository.findAllByUser(user).stream()
-				.map(assembler::toModel).collect(Collectors.toList());
+		return user_registryRepository.findAllByUser(user);
 
-		return CollectionModel.of(assessments);
+	}
+
+	
+	@CrossOrigin
+	@GetMapping("registry/{id}")
+	public @ResponseBody Iterable<Assessment> allByRegistry(@PathVariable Long id) {
+
+		Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
+
+		return user_registryRepository.findAllByRegistry(registry);
 
 	}
 
 	@CrossOrigin
 	@GetMapping("media/{media}")
-	@ResponseBody
-	CollectionModel<EntityModel<Assessment>> allByMedia(@PathVariable String media) {
+	public @ResponseBody Iterable<Assessment> allByMedia(@PathVariable String media) {
 
-		List<EntityModel<Assessment>> assessments = user_registryRepository.findM(media).stream()
-				.map(assembler::toModel).collect(Collectors.toList());
+		return user_registryRepository.findM(media);
 
-		return CollectionModel.of(assessments);
 	}
 
 	@CrossOrigin
 	@GetMapping("user/{id}/{media}")
-	@ResponseBody
-	CollectionModel<EntityModel<Assessment>> allUserByMedia(@PathVariable Long id, @PathVariable String media) {
+	public @ResponseBody Iterable<Assessment> allUserByMedia(@PathVariable Long id, @PathVariable String media) {
 
-		List<EntityModel<Assessment>> assessments = user_registryRepository.findUM(id, media).stream()
-				.map(assembler::toModel).collect(Collectors.toList());
-
-		return CollectionModel.of(assessments);
-	}
-
-	@CrossOrigin
-	@GetMapping("registry/{id}")
-	@ResponseBody
-	CollectionModel<EntityModel<Assessment>> allByRegistry(@PathVariable Long id) {
-
-		Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
-
-		List<EntityModel<Assessment>> assessments = user_registryRepository.findAllByRegistry(registry).stream()
-				.map(assembler::toModel).collect(Collectors.toList());
-
-		return CollectionModel.of(assessments);
+		return user_registryRepository.findUM(id, media);
 
 	}
+
 
 }

@@ -81,10 +81,10 @@
                 },
                 {
                     controller: 'user Controller',
-                    name: 'users/email/',
+                    name: 'users/email',
                     method: 'POST',
                     description: 'Un usuario a partir de su nombre',
-                    url: $scope.backurl + '/backend/users/email/',
+                    url: $scope.backurl + '/backend/users/email',
                     data: { eMail: 'john@london.exp' },
                     result: '...',
 
@@ -391,15 +391,11 @@
                 let notas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 
-
-
                 console.log('Generando ' + _totalValoraciones + ' valoraciones de las obras en bbdd.');
 
-                let cuentaU = 0;
-                let cuentaR = 0;
+                
                 $scope.juegoDeDatosUsers.forEach(usuario => {
-
-                    cuentaU++;
+    
                     let indiceActuacion = Math.random() - .2;
 
                     //cada usuario valorará entre 0 y todos los registros
@@ -530,7 +526,7 @@
                         } else {
                             console.log('registro undefined');
                         }
-
+                        
                     }
 
                 });
@@ -545,11 +541,19 @@
                     (res) => {
                         //        console.log(res);
                         $scope.connected = true;
-                        if (res['data']['_embedded']['users'].length > 0) {
-                            $scope.dbState = 'completed';
-                        } else {
-                            $scope.dbState = 'initial'
+
+                        try {
+                            let sondeo = res.data.length;
+                            if (sondeo && sondeo > 0){
+                                $scope.dbState = 'completed';
+                            } else {
+                                $scope.dbState = 'initial';
+                            }
+
+                        } catch (e) {
+                            $scope.dbState = 'initial';
                         }
+
                         //res._embedded[this.entityListName] == 0 ? $scope.dbState = 'initial' : $scope.dbState = 'completed';
 
                     },
@@ -598,7 +602,7 @@
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0">{{caso.controller.toUpperCase()}}</span>
                         </h5>
                         <p>
-                            <img src="{{caso.icon?caso.icon:iconoDefault}}" alt="icono"
+                            <img src="{{ iconoDefault }}" alt="[i]"
                                 style="width: 12px; height: 12px; clear: right; float:left;margin:.5rem .5rem 0 0">
 
                             <a href="{{caso.link}}"
