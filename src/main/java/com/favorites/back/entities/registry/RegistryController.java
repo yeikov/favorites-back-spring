@@ -43,6 +43,13 @@ public class RegistryController {
 	}
 
 	@CrossOrigin
+	@PostMapping("/find")
+	@ResponseBody
+	Iterable<Registry> find(@RequestBody String title) {
+		return registryRepository.findAllByTitleIgnoreCaseContaining(title);
+	}
+
+	@CrossOrigin
 	@PostMapping
 	@ResponseBody
 	Registry add(@RequestBody RegistryDto newRegistry) throws URISyntaxException {
