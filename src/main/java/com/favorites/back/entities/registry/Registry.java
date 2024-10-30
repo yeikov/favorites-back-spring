@@ -74,6 +74,9 @@ public class Registry {
 		this.author = author;
 	}
 
+	public int getRegistrations(){
+		return this.registrations.size();
+	}
 
 }
 
