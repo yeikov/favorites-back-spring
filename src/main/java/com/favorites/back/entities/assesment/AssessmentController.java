@@ -78,6 +78,7 @@ public class AssessmentController {
 		return user_registryRepository.save(ur);
 	}
 
+	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public @ResponseBody Long delete(@PathVariable Long id) {
 		user_registryRepository.deleteById(id);
