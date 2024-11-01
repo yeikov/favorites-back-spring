@@ -79,7 +79,7 @@ public class UserController {
 			userRepository.deleteById(id);
 			return deletedUser;
 		} catch (Exception e) {
-			throw new Exception();
+			throw e;
 		}
 
 	}
