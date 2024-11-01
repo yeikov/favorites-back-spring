@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.favorites.back.BackApplication;
+import com.favorites.back.entities.assesment.AssessmentRepository;
 
 @Controller
 @RequestMapping(path = BackApplication.backEndUrl + "/users")
@@ -24,6 +25,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private AssessmentRepository assessmentRepository;
 
 	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
@@ -76,6 +80,7 @@ public class UserController {
 		User deletedUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
 		try {
+			assessmentRepository.deleteAllInBatch(assessmentRepository.findAllByUser(deletedUser));
 			userRepository.deleteById(id);
 			return deletedUser;
 		} catch (Exception e) {
