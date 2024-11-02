@@ -44,12 +44,14 @@ public class UserController {
 
 	@CrossOrigin
 	@PostMapping
-	public @ResponseBody User add(@RequestBody User newUser) throws URISyntaxException {
+	public @ResponseBody User add(@RequestBody User newUser) throws Exception {
 
 		User doexists = userRepository.findByeMail(newUser.geteMail()).orElse(null);
 
 		if (doexists != null) {
-			throw new UserExistsException(newUser.geteMail());
+			//throw new UserExistsException(newUser.geteMail());
+			newUser.setId(-1L); // ...er.setId(-1L); workaround Todo: review exceptions
+			return newUser;
 		} else {
 			return userRepository.save(newUser);
 		}
