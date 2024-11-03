@@ -3,8 +3,6 @@ package com.favorites.back.entities.user;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 
-import java.net.URISyntaxException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
