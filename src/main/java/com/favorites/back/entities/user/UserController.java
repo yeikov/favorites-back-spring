@@ -3,8 +3,6 @@ package com.favorites.back.entities.user;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 
-import java.net.URISyntaxException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.favorites.back.BackApplication;
+import com.favorites.back.entities.assesment.AssessmentRepository;
 
 @Controller
 @RequestMapping(path = BackApplication.backEndUrl + "/users")
@@ -24,6 +23,9 @@ public class UserController {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private AssessmentRepository assessmentRepository;
 
 	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
@@ -40,12 +42,14 @@ public class UserController {
 
 	@CrossOrigin
 	@PostMapping
-	public @ResponseBody User add(@RequestBody User newUser) throws URISyntaxException {
+	public @ResponseBody User add(@RequestBody User newUser) throws Exception {
 
 		User doexists = userRepository.findByeMail(newUser.geteMail()).orElse(null);
 
 		if (doexists != null) {
-			throw new UserExistsException(newUser.geteMail());
+			//throw new UserExistsException(newUser.geteMail());
+			newUser.setId(-1L); // ...er.setId(-1L); workaround Todo: review exceptions
+			return newUser;
 		} else {
 			return userRepository.save(newUser);
 		}
@@ -76,10 +80,11 @@ public class UserController {
 		User deletedUser = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
 		try {
+			assessmentRepository.deleteAllInBatch(assessmentRepository.findAllByUser(deletedUser));
 			userRepository.deleteById(id);
 			return deletedUser;
 		} catch (Exception e) {
-			throw new Exception();
+			throw e;
 		}
 
 	}
