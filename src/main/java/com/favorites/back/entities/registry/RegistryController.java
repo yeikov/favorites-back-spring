@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping(path = BackApplication.backEndUrl + "/registries")
+//@CrossOrigin(origins="http://localhost:4200", maxAge=3600)
+@CrossOrigin(origins = "http://localhost:4200")
 public class RegistryController {
 
 	@Autowired
@@ -33,8 +35,6 @@ public class RegistryController {
 	Iterable<Registry> all() {
 		return registryRepository.findAll();
 	}
-
-	@CrossOrigin
 	@GetMapping("/{id}")
 	@ResponseBody
 	Registry one(@PathVariable Long id) {
@@ -122,7 +122,7 @@ public class RegistryController {
 		return response;
 	}
 
-	@CrossOrigin
+	@CrossOrigin(origins = "http://localhost:4000")
 	@GetMapping("/topFavorite/{media}")
 	@ResponseBody
 	Iterable<Registry> findTopFavoritesByMedia(@PathVariable String media) {
