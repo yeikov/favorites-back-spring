@@ -22,6 +22,6 @@ public class BackApplication implements WebMvcConfigurer {
 		SpringApplication.run(BackApplication.class, args);
 	}
 
-	public static final String backEndUrl = "/backend";
+	public static final String backEndUrl = "/favorites";
 
 }

@@ -48,7 +48,7 @@
 
         app.controller("myCtrl", function ($scope, $http) {
 
-            $scope.backurl = 'http://localhost:9000';
+            $scope.backurl = 'http://localhost:9001';
 
             $scope.iconoDefault = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACvUlEQVQ4jX3T20tUcRAH8O/8ztl117Pretk9665tZVtWW0lgtgRGmC9GBpFUQikUFBRFFyLozX+hG6J0D30wiHxR6CUTu1BtD9JNM0w0V9dbarqtnvObHkwpM+dtGD4MM/P7Ef6IyvqQddDu3U7gcoALAHh/l6IgaiFJ9xP+8ec1WyIzpxtXJ13d1TlNc/hMQ5FXCuMigAoG3Fg8YgBuSkm3ki32QihmHc1hU8xcB2gfAPoPBgBINg2fY+WHrYFi5fHnBwfUyvqQdUiYlwAqXQoyGFKacGt+ZW/oZK7XsTzRMRwJqzFN3ykkH17QBcw8nwtS2GF1IaSHuShYRlkpQfw0JpN8zmCBKpgrAGQAALOEIiwccOWw37kKLlsGklQ7Um06Aq41pGsBoQgVzBJWxYY0m2ezCkbBbFcJd7KP96w7xhu828iuaovuwmQDQ5NRU9eyFKc1NaAC0BkMzerkstwLvN6TL5baRe9Yp5wxE+R1BECkaGJu5pAnzGvdeUvi/h/d/D72mv0pQQIAUxrTAkA/GMhKCZKg//svI22yqeOu3OgNi2SLg2ZH6e1TCWgBUB43Jv9BDMb3eIxf9DRx+1CEd+ccoeWuHAKA4ako2ocjT1UQ3SMSxW39zzzhZcWcZtcxEh9Az1gHtw9F0P39E2c6VqBs03nhc2YTACSMOFq+Pur7MPC6Vs3Q0Dw4Lu78mB690PCxmicSIxhPjMCmapydvhGlG05RMD2XVGGhuDHJ/RNdeNr1UL6NNt8YN9+8JADYX5/pOZF/7bICcfDBuyuUbtdlml0nhzUNFsVKkiUSZpzH4oNicOqbOTU9UQuFzlaVtI7O3/pN3xN3Y8ftc7GJ7qPMnMmQf71GACBBUSFFjanIy1UlraPAgo9zvDrPovqcYUHyEEA7wPDPSvQSqJlI1qVr4lVlYbMxZ34BeHEn8QqSwzsAAAAASUVORK5CYII=";
 
@@ -60,10 +60,10 @@
                 {
                     controller: 'user Controller',
                     name: 'users',
-                    link: $scope.backurl + '/backend/users',
+                    link: $scope.backurl + '/favorites/users',
                     method: 'GET',
                     description: 'Todos los usuarios',
-                    url: $scope.backurl + '/backend/users',
+                    url: $scope.backurl + '/favorites/users',
                     data: {},
                     result: '...',
 
@@ -72,9 +72,9 @@
                     controller: 'user Controller',
                     name: 'users/{id}',
                     method: 'GET',
-                    link: $scope.backurl + '/backend/users/1',
+                    link: $scope.backurl + '/favorites/users/1',
                     description: 'Un usuario a partir de su id',
-                    url: $scope.backurl + '/backend/users/',
+                    url: $scope.backurl + '/favorites/users/',
                     data: { id: 1 },
                     result: '...',
 
@@ -84,7 +84,7 @@
                     name: 'users/email',
                     method: 'POST',
                     description: 'Un usuario a partir de su nombre',
-                    url: $scope.backurl + '/backend/users/email',
+                    url: $scope.backurl + '/favorites/users/email',
                     data: { eMail: 'john@london.exp' },
                     result: '...',
 
@@ -94,8 +94,8 @@
                     name: 'users',
                     method: 'POST',
                     description: 'Nuevo usuario',
-                    curl: 'curl -v -X POST ' + $scope.backurl + '/backend/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
-                    url: $scope.backurl + '/backend/users/',
+                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
+                    url: $scope.backurl + '/favorites/users/',
                     data: { name: 'John', city: 'Barcelona', eMail: 'john@mail' },
                     result: '...',
 
@@ -105,8 +105,8 @@
                     name: 'users/{id}',
                     method: 'PUT',
                     description: 'Actualiza usuario',
-                    curl: 'curl -v -X PUT ' + $scope.backurl + '/backend/users/1 -d \'{"name": "john", "city":"London", "eMail": "john@mail"}\'',
-                    url: $scope.backurl + '/backend/users/',
+                    curl: 'curl -v -X PUT ' + $scope.backurl + '/favorites/users/1 -d \'{"name": "john", "city":"London", "eMail": "john@mail"}\'',
+                    url: $scope.backurl + '/favorites/users/',
                     data: { id: '', name: '', city: '', eMail: '' },
                     result: '...',
                 },
@@ -115,8 +115,8 @@
                     name: 'users/{id}',
                     method: 'DELETE',
                     description: 'Borra usuario',
-                    curl: 'curl -v -X DELETE ' + $scope.backurl + '/backend/users/1',
-                    url: $scope.backurl + '/backend/users/',
+                    curl: 'curl -v -X DELETE ' + $scope.backurl + '/favorites/users/1',
+                    url: $scope.backurl + '/favorites/users/',
                     data: { id: '' },
                     result: '...',
                     //todo: '>> el usuario ha sido eliminado.'
@@ -126,8 +126,8 @@
                     name: 'registries',
                     method: 'GET',
                     description: 'Todos los registros',
-                    link: $scope.backurl + '/backend/registries',
-                    url: $scope.backurl + '/backend/registries',
+                    link: $scope.backurl + '/favorites/registries',
+                    url: $scope.backurl + '/favorites/registries',
                     data: {},
                     result: '...',
                 },
@@ -136,8 +136,8 @@
                     name: 'registries/{id}',
                     method: 'GET',
                     description: 'Un registro a partir de su id',
-                    link: $scope.backurl + '/backend/registries/1',
-                    url: $scope.backurl + '/backend/registries/',
+                    link: $scope.backurl + '/favorites/registries/1',
+                    url: $scope.backurl + '/favorites/registries/',
                     data: { id: '1' },
                     result: '...',
 
@@ -147,8 +147,8 @@
                     name: 'registries/{id}',
                     method: 'POST',
                     description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion.',
-                    curl: 'curl -X POST ' + $scope.backurl + '/backend/registries/ -d \'{ title: "The Hobbit", media: "book", author: "J. R. R. Tolkien", year: "1937" }\'',
-                    url: $scope.backurl + '/backend/registries/',
+                    curl: 'curl -X POST ' + $scope.backurl + '/favorites/registries/ -d \'{ title: "The Hobbit", media: "book", author: "J. R. R. Tolkien", year: "1937" }\'',
+                    url: $scope.backurl + '/favorites/registries/',
                     data: { title: 'The Hobbit', media: 'book', author: 'J. R. R. Tolkien', year: '1937' },
                     result: '...',
                 },
@@ -157,8 +157,8 @@
                     name: 'registries/{id}',
                     method: 'PUT',
                     description: 'Modifica registro a partir de su id',
-                    curl: 'curl -X PUT ' + $scope.backurl + '/backend/registries/1 -d \'{title: "The Hobbit", media: "film saga", author: "Petter Jackson", "year": "2012"}\'',
-                    url: $scope.backurl + '/backend/registries/',
+                    curl: 'curl -X PUT ' + $scope.backurl + '/favorites/registries/1 -d \'{title: "The Hobbit", media: "film saga", author: "Petter Jackson", "year": "2012"}\'',
+                    url: $scope.backurl + '/favorites/registries/',
                     data: { id: '', title: '', media: '', author: '', year: '' },
                     result: '...',
 
@@ -168,8 +168,8 @@
                     name: 'registries/{id}',
                     method: 'DELETE',
                     description: 'Elimina registro a partir de su id',
-                    link: $scope.backurl + '/backend/registries/1',
-                    url: $scope.backurl + '/backend/registries/',
+                    link: $scope.backurl + '/favorites/registries/1',
+                    url: $scope.backurl + '/favorites/registries/',
                     data: { id: '' },
                     result: '...',
 
@@ -179,8 +179,8 @@
                     name: 'assessments/user/{id}',
                     method: 'GET',
                     description: 'Lista de valoraciones de un usuario',
-                    link: $scope.backurl + '/backend/assessments/user/1',
-                    url: $scope.backurl + '/backend/assessments/user/',
+                    link: $scope.backurl + '/favorites/assessments/user/1',
+                    url: $scope.backurl + '/favorites/assessments/user/',
                     data: { id: 1 },
                     result: '...',
                 },
@@ -189,8 +189,8 @@
                     name: 'assessments/{id}',
                     method: 'GET',
                     description: 'Una valoración a partir de su id',
-                    link: $scope.backurl + '/backend/assessments/1',
-                    url: $scope.backurl + '/backend/assessments/',
+                    link: $scope.backurl + '/favorites/assessments/1',
+                    url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '1' },
                     result: '...',
                 },
@@ -199,8 +199,8 @@
                     name: 'assessments/',
                     method: 'POST',
                     description: 'Nueva valoración de un usuario para un registro. Parametros: registry, user,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl -v -X POST ' + $scope.backurl + '/backend/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
-                    url: $scope.backurl + '/backend/assessments',
+                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    url: $scope.backurl + '/favorites/assessments',
                     data: { userId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Muy recomendable' },
                     result: '...',
                 },
@@ -209,8 +209,8 @@
                     name: 'assessments/',
                     method: 'PUT',
                     description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
-                    curl: 'curl ' + $scope.backurl + '/backend/assessments/1 -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
-                    url: $scope.backurl + '/backend/assessments/',
+                    curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '', favourite: '', recommend: '', notes: '' },
                     result: '...',
                 }
@@ -294,7 +294,7 @@
 
             $scope.sondeaUsers = {
                 method: 'GET',
-                url: $scope.backurl + '/backend/users',
+                url: $scope.backurl + '/favorites/users',
                 data: {},
                 result: '...',
             }
@@ -351,7 +351,7 @@
                 })
 
                 $scope.juegoDeDatosUsers.forEach((element, index) => {
-                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/backend/users', data: element, result: '--' }).then((res) => {
+                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/users', data: element, result: '--' }).then((res) => {
 
                         element.id = res.data.id;
                         if (index == ($scope.juegoDeDatosUsers.length - 1)) {
@@ -370,7 +370,7 @@
             ////se rellenan las tablas 3/4 (registros)
             $scope.rellenaRegistros = function () {
                 $scope.juegoDeDatos_fuentes.forEach((element, index) => {
-                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/backend/registries', data: element, result: '--' }).then((res) => {
+                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/registries', data: element, result: '--' }).then((res) => {
 
                         $scope.juegoDeDatosRegistries.push({ id: res.data.id, title: res.data.title, media: res.data.media, author: res.data.author, year: res.data.productionDate });
                         if (index == ($scope.juegoDeDatos_fuentes.length - 1)) {
@@ -507,7 +507,7 @@
                         if (registro != undefined) {
 
                             $scope.lanzaConsulta({
-                                method: 'POST', url: $scope.backurl + '/backend/assessments',
+                                method: 'POST', url: $scope.backurl + '/favorites/assessments',
                                 data: {
                                     registryId: registro.id,
                                     userId: usuario.id,
@@ -581,14 +581,14 @@
 
         <div class=container ng-if="connected && dbState=='completed'">
             <p>
-                <a href="http://localhost:9000/v2/api-docs"
+                <a href="http://localhost:9001/v2/api-docs"
                     style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
-                    title=http://localhost:9000/v2/api-docs>http://localhost:9000/v2/api-docs</a>
+                    title=http://localhost:9001/v2/api-docs>http://localhost:9001/v2/api-docs</a>
             </p>
             <p>
-                <a href="http://localhost:9000/swagger-ui.html"
+                <a href="http://localhost:9001/swagger-ui.html"
                     style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
-                    title=http://localhost:9000/swagger-ui.html>http://localhost:9000/swagger-ui.html</a>
+                    title=http://localhost:9001/swagger-ui.html>http://localhost:9001/swagger-ui.html</a>
             </p>
 
             <div ng-repeat="caso in endPoints" class=row>

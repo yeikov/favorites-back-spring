@@ -8,7 +8,7 @@ A prerequisite to build this application is that your development machine has a 
 
 Gradle tasks application bootRun
 
-	http://localhost:8080/backend
+	http://localhost:9001/favorites
 
 ## Front-end
 
