@@ -22,22 +22,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@WithMockUser
 class BackApplicationTests {
 
+	private String path = BackApplication.backEndUrl;
+
 	@Autowired
 	private MockMvc mockMvc;
 
-	/* @Test
+	@Test
 	void shouldReturnAUserWhenDataIsSaved() throws Exception {
-		this.mockMvc.perform(get("/favorites/users/1"))
+		this.mockMvc.perform(get("http://localhost:9001/favorites/users/1"))
 				.andExpect(status().isOk())
 				.andExpect(jsonPath("$.id").value(1))
 				.andExpect(jsonPath("$.name").value("Juana"));
 	}
- */
+ 
+	@Test
+	void shouldReturnAUserWhenDataIsSaved_1_() throws Exception {
+		this.mockMvc.perform(get("localhost:9001/favorites/users/1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.name").value("Juana"));
+	} 
+	@Test
+	void shouldReturnAUserWhenDataIsSaved_2() throws Exception {
+		this.mockMvc.perform(get("favorites/users/1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.name").value("Juana"));
+	}
+	@Test
+	void shouldReturnAUserWhenDataIsSaved_3() throws Exception {
+		this.mockMvc.perform(get(this.path + "/users/1"))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andExpect(jsonPath("$.name").value("Juana"));
+	}
 
 	/**
 	 * @Test
 	 * void shouldCreateANewCashCard() throws Exception {
-  		String location = this.mvc.perform(post("/cashcards")
+  		String location = this.mvc.perform(post("/users")
       	.with(csrf())
 		...
 	 */
