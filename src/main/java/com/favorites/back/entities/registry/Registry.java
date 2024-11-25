@@ -14,8 +14,6 @@ import com.favorites.back.entities.assesment.Assessment;
 //import io.swagger.annotations.ApiModelProperty;
 
 
-
-
 @Entity
 public class Registry {
 	@Id
@@ -75,7 +73,7 @@ public class Registry {
 	}
 
 	public int getRegistrations(){
-		return this.registrations.size();
+		return this.registrations == null? 0: this.registrations.size();
 	}
 
 }

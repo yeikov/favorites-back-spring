@@ -16,5 +16,4 @@ public class UserNotFoundAdvice {
 	    return ex; //.getMessage();
 	}
 	
-
 }

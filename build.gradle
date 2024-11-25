@@ -20,22 +20,30 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
-	//implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	//implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+	
+	implementation 'com.h2database:h2'
+	
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//implementation ( "io.springfox:springfox-boot-starter:3.0.0'
-	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
-	runtimeOnly 'com.mysql:mysql-connector-j'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	//testImplementation 'org.springframework.security:spring-security-test'
-	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
-	testImplementation 'org.testcontainers:junit-jupiter'
-	testImplementation 'org.testcontainers:mysql'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+test {
+	//useJUnitPlatform()
+ 	testLogging {
+     events "passed", "skipped", "failed" //, "standardOut", "standardError"
+
+     showExceptions true
+     exceptionFormat "full"
+     showCauses true
+     showStackTraces true
+
+     // Change from false to true
+     showStandardStreams = false
+ 	}
 }

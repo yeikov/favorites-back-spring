@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 import com.favorites.back.entities.assesment.Assessment;
 
@@ -17,7 +18,7 @@ import com.favorites.back.entities.assesment.Assessment;
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 
-
+@Table(name="UserFav") //User is reserved
 @Entity
 public class User {
 	@Id
@@ -37,11 +38,11 @@ public class User {
 	@OneToMany(mappedBy="user")
 	private Set<Assessment> registrations;
 	
-	User() {};
+	public User() {};
 
-	User(String name, String city) {
+	public User(String name, String eMail) {
 	    this.name = name;
-	    this.city = city;
+	    this.eMail = eMail;
 	}
 	
 
@@ -84,6 +85,5 @@ public class User {
 	public void setBirdth(LocalDate birdth) {
 		this.birdth = birdth;
 	}
-
 
 }
