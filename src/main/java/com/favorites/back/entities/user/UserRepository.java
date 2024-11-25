@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	public Optional<User> findByeMail(String eMail);
 	
 	@Query(
-			value = "SELECT * FROM user WHERE user.id = ANY (SELECT DISTINCT user_id FROM assessment INNER JOIN user ON user.id = assessment.user_id) LIMIT 10;",
+			value = "SELECT u FROM user as us LIMIT 10;",
 			nativeQuery = true)
 	public List <User> recent(String criterio);
 	

@@ -15,9 +15,6 @@ import jakarta.persistence.Table;
 import com.favorites.back.entities.assesment.Assessment;
 
 
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-
 @Table(name="UserFav") //User is reserved
 @Entity
 public class User {
@@ -43,6 +40,13 @@ public class User {
 	public User(String name, String eMail) {
 	    this.name = name;
 	    this.eMail = eMail;
+	}
+
+	public User(String name, String eMail, String city, LocalDate birdth) {
+	    this.name = name;
+	    this.eMail = eMail;
+	    this.city = city;
+	    this.birdth = birdth;
 	}
 	
 

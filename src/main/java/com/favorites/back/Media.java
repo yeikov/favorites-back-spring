@@ -1,8 +1,9 @@
 package com.favorites.back;
 
-enum Media {
+public enum Media {
 	SERIE,
 	BOOK,
 	FILM,
-	ALBUM
+	ALBUM,
+	COMIC
 }
