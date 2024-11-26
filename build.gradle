@@ -36,9 +36,12 @@ dependencies {
 	//implementation ( "io.springfox:springfox-boot-starter:3.0.0'
 }
 
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
 test {
-	//useJUnitPlatform()
- 	testLogging {
+	testLogging {
      events "passed", "skipped", "failed" //, "standardOut", "standardError"
 
      showExceptions true

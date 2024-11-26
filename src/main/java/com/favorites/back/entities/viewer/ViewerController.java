@@ -81,7 +81,7 @@ public class ViewerController {
 	public ResponseEntity <Viewer> update(@PathVariable Long id, @RequestBody Viewer newViewer) {
 
 		try {
-			Viewer _newViewer = new Viewer(newViewer.getName(),newViewer.geteMail(), newViewer.getCity(), newViewer.getBirdth());
+			Viewer _newViewer = new Viewer(newViewer.getName(),newViewer.geteMail(), newViewer.getCity(), newViewer.getBirth());
 			viewerRepository.save(_newViewer);
 			return ResponseEntity.ok(_newViewer);
 			

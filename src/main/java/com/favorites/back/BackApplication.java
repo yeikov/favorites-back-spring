@@ -40,11 +40,9 @@ public class BackApplication implements WebMvcConfigurer {
 
     public static final String backEndUrl = "/favorites";
 
-
-
-
+/*
     @Bean
-    public CommandLineRunner demoAssessments(ViewerRepository vRepository, RegistryRepository rRepository,
+    public CommandLineRunner demoData(ViewerRepository vRepository, RegistryRepository rRepository,
             AssessmentRepository aRepository) {
         return (args) -> {
             // save a few viewers
@@ -69,14 +67,6 @@ public class BackApplication implements WebMvcConfigurer {
                 log.info(viewer.toString());
             });
             log.info("");
-
-            // fetch an individual viewer by ID
-            /* Optional<Viewer> viewer = vRepository.findById(1L);
-            log.info("Viewer found with findById(1L):");
-            log.info("--------------------------------");
-            log.info(viewer.toString());
-            log.info(""); */
-
 
 
            rRepository.save(new Registry("The Hobbit", "book", "J. R. R. Tolkien", "1937"));
@@ -148,5 +138,5 @@ public class BackApplication implements WebMvcConfigurer {
 
         };
     }
-
+*/
 }

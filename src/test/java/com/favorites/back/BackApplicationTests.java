@@ -1,104 +1,118 @@
 package com.favorites.back;
 
+import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 import com.favorites.back.entities.viewer.Viewer;
-import com.favorites.back.entities.viewer.ViewerRepository;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 
-import org.springframework.boot.test.context.TestConfiguration;
-import static org.hamcrest.Matchers.hasItem;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.net.URI;
+import java.time.LocalDate;
 
-import java.util.List;
-import java.util.Optional;
-
-//@TestConfiguration(proxyBeanMethods = false)
-//@Testcontainers
-//@SpringBootTest
-
-@DataJpaTest
-@AutoConfigureMockMvc
-// @WithMockViewer
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class BackApplicationTests {
 
 	private String path = BackApplication.backEndUrl;
 
-	// @Container
-	// @ServiceConnection
-	// static MySQLContainer<?> mySQLContainer = new
-	// MySQLContainer<>(DockerImageName.parse("mysql:latest"));
-
 	@Autowired
-	private MockMvc mockMvc;
+	TestRestTemplate restTemplate;
 
-	@Autowired
-	private TestEntityManager entityManager;
-
-	@Autowired
-	private ViewerRepository viewers;
-
-	@Test
-	void contextLoads() {
-	}
-
-	@Test
-	public void testFindRecent() {
-		Viewer viewer = new Viewer("Orlando", "Orlando@Orlando.exp");
-
-		entityManager.persist(viewer);
-
-		Optional<Viewer> findViewer = viewers.findByeMail(viewer.geteMail());
-
-		// assertThat(findByLastName).extracting(Viewer::getName).containsOnly(viewer.getName());
-
-		// assertThat(findViewer).extrac (viewer.getName())
-
-	}
-
-	@Test
-	void shouldReturnAViewerWhenDataIsSaved_3() throws Exception {
-		this.mockMvc.perform(post(this.path + "/viewers/", new Viewer("Juana", "Chicago")))
-				.andExpect(status().isOk());
-		/*
-		 * this.mockMvc.perform(get(this.path + "/viewers/1"))
-		 * .andExpect(status().isOk())
-		 * .andExpect(jsonPath("$.id").value(1))
-		 * .andExpect(jsonPath("$.name").value("Juana"));
-		 */
-	}
-
-	@Test
-	void shouldReturnAViewer() throws Exception {
-
-		// assertThat(1).isEqualTo(1);
-		this.mockMvc.perform(get(this.path + "/viewers/1"))
-				.andExpect(status().isOk());
-		/*
-		 * .andExpect(jsonPath("$.id").value(1))
-		 * .andExpect(jsonPath("$.name").value("Juana"));
-		 */
-	}
-
-	/**
+	/*
+	 * 
 	 * @Test
-	 *       void shouldCreateANewCashCard() throws Exception {
-	 *       String location = this.mvc.perform(post("/viewers")
-	 *       .with(csrf())
-	 *       ...
+	 * public void testFindRecent() {
+	 * //Viewer viewer = new Viewer("Orlando", "Orlando@Orlando.exp");
+	 * 
+	 * ResponseEntity<String> response = restTemplate.getForEntity(path +
+	 * "/viewer/1", String.class);
+	 * assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	 * 
+	 * DocumentContext documentContext = JsonPath.parse(response.getBody());
+	 * Number id = documentContext.read("$.id");
+	 * assertThat(id).isEqualTo(1);
+	 * 
+	 * Double amount = documentContext.read("$.name");
+	 * assertThat(amount).isEqualTo("ka_y");
+	 * 
+	 * }
 	 */
+/* 
+	@Test
+	void shouldReturnAViewerWhenDataIsSaved() {
+		ResponseEntity<String> response = restTemplate.postForEntity("/viewers",
+				new Viewer("Kay", "kay@tokio.exp", "Tokio", LocalDate.parse("2000-11-26")), String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		Number id = documentContext.read("$.id");
+		assertThat(id).isEqualTo(1);
+
+		Double amount = documentContext.read("$.name");
+		assertThat(amount).isEqualTo("Kay");
+	}
+
+	@Test
+	void shouldNotReturnAViewerWithAnUnknownId() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/viewers/1000", String.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(response.getBody()).isBlank();
+	}
+
+	@Test
+	@DirtiesContext
+	void shouldCreateANewViewer() {
+		Viewer newViewer = new Viewer("Kay", "kay@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
+		ResponseEntity<Void> createResponse = restTemplate.postForEntity("/viewers", newViewer, Void.class);
+		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+		URI locationOfNewViewer = createResponse.getHeaders().getLocation();
+		ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewViewer, String.class);
+		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
+		Number id = documentContext.read("$.id");
+		String name = documentContext.read("$.name");
+
+		assertThat(id).isNotNull();
+		assertThat(name).isEqualTo("Kay");
+	}
+
+	@Test
+	void shouldReturnAllViewersWhenListIsRequested() {
+		ResponseEntity<String> response = restTemplate.getForEntity("/viewers", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		int viewerCount = documentContext.read("$.length()");
+		assertThat(viewerCount).isEqualTo(3);
+
+		JSONArray ids = documentContext.read("$..name");
+		assertThat(ids).containsExactlyInAnyOrder("Kay", "Tetsuo", "Kaneda");
+
+		JSONArray amounts = documentContext.read("$..city");
+		assertThat(amounts).containsExactlyInAnyOrder("Tokio", "Tokio", "Tokio");
+	} */
+
+	@Test
+	void shouldReturnAPageOfViewers() {
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers?page=0&size=3", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(response.getBody());
+		JSONArray page = documentContext.read("$[*]");
+		assertThat(page.size()).isEqualTo(1);
+	}
 
 }

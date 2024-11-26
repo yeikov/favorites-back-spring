@@ -30,7 +30,7 @@ public class Viewer {
 	
 	private String city;
 	
-	private LocalDate birdth;
+	private LocalDate birth;
 	
 	@OneToMany(mappedBy="viewer")
 	private Set<Assessment> registrations;
@@ -42,11 +42,11 @@ public class Viewer {
 	    this.eMail = eMail;
 	}
 
-	public Viewer(String name, String eMail, String city, LocalDate birdth) {
+	public Viewer(String name, String eMail, String city, LocalDate birth) {
 	    this.name = name;
 	    this.eMail = eMail;
 	    this.city = city;
-	    this.birdth = birdth;
+	    this.birth = birth;
 	}
 	
 
@@ -82,12 +82,12 @@ public class Viewer {
 		this.city = city;
 	}
 
-	public LocalDate getBirdth() {
-		return birdth;
+	public LocalDate getBirth() {
+		return birth;
 	}
 
-	public void setBirdth(LocalDate birdth) {
-		this.birdth = birdth;
+	public void setBirth(LocalDate birth) {
+		this.birth = birth;
 	}
 
 }

@@ -6,10 +6,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 
 import com.favorites.back.Media;
 
-public interface ViewerRepository extends JpaRepository<Viewer, Long>{
+public interface ViewerRepository extends JpaRepository<Viewer, Long>, PagingAndSortingRepository<Viewer, Long> {
 
 	public Optional<Viewer> findByeMail(String eMail);
 	
