@@ -1,9 +1,18 @@
 package com.favorites.back.entities.viewer;
 
+import java.util.List;
+import java.util.Optional;
+
 //import io.swagger.annotations.Api;
 //import io.swagger.annotations.ApiOperation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import com.favorites.back.BackApplication;
@@ -31,90 +40,112 @@ public class ViewerController {
 
 	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
-	public @ResponseBody Iterable<Viewer> all() {
-		return viewerRepository.findAll();
+	private ResponseEntity<List<Viewer>> all(Pageable pageable) {
+		Page<Viewer> page = viewerRepository.findAll(
+				PageRequest.of(
+						pageable.getPageNumber(),
+						pageable.getPageSize(),
+						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id"))));
+		return ResponseEntity.ok(page.getContent());
 	}
+
 
 	@CrossOrigin
 	@GetMapping(path = "/{id}")
-	public @ResponseBody <Opional> Viewer one(@PathVariable Long id) {
-		return viewerRepository.findById(id).orElseThrow(() -> new ViewerNotFoundException(id));
+	private ResponseEntity<Viewer> one(@PathVariable Long id) {
+		Optional<Viewer> viewerOptional = viewerRepository.findById(id);
+
+		if (viewerOptional.isPresent()) {
+			return ResponseEntity.ok(viewerOptional.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 
 	}
 
 	@CrossOrigin
 	@PostMapping
-	public @ResponseBody Viewer add(@RequestBody Viewer newViewer) throws Exception {
+	private ResponseEntity <Viewer> add(@RequestBody Viewer newViewer) throws Exception {
 
-		Viewer doexists = viewerRepository.findByeMail(newViewer.geteMail()).orElse(null);
-
-		if (doexists != null) {
-			//throw new ViewerExistsException(newViewer.geteMail());
-			newViewer.setId(-1L); // ...er.setId(-1L); workaround Todo: review exceptions
-			return newViewer;
-		} else {
-			return viewerRepository.save(newViewer);
+		try {
+			Viewer _newViewer = viewerRepository.save(newViewer);
+			return ResponseEntity.ok(_newViewer);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
 	@CrossOrigin
 	@PutMapping(path = "/{id}")
-	public @ResponseBody Viewer update(@PathVariable Long id, @RequestBody Viewer newViewer) {
-		Viewer updatedViewer = viewerRepository.findById(id).map(viewer -> {
-			viewer.setName(newViewer.getName());
-			viewer.setCity(newViewer.getCity());
-			viewer.seteMail(newViewer.geteMail());
-			return viewerRepository.save(viewer);
-		}).orElseGet(() -> {
-			newViewer.setId(id);
-			return viewerRepository.save(newViewer);
-		});
+	public ResponseEntity <Viewer> update(@PathVariable Long id, @RequestBody Viewer newViewer) {
 
-		return updatedViewer;
+		try {
+			Viewer _newViewer = new Viewer(newViewer.getName(),newViewer.geteMail(), newViewer.getCity(), newViewer.getBirdth());
+			viewerRepository.save(_newViewer);
+			return ResponseEntity.ok(_newViewer);
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
 
 	}
 
 	@CrossOrigin
 	@DeleteMapping("/{id}")
-	@ResponseBody
-	Viewer delete(@PathVariable Long id) throws Exception {
+	ResponseEntity
+	<Viewer>
+
+	delete(@PathVariable Long id) throws Exception {
 		Viewer deletedViewer = viewerRepository.findById(id).orElseThrow(() -> new ViewerNotFoundException(id));
 
 		try {
 			assessmentRepository.deleteAllInBatch(assessmentRepository.findAllByViewer(deletedViewer));
 			viewerRepository.deleteById(id);
-			return deletedViewer;
+			return ResponseEntity.ok(deletedViewer);
 		} catch (Exception e) {
-			throw e;
+			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
 	@CrossOrigin
 	@PostMapping("/email")
-	@ResponseBody
-	Viewer oneByEMail(@RequestBody Viewer search) {
+	ResponseEntity
+	<Viewer>
 
-		return viewerRepository.findByeMail(search.geteMail())
-				.orElseThrow(() -> new ViewerNotFoundException(search.geteMail()));
+	oneByEMail(@RequestBody Viewer search) {
+
+		try {
+			Optional<Viewer> findViewer = viewerRepository.findByeMail(search.geteMail());
+			return ResponseEntity.ok(findViewer.get());
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 
 	}
 
 	@CrossOrigin
 	@GetMapping("/recent/{media}")
-	@ResponseBody
-	Iterable<Viewer> recent(@PathVariable String media) {
+	ResponseEntity <List<Viewer>> recent(@PathVariable String media) {
 
 		Media _media = Media.ALL;
 		try {
 			_media = Media.valueOf(media.toUpperCase());
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw(e);
 		}
 
-		return viewerRepository.recent(_media);
-
+		try {
+			List<Viewer>  _recent =  viewerRepository.recent(_media);
+			return ResponseEntity.ok(_recent);
+			
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+		
 	}
 
 }

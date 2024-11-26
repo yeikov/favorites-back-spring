@@ -15,6 +15,6 @@ public interface ViewerRepository extends JpaRepository<Viewer, Long>{
 	
 	@Query(value = "SELECT DISTINCT name, city FROM (SELECT a.viewer FROM assessment AS a WHERE a.media = :media INNER JOIN viewer AS v ON v.id = a.viewer_id) AS dt LIMIT 10;",
 			nativeQuery = true)
-	public List <Viewer> recent(Media media);
+	public List<Viewer> recent(Media media);
 	
 }
