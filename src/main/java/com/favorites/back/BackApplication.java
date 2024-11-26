@@ -48,11 +48,19 @@ public class BackApplication implements WebMvcConfigurer {
             AssessmentRepository aRepository) {
         return (args) -> {
             // save a few viewers
-            vRepository.save(new Viewer("George", "george@London.exp", "London", null));
-            vRepository.save(new Viewer("Georg", "georg@berlin.exp", "berlin", null));
-            vRepository.save(new Viewer("Georges", "georges@paris.exp", "paris", null));
-            vRepository.save(new Viewer("Xurxo", "xurxo@Lugo.exp", "Lugo", null));
-            vRepository.save(new Viewer("Gino", "gino@roma.exp", "roma", null));
+            vRepository.save(new Viewer("George", "george@london.exp", "London", null));
+            vRepository.save(new Viewer("Georg", "georg@berlin.exp", "Berlin", null));
+            vRepository.save(new Viewer("Georges", "georges@paris.exp", "Paris", null));
+            vRepository.save(new Viewer("Xurxo", "xurxo@lugo.exp", "Lugo", null));
+            vRepository.save(new Viewer("Gino", "gino@roma.exp", "Roma", null));
+
+            vRepository.save(new Viewer("Joana", "joana@barcelona.exp", "Barcelona", null));
+            vRepository.save(new Viewer("John", "john@london.exp", "London", null));
+            vRepository.save(new Viewer("Johanes", "johanes@born.exp", "Born", null));
+            vRepository.save(new Viewer("Johan", "johan@paris.exp", "Paris", null));
+            vRepository.save(new Viewer("Juan", "juan@zaragoza.exp", "Zaragoza", null));
+            vRepository.save(new Viewer("Juana", "juanan@valencia.exp", "Valencia", null));
+            vRepository.save(new Viewer("Xoana", "xoana@vigo.exp", "Vigo", null));
 
             // fetch all viewers
             log.info("Viewers found with findAll():");

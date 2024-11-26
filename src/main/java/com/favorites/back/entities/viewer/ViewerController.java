@@ -128,8 +128,8 @@ public class ViewerController {
 	}
 
 	@CrossOrigin
-	@GetMapping("/recent/{media}")
-	ResponseEntity <List<Viewer>> recent(@PathVariable String media) {
+	@GetMapping("/recent_notWorking/{media}")
+	ResponseEntity <List<Viewer>> recent_notWorking(@PathVariable String media) {
 
 		Media _media = Media.ALL;
 		try {
@@ -147,5 +147,17 @@ public class ViewerController {
 		}
 		
 	}
+
+	@CrossOrigin
+	@GetMapping("/recent/{media}")
+	ResponseEntity <List<Viewer>> recent(@PathVariable String media, Pageable pageable) {
+		Page<Viewer> page = viewerRepository.findAll(
+				PageRequest.of(
+						pageable.getPageNumber(),
+						pageable.getPageSize(),
+						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id"))));
+		return ResponseEntity.ok(page.getContent());
+	}
+	
 
 }
