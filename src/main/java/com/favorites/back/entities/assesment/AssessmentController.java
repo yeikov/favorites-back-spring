@@ -17,19 +17,19 @@ import com.favorites.back.BackApplication;
 import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.registry.RegistryNotFoundException;
 import com.favorites.back.entities.registry.RegistryRepository;
-import com.favorites.back.entities.user.User;
-import com.favorites.back.entities.user.UserNotFoundException;
-import com.favorites.back.entities.user.UserRepository;
+import com.favorites.back.entities.viewer.Viewer;
+import com.favorites.back.entities.viewer.ViewerNotFoundException;
+import com.favorites.back.entities.viewer.ViewerRepository;
 
 @RestController
 @RequestMapping(path = BackApplication.backEndUrl + "/assessments")
 public class AssessmentController {
 
 	@Autowired
-	private AssessmentRepository user_registryRepository;
+	private AssessmentRepository viewer_registryRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private ViewerRepository viewerRepository;
 
 	@Autowired
 	private RegistryRepository registryRepository;
@@ -37,7 +37,7 @@ public class AssessmentController {
 	@CrossOrigin
 	@GetMapping("/{id}")
 	public @ResponseBody Assessment one(@PathVariable Long id) {
-		return user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
+		return viewer_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 
 	}
 
@@ -45,19 +45,19 @@ public class AssessmentController {
 	@PostMapping
 	public @ResponseBody Assessment add(@RequestBody AssessmentDto dto) {
 
-		User user = userRepository.findById(dto.getUserId())
-				.orElseThrow(() -> new UserNotFoundException(dto.getUserId())); // .orElse(null);
+		Viewer viewer = viewerRepository.findById(dto.getViewerId())
+				.orElseThrow(() -> new ViewerNotFoundException(dto.getViewerId())); // .orElse(null);
 		Registry reg = registryRepository.findById(dto.getRegistryId())
 				.orElseThrow(() -> new RegistryNotFoundException(dto.getRegistryId()));
 		int favo = dto.getFavorite();
 		int recom = dto.getRecommend();
 		String notes = dto.getNotes();
 
-		Assessment newValoration = new Assessment(user, reg, favo, recom, notes);
+		Assessment newValoration = new Assessment(viewer, reg, favo, recom, notes);
 
 		try {
 
-			return user_registryRepository.save(newValoration);
+			return viewer_registryRepository.save(newValoration);
 
 		} catch (Exception e) {
 			// throw e;
@@ -70,30 +70,30 @@ public class AssessmentController {
 	@PutMapping("/{id}")
 	public @ResponseBody Assessment update(@PathVariable Long id, @RequestBody Assessment valoration) {
 
-		Assessment ur = user_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
+		Assessment ur = viewer_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
 
 		ur.setFavorite(valoration.getFavorite());
 		ur.setRecommend(valoration.getRecommend());
 		ur.setNotes(valoration.getNotes());
 
-		return user_registryRepository.save(ur);
+		return viewer_registryRepository.save(ur);
 	}
 
 	@CrossOrigin
 	@DeleteMapping("/{id}")
 	public @ResponseBody Long delete(@PathVariable Long id) {
-		user_registryRepository.deleteById(id);
+		viewer_registryRepository.deleteById(id);
 
 		return id;
 	}
 
 	@CrossOrigin
-	@GetMapping("/user/{id}")
-	public @ResponseBody Iterable<Assessment> allByUser(@PathVariable Long id) {
+	@GetMapping("/viewer/{id}")
+	public @ResponseBody Iterable<Assessment> allByViewer(@PathVariable Long id) {
 
-		User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+		Viewer viewer = viewerRepository.findById(id).orElseThrow(() -> new ViewerNotFoundException(id));
 
-		return user_registryRepository.findAllByUser(user);
+		return viewer_registryRepository.findAllByViewer(viewer);
 
 	}
 
@@ -104,7 +104,7 @@ public class AssessmentController {
 
 		Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
 
-		return user_registryRepository.findAllByRegistry(registry);
+		return viewer_registryRepository.findAllByRegistry(registry);
 
 	}
 
@@ -112,15 +112,15 @@ public class AssessmentController {
 	@GetMapping("media/{media}")
 	public @ResponseBody Iterable<Assessment> allByMedia(@PathVariable String media) {
 
-		return user_registryRepository.findM(media);
+		return viewer_registryRepository.findM(media);
 
 	}
 
 	@CrossOrigin
-	@GetMapping("user/{id}/{media}")
-	public @ResponseBody Iterable<Assessment> allUserByMedia(@PathVariable Long id, @PathVariable String media) {
+	@GetMapping("viewer/{id}/{media}")
+	public @ResponseBody Iterable<Assessment> allViewerByMedia(@PathVariable Long id, @PathVariable String media) {
 
-		return user_registryRepository.findUM(id, media);
+		return viewer_registryRepository.findUM(id, media);
 
 	}
 

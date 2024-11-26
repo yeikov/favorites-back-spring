@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.favorites.back.entities.user.User;
-import com.favorites.back.entities.user.UserRepository;
+import com.favorites.back.entities.viewer.Viewer;
+import com.favorites.back.entities.viewer.ViewerRepository;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import static org.hamcrest.Matchers.hasItem;
@@ -32,7 +32,7 @@ import java.util.Optional;
 
 @DataJpaTest
 @AutoConfigureMockMvc
-// @WithMockUser
+// @WithMockViewer
 class BackApplicationTests {
 
 	private String path = BackApplication.backEndUrl;
@@ -49,7 +49,7 @@ class BackApplicationTests {
 	private TestEntityManager entityManager;
 
 	@Autowired
-	private UserRepository users;
+	private ViewerRepository viewers;
 
 	@Test
 	void contextLoads() {
@@ -57,24 +57,24 @@ class BackApplicationTests {
 
 	@Test
 	public void testFindRecent() {
-		User user = new User("Orlando", "Orlando@Orlando.exp");
+		Viewer viewer = new Viewer("Orlando", "Orlando@Orlando.exp");
 
-		entityManager.persist(user);
+		entityManager.persist(viewer);
 
-		Optional<User> findUser = users.findByeMail(user.geteMail());
+		Optional<Viewer> findViewer = viewers.findByeMail(viewer.geteMail());
 
-		// assertThat(findByLastName).extracting(User::getName).containsOnly(user.getName());
+		// assertThat(findByLastName).extracting(Viewer::getName).containsOnly(viewer.getName());
 
-		// assertThat(findUser).extrac (user.getName())
+		// assertThat(findViewer).extrac (viewer.getName())
 
 	}
 
 	@Test
-	void shouldReturnAUserWhenDataIsSaved_3() throws Exception {
-		this.mockMvc.perform(post(this.path + "/users/", new User("Juana", "Chicago")))
+	void shouldReturnAViewerWhenDataIsSaved_3() throws Exception {
+		this.mockMvc.perform(post(this.path + "/viewers/", new Viewer("Juana", "Chicago")))
 				.andExpect(status().isOk());
 		/*
-		 * this.mockMvc.perform(get(this.path + "/users/1"))
+		 * this.mockMvc.perform(get(this.path + "/viewers/1"))
 		 * .andExpect(status().isOk())
 		 * .andExpect(jsonPath("$.id").value(1))
 		 * .andExpect(jsonPath("$.name").value("Juana"));
@@ -82,10 +82,10 @@ class BackApplicationTests {
 	}
 
 	@Test
-	void shouldReturnAUser() throws Exception {
+	void shouldReturnAViewer() throws Exception {
 
 		// assertThat(1).isEqualTo(1);
-		this.mockMvc.perform(get(this.path + "/users/1"))
+		this.mockMvc.perform(get(this.path + "/viewers/1"))
 				.andExpect(status().isOk());
 		/*
 		 * .andExpect(jsonPath("$.id").value(1))
@@ -96,7 +96,7 @@ class BackApplicationTests {
 	/**
 	 * @Test
 	 *       void shouldCreateANewCashCard() throws Exception {
-	 *       String location = this.mvc.perform(post("/users")
+	 *       String location = this.mvc.perform(post("/viewers")
 	 *       .with(csrf())
 	 *       ...
 	 */

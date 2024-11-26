@@ -58,65 +58,65 @@
 
             $scope.endPoints = [
                 {
-                    controller: 'user Controller',
-                    name: 'users',
-                    link: $scope.backurl + '/favorites/users',
+                    controller: 'viewer Controller',
+                    name: 'viewers',
+                    link: $scope.backurl + '/favorites/viewers',
                     method: 'GET',
                     description: 'Todos los usuarios',
-                    url: $scope.backurl + '/favorites/users',
+                    url: $scope.backurl + '/favorites/viewers',
                     data: {},
                     result: '...',
 
                 },
                 {
-                    controller: 'user Controller',
-                    name: 'users/{id}',
+                    controller: 'viewer Controller',
+                    name: 'viewers/{id}',
                     method: 'GET',
-                    link: $scope.backurl + '/favorites/users/1',
+                    link: $scope.backurl + '/favorites/viewers/1',
                     description: 'Un usuario a partir de su id',
-                    url: $scope.backurl + '/favorites/users/',
+                    url: $scope.backurl + '/favorites/viewers/',
                     data: { id: 1 },
                     result: '...',
 
                 },
                 {
-                    controller: 'user Controller',
-                    name: 'users/email',
+                    controller: 'viewer Controller',
+                    name: 'viewers/email',
                     method: 'POST',
                     description: 'Un usuario a partir de su nombre',
-                    url: $scope.backurl + '/favorites/users/email',
+                    url: $scope.backurl + '/favorites/viewers/email',
                     data: { eMail: 'john@london.exp' },
                     result: '...',
 
                 },
                 {
-                    controller: 'user Controller',
-                    name: 'users',
+                    controller: 'viewer Controller',
+                    name: 'viewers',
                     method: 'POST',
                     description: 'Nuevo usuario',
-                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/users -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
-                    url: $scope.backurl + '/favorites/users/',
+                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/viewers -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
+                    url: $scope.backurl + '/favorites/viewers/',
                     data: { name: 'John', city: 'Barcelona', eMail: 'john@mail' },
                     result: '...',
 
                 },
                 {
-                    controller: 'user Controller',
-                    name: 'users/{id}',
+                    controller: 'viewer Controller',
+                    name: 'viewers/{id}',
                     method: 'PUT',
                     description: 'Actualiza usuario',
-                    curl: 'curl -v -X PUT ' + $scope.backurl + '/favorites/users/1 -d \'{"name": "john", "city":"London", "eMail": "john@mail"}\'',
-                    url: $scope.backurl + '/favorites/users/',
+                    curl: 'curl -v -X PUT ' + $scope.backurl + '/favorites/viewers/1 -d \'{"name": "john", "city":"London", "eMail": "john@mail"}\'',
+                    url: $scope.backurl + '/favorites/viewers/',
                     data: { id: '', name: '', city: '', eMail: '' },
                     result: '...',
                 },
                 {
-                    controller: 'user Controller',
-                    name: 'users/{id}',
+                    controller: 'viewer Controller',
+                    name: 'viewers/{id}',
                     method: 'DELETE',
                     description: 'Borra usuario',
-                    curl: 'curl -v -X DELETE ' + $scope.backurl + '/favorites/users/1',
-                    url: $scope.backurl + '/favorites/users/',
+                    curl: 'curl -v -X DELETE ' + $scope.backurl + '/favorites/viewers/1',
+                    url: $scope.backurl + '/favorites/viewers/',
                     data: { id: '' },
                     result: '...',
                     //todo: '>> el usuario ha sido eliminado.'
@@ -175,17 +175,17 @@
 
                 },
                 {
-                    controller: '(user_registry) assessment Controller Controller',
-                    name: 'assessments/user/{id}',
+                    controller: '(viewer_registry) assessment Controller Controller',
+                    name: 'assessments/viewer/{id}',
                     method: 'GET',
                     description: 'Lista de valoraciones de un usuario',
-                    link: $scope.backurl + '/favorites/assessments/user/1',
-                    url: $scope.backurl + '/favorites/assessments/user/',
+                    link: $scope.backurl + '/favorites/assessments/viewer/1',
+                    url: $scope.backurl + '/favorites/assessments/viewer/',
                     data: { id: 1 },
                     result: '...',
                 },
                 {
-                    controller: '(user_registry) assessment Controller Controller',
+                    controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/{id}',
                     method: 'GET',
                     description: 'Una valoración a partir de su id',
@@ -195,21 +195,21 @@
                     result: '...',
                 },
                 {
-                    controller: '(user_registry) assessment Controller Controller',
+                    controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/',
                     method: 'POST',
-                    description: 'Nueva valoración de un usuario para un registro. Parametros: registry, user,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
-                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    description: 'Nueva valoración de un usuario para un registro. Parametros: registry, viewer,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments',
-                    data: { userId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Muy recomendable' },
+                    data: { viewerId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Muy recomendable' },
                     result: '...',
                 },
                 {
-                    controller: '(user_registry) assessment Controller Controller',
+                    controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/',
                     method: 'PUT',
-                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), userId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
-                    curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "userId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), viewerId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
+                    curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '', favourite: '', recommend: '', notes: '' },
                     result: '...',
@@ -217,7 +217,7 @@
 
             ];
 
-            $scope.juegoDeDatosUsers = [];
+            $scope.juegoDeDatosViewers = [];
 
             $scope.ciudades = [
                 'Barcelona',
@@ -287,14 +287,14 @@
 
             $scope.juegoDeDatosRegistries = [];
 
-            $scope.usersIn = false;
-            $scope.usersLastId = 0;
+            $scope.viewersIn = false;
+            $scope.viewersLastId = 0;
             $scope.registriesIn = false;
             $scope.assessmentsIn = false;
 
-            $scope.sondeaUsers = {
+            $scope.sondeaViewers = {
                 method: 'GET',
-                url: $scope.backurl + '/favorites/users',
+                url: $scope.backurl + '/favorites/viewers',
                 data: {},
                 result: '...',
             }
@@ -346,17 +346,17 @@
 
                 $scope.nombres.forEach(nom => {
                     $scope.ciudades.forEach(lugar => {
-                        $scope.juegoDeDatosUsers.push({ name: nom, city: lugar, eMail: nom.toLowerCase() + '@' + lugar.toLowerCase() + '.exp' })
+                        $scope.juegoDeDatosViewers.push({ name: nom, city: lugar, eMail: nom.toLowerCase() + '@' + lugar.toLowerCase() + '.exp' })
                     })
                 })
 
-                $scope.juegoDeDatosUsers.forEach((element, index) => {
-                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/users', data: element, result: '--' }).then((res) => {
+                $scope.juegoDeDatosViewers.forEach((element, index) => {
+                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/viewers', data: element, result: '--' }).then((res) => {
 
                         element.id = res.data.id;
-                        if (index == ($scope.juegoDeDatosUsers.length - 1)) {
-                            $scope.usersIn = true;
-                            $scope.usersLastId = res.data.id;
+                        if (index == ($scope.juegoDeDatosViewers.length - 1)) {
+                            $scope.viewersIn = true;
+                            $scope.viewersLastId = res.data.id;
 
                             console.log('Generada la serie de usuarios en bbdd.');
 
@@ -386,7 +386,7 @@
 
             //se rellenan las tablas 4/4 (valoraciones)
             $scope.rellenaValoraciones = function () {
-                let _totalValoraciones = $scope.juegoDeDatos_fuentes.length * $scope.juegoDeDatosUsers.length;
+                let _totalValoraciones = $scope.juegoDeDatos_fuentes.length * $scope.juegoDeDatosViewers.length;
 
                 let notas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
@@ -394,7 +394,7 @@
                 console.log('Generando ' + _totalValoraciones + ' valoraciones de las obras en bbdd.');
 
                 
-                $scope.juegoDeDatosUsers.forEach(usuario => {
+                $scope.juegoDeDatosViewers.forEach(usuario => {
     
                     let indiceActuacion = Math.random() - .2;
 
@@ -510,14 +510,14 @@
                                 method: 'POST', url: $scope.backurl + '/favorites/assessments',
                                 data: {
                                     registryId: registro.id,
-                                    userId: usuario.id,
+                                    viewerId: usuario.id,
                                     favorite: puntua(registro.media),
                                     recommend: puntuaR(registro.media),
                                     notes: 'Great!'
                                 }
                             }).then((res) => {
 
-                                if (res.data.user.id >= $scope.usersLastId && $scope.dbState != 'completed') {
+                                if (res.data.viewer.id >= $scope.viewersLastId && $scope.dbState != 'completed') {
                                     console.log("finalizado");
                                     $scope.dbState = 'completed';
                                 }
@@ -568,7 +568,7 @@
                 )
             }
 
-            $scope.sondeaTabla($scope.sondeaUsers);
+            $scope.sondeaTabla($scope.sondeaViewers);
 
         });
 

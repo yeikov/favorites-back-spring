@@ -1,4 +1,4 @@
-package com.favorites.back.entities.user;
+package com.favorites.back.entities.viewer;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -15,9 +15,9 @@ import jakarta.persistence.Table;
 import com.favorites.back.entities.assesment.Assessment;
 
 
-@Table(name="UserFav") //User is reserved
+@Table(name="ViewerFav") //Viewer is reserved
 @Entity
-public class User {
+public class Viewer {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -32,17 +32,17 @@ public class User {
 	
 	private LocalDate birdth;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="viewer")
 	private Set<Assessment> registrations;
 	
-	public User() {};
+	public Viewer() {};
 
-	public User(String name, String eMail) {
+	public Viewer(String name, String eMail) {
 	    this.name = name;
 	    this.eMail = eMail;
 	}
 
-	public User(String name, String eMail, String city, LocalDate birdth) {
+	public Viewer(String name, String eMail, String city, LocalDate birdth) {
 	    this.name = name;
 	    this.eMail = eMail;
 	    this.city = city;
