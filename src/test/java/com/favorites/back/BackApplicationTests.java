@@ -20,7 +20,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
 class BackApplicationTests {
 
 	private String path = BackApplication.backEndUrl;
@@ -87,11 +87,11 @@ class BackApplicationTests {
 
 		assertThat(id).isNotNull();
 		assertThat(name).isEqualTo("Kay");
-	}
+	} */
 
 	@Test
 	void shouldReturnAllViewersWhenListIsRequested() {
-		ResponseEntity<String> response = restTemplate.getForEntity("/viewers", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -103,16 +103,29 @@ class BackApplicationTests {
 
 		JSONArray amounts = documentContext.read("$..city");
 		assertThat(amounts).containsExactlyInAnyOrder("Tokio", "Tokio", "Tokio");
-	} */
-
+	} 
+ 
 	@Test
 	void shouldReturnAPageOfViewers() {
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers?page=0&size=3", String.class);
+
+		//schema & data sql's not workin ...
+		/* */
+		  
+		Viewer newViewerA = new Viewer("Kay", "kay@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
+		Viewer newViewerB = new Viewer("Tetsuo", "tetsuo@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
+		Viewer newViewerC = new Viewer("Kaneda", "kaneda@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
+		
+		restTemplate.postForEntity( path + "/viewers", newViewerA, Void.class);
+		restTemplate.postForEntity( path + "/viewers", newViewerB, Void.class);
+		restTemplate.postForEntity( path + "/viewers", newViewerC, Void.class);
+		
+		
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers?page=0&size=1&sort=id,asc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
 		JSONArray page = documentContext.read("$[*]");
 		assertThat(page.size()).isEqualTo(1);
 	}
-
+ 
 }

@@ -1,10 +1,7 @@
 package com.favorites.back.entities.registry;
 
-import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.Set;
-
-import org.hibernate.type.descriptor.java.LocalDateJavaType;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -13,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import com.favorites.back.CommonUtilities;
-import com.favorites.back.Media;
 import com.favorites.back.entities.assesment.Assessment;
 
 @Entity

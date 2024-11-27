@@ -10,12 +10,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+
 
 import com.favorites.back.entities.assesment.Assessment;
 
-
-@Table(name="ViewerFav") //Viewer is reserved
+ 
 @Entity
 public class Viewer {
 	@Id
@@ -89,5 +88,5 @@ public class Viewer {
 	public void setBirth(LocalDate birth) {
 		this.birth = birth;
 	}
+} 
 
-}
