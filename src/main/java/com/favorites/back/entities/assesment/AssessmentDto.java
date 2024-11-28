@@ -2,7 +2,7 @@ package com.favorites.back.entities.assesment;
 
 public class AssessmentDto {
 	
-	private Long userId;
+	private Long viewerId;
 	
 	private Long registryId;
 	
@@ -14,14 +14,14 @@ public class AssessmentDto {
 
 	
 	
-	public Long getUserId() {
-		return userId;
+	public Long getViewerId() {
+		return viewerId;
 	}
 
 
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setViewerId(Long viewerId) {
+		this.viewerId = viewerId;
 	}
 
 
@@ -77,7 +77,7 @@ public class AssessmentDto {
 
 	@Override
 	public String toString() {
-		return "User_RegistryDto [userId=" + userId + ", registryId=" + registryId + ", favorito=" + favorite
+		return "Viewer_RegistryDto [viewerId=" + viewerId + ", registryId=" + registryId + ", favorito=" + favorite
 				+ ", recomendable=" + recommend + ", notes=" + notes + "]";
 	}
 	

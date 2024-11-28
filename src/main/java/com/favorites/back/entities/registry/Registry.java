@@ -9,30 +9,44 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import com.favorites.back.CommonUtilities;
 import com.favorites.back.entities.assesment.Assessment;
-
-//import io.swagger.annotations.ApiModelProperty;
-
-
-
 
 @Entity
 public class Registry {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String title;
-	
+
 	private LocalDate productionDate;
-	
-	//@ApiModelProperty(notes = "Tipo de medio", name="media", required=true, value="book")
+
+	// @ApiModelProperty(notes = "Tipo de medio", name="media", required=true,
+	// value="book")
 	private String media;
-	
+
 	private String author;
 
-	@OneToMany(mappedBy="registry")
+	@OneToMany(mappedBy = "registry")
 	private Set<Assessment> registrations;
+
+	public Registry() {
+	};
+
+	public Registry(String title, String media, String author, String year) {
+
+		this.title = title;
+		this.media = media;
+		this.author = author;
+		try {
+			this.productionDate = CommonUtilities.year2LocalDate(Integer.parseInt(year));
+
+		} catch (NumberFormatException e) {
+			System.out.println("Invalid String");
+		}
+
+	}
 
 	public Long getId() {
 		return id;
@@ -74,12 +88,8 @@ public class Registry {
 		this.author = author;
 	}
 
-	public int getRegistrations(){
-		return this.registrations.size();
+	public int getRegistrations() {
+		return this.registrations == null ? 0 : this.registrations.size();
 	}
 
 }
-
-
-
-

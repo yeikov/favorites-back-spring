@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.favorites.back.CommonUtilities;
 import com.favorites.back.BackApplication;
@@ -20,8 +20,10 @@ import com.favorites.back.BackApplication;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Controller
+@RestController
 @RequestMapping(path = BackApplication.backEndUrl + "/registries")
+//@CrossOrigin(origins="http://localhost:4200", maxAge=3600)
+@CrossOrigin(origins = "http://localhost:4200")
 public class RegistryController {
 
 	@Autowired
@@ -33,8 +35,6 @@ public class RegistryController {
 	Iterable<Registry> all() {
 		return registryRepository.findAll();
 	}
-
-	@CrossOrigin
 	@GetMapping("/{id}")
 	@ResponseBody
 	Registry one(@PathVariable Long id) {
@@ -122,7 +122,7 @@ public class RegistryController {
 		return response;
 	}
 
-	@CrossOrigin
+	@CrossOrigin(origins = "http://localhost:4000")
 	@GetMapping("/topFavorite/{media}")
 	@ResponseBody
 	Iterable<Registry> findTopFavoritesByMedia(@PathVariable String media) {

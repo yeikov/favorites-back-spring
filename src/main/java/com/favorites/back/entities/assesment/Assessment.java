@@ -12,13 +12,13 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 
 import com.favorites.back.entities.registry.Registry;
-import com.favorites.back.entities.user.User;
+import com.favorites.back.entities.viewer.Viewer;
 
 //import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(uniqueConstraints= {
-		@UniqueConstraint(columnNames = {"user_id", "registry_id"})
+		@UniqueConstraint(columnNames = {"viewer_id", "registry_id"})
 })
 public class Assessment {
 
@@ -27,8 +27,8 @@ public class Assessment {
 	private Long id;
 	
 	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	@JoinColumn(name = "viewer_id")
+	private Viewer viewer;
 	
 	@ManyToOne
 	@JoinColumn(name = "registry_id")
@@ -47,9 +47,9 @@ public class Assessment {
 		
 	}
 	
-	public Assessment(User user, Registry registry, int favorite, int recommend, String notes) {
+	public Assessment(Viewer viewer, Registry registry, int favorite, int recommend, String notes) {
 		super();
-		this.user = user;
+		this.viewer = viewer;
 		this.registry = registry;
 		this.favorite = favorite;
 		this.recommend = recommend;
@@ -65,12 +65,12 @@ public class Assessment {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Viewer getViewer() {
+		return viewer;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setViewer(Viewer viewer) {
+		this.viewer = viewer;
 	}
 
 	public Registry getRegistry() {
@@ -115,7 +115,7 @@ public class Assessment {
 
 	@Override
 	public String toString() {
-		return "User_Registry [id=" + id + ", user=" + user + ", registry=" + registry + ", registeredAt="
+		return "Viewer_Registry [id=" + id + ", viewer=" + viewer + ", registry=" + registry + ", registeredAt="
 				+ registeredAt + ", favorito=" + favorite + ", recomendable=" + recommend + ", notes=" + notes + "]";
 	}
 	

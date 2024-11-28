@@ -11,7 +11,7 @@ public class RegistryExistsAdvice {
 	@ResponseBody
 	@ExceptionHandler(RegistryExistsException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	Exception userNotFoundHandler(RegistryExistsException ex) {
+	Exception viewerNotFoundHandler(RegistryExistsException ex) {
 	    return ex; //.getMessage();
 	}
 	

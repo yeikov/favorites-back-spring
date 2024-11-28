@@ -1,4 +1,4 @@
-package com.favorites.back.entities.user;
+package com.favorites.back.entities.viewer;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -11,15 +11,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+
 import com.favorites.back.entities.assesment.Assessment;
 
-
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-
-
+ 
 @Entity
-public class User {
+public class Viewer {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
@@ -32,16 +29,23 @@ public class User {
 	
 	private String city;
 	
-	private LocalDate birdth;
+	private LocalDate birth;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(mappedBy="viewer")
 	private Set<Assessment> registrations;
 	
-	User() {};
+	public Viewer() {};
 
-	User(String name, String city) {
+	public Viewer(String name, String eMail) {
 	    this.name = name;
+	    this.eMail = eMail;
+	}
+
+	public Viewer(String name, String eMail, String city, LocalDate birth) {
+	    this.name = name;
+	    this.eMail = eMail;
 	    this.city = city;
+	    this.birth = birth;
 	}
 	
 
@@ -77,13 +81,12 @@ public class User {
 		this.city = city;
 	}
 
-	public LocalDate getBirdth() {
-		return birdth;
+	public LocalDate getBirth() {
+		return birth;
 	}
 
-	public void setBirdth(LocalDate birdth) {
-		this.birdth = birdth;
+	public void setBirth(LocalDate birth) {
+		this.birth = birth;
 	}
+} 
 
-
-}

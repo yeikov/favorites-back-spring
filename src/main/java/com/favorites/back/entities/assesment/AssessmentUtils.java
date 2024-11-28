@@ -3,20 +3,20 @@ package com.favorites.back.entities.assesment;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.favorites.back.entities.registry.Registry;
-import com.favorites.back.entities.user.User;
+import com.favorites.back.entities.viewer.Viewer;
 
 public class AssessmentUtils {
 	@Autowired
-	private AssessmentRepository user_registryRepository;
+	private AssessmentRepository viewer_registryRepository;
 	
-	Iterable <Assessment> existsUserRegistry(User u, Registry r) {
+	Iterable <Assessment> existsViewerRegistry(Viewer u, Registry r) {
 
 		Iterable <Assessment> response = null;
-		Iterable <Assessment> request =  user_registryRepository.findAllByUserAndRegistry(u, r);
+		Iterable <Assessment> request =  viewer_registryRepository.findAllByViewerAndRegistry(u, r);
 		
 		response = request;
 		
-		System.out.println("RegistryController.existUserRegistry resp"+ response);
+		System.out.println("RegistryController.existViewerRegistry resp"+ response);
 		
 		return response;
 	}

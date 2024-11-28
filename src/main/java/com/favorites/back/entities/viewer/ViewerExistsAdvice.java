@@ -1,4 +1,4 @@
-package com.favorites.back.entities.user;
+package com.favorites.back.entities.viewer;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -6,15 +6,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+
 @ControllerAdvice
-public class UserNotFoundAdvice {
+public class ViewerExistsAdvice {
 	
 	@ResponseBody
-	@ExceptionHandler(UserNotFoundException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	Exception userNotFoundHandler(UserNotFoundException ex) {
+	@ExceptionHandler(ViewerNotFoundException.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	Exception viewerNotFoundHandler(ViewerNotFoundException ex) {
 	    return ex; //.getMessage();
 	}
 	
-
 }
