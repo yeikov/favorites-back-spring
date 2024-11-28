@@ -1,5 +1,8 @@
 package com.favorites.back.entities.viewer;
 
+
+import java.net.URI;
+import java.net.http.HttpHeaders;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.BackApplication;
 import com.favorites.back.Media;
@@ -64,11 +69,13 @@ public class ViewerController {
 
 	@CrossOrigin
 	@PostMapping
-	private ResponseEntity<Viewer> add(@RequestBody Viewer newViewer) throws Exception {
+	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
 
 		try {
+			//return ResponseEntity.ok(_newViewer);
 			Viewer _newViewer = viewerRepository.save(newViewer);
-			return ResponseEntity.ok(_newViewer);
+			URI locationOfNewViewer = ucb.path("/favorites/viewers/{id}").buildAndExpand(_newViewer.getId()).toUri();
+			return ResponseEntity.created(locationOfNewViewer).build();
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
