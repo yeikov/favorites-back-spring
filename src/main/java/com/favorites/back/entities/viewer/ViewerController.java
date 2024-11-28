@@ -72,10 +72,10 @@ public class ViewerController {
 	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
 
 		try {
-			//return ResponseEntity.ok(_newViewer);
 			Viewer _newViewer = viewerRepository.save(newViewer);
 			URI locationOfNewViewer = ucb.path("/favorites/viewers/{id}").buildAndExpand(_newViewer.getId()).toUri();
-			return ResponseEntity.created(locationOfNewViewer).build();
+			return ResponseEntity.created(locationOfNewViewer).body(_newViewer);
+			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
