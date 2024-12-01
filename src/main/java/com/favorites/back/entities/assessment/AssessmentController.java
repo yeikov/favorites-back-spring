@@ -1,7 +1,10 @@
-package com.favorites.back.entities.assesment;
+package com.favorites.back.entities.assessment;
+
+import java.net.URI;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.BackApplication;
 import com.favorites.back.entities.registry.Registry;
@@ -43,7 +47,7 @@ public class AssessmentController {
 
 	@CrossOrigin
 	@PostMapping
-	public @ResponseBody Assessment add(@RequestBody AssessmentDto dto) {
+	public ResponseEntity<Assessment> save(@RequestBody AssessmentDto dto, UriComponentsBuilder ucb, Principal principal) {
 
 		Viewer viewer = viewerRepository.findById(dto.getViewerId())
 				.orElseThrow(() -> new ViewerNotFoundException(dto.getViewerId())); // .orElse(null);
@@ -53,15 +57,17 @@ public class AssessmentController {
 		int recom = dto.getRecommend();
 		String notes = dto.getNotes();
 
-		Assessment newValoration = new Assessment(viewer, reg, favo, recom, notes);
+		Assessment newAssessment = new Assessment(viewer, reg, favo, recom, notes);
 
 		try {
 
-			return viewer_registryRepository.save(newValoration);
+			Assessment _newAssessment = viewer_registryRepository.save(newAssessment);
+			URI location = ucb.path("favorites/assessment/{id}").buildAndExpand(_newAssessment.getId()).toUri();
+			return ResponseEntity.created(location).body(_newAssessment);
 
 		} catch (Exception e) {
 			// throw e;
-			throw new AssessmentExistsException();
+			return ResponseEntity.badRequest().build();
 		}
 
 	}

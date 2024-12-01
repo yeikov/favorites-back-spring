@@ -3,6 +3,7 @@ package com.favorites.back.entities.viewer;
 
 import java.net.URI;
 import java.net.http.HttpHeaders;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,8 +29,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.BackApplication;
+import com.favorites.back.CurrentViewer;
 import com.favorites.back.Media;
-import com.favorites.back.entities.assesment.AssessmentRepository;
+import com.favorites.back.entities.assessment.AssessmentRepository;
 
 @RestController
 @RequestMapping(path = BackApplication.backEndUrl + "/viewers")
@@ -56,7 +59,7 @@ public class ViewerController {
 
 	@CrossOrigin
 	@GetMapping(path = "/{id}")
-	private ResponseEntity<Viewer> one(@PathVariable Long id) {
+	private ResponseEntity<Viewer> one(@PathVariable Long id, Principal principal) {
 		Optional<Viewer> viewerOptional = viewerRepository.findById(id);
 
 		if (viewerOptional.isPresent()) {
@@ -68,13 +71,20 @@ public class ViewerController {
 	}
 
 	@CrossOrigin
+	//@PostAuthorize("returnObject.body.owner == authentication.name")
+	//@PostAuthorize("'Master' == authentication.name")
 	@PostMapping
-	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
+	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb,  @CurrentViewer String viewer) throws Exception {
 
+ 		if(viewer != "Master") {
+			return ResponseEntity.badRequest().build();
+		} 
+		
 		try {
 			Viewer _newViewer = viewerRepository.save(newViewer);
-			URI locationOfNewViewer = ucb.path("/favorites/viewers/{id}").buildAndExpand(_newViewer.getId()).toUri();
-			return ResponseEntity.created(locationOfNewViewer).body(_newViewer);
+			URI location = ucb.path("/favorites/viewers/{id}").buildAndExpand(_newViewer.getId()).toUri();
+			return ResponseEntity.created(location).body(_newViewer);
+			
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
@@ -158,5 +168,7 @@ public class ViewerController {
 						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id"))));
 		return ResponseEntity.ok(page.getContent());
 	}
+
+
 
 }

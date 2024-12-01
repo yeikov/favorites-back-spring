@@ -11,27 +11,55 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.favorites.back.entities.assesment.Assessment;
-import com.favorites.back.entities.assesment.AssessmentRepository;
+import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentRepository;
 import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.registry.RegistryController;
 import com.favorites.back.entities.registry.RegistryRepository;
 import com.favorites.back.entities.viewer.Viewer;
 import com.favorites.back.entities.viewer.ViewerRepository;
 
+@EnableMethodSecurity
 @SpringBootApplication
 public class BackApplication implements WebMvcConfigurer {
     private static final Logger log = LoggerFactory.getLogger(BackApplication.class);
 
+    @Bean
+	SecurityFilterChain appSecurity(HttpSecurity http, AuthenticationEntryPoint entryPoint)
+			throws Exception {
+		http
+			.authorizeHttpRequests((authorize) -> authorize
+            /*
+            .requestMatchers(HttpMethod.GET, BackApplication.backEndUrl + "/viewer/**")
+            .hasAuthority("SCOPE_viewer:read")
+            .requestMatchers("/favorites/viewer/**")
+            .hasAuthority("SCOPE_viewer:write")
+            .requestMatchers(HttpMethod.GET, BackApplication.backEndUrl + "/resources/**").anonymous() */
+            .anyRequest().authenticated()
+			)
+			.oauth2ResourceServer((oauth2) -> oauth2
+				.authenticationEntryPoint(entryPoint)
+				.jwt(Customizer.withDefaults())
+			);
+		return http.build();
+	}
+
+    
     @SuppressWarnings("null")
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
+                .addResourceHandler( BackApplication.backEndUrl + "/resources/**")
+                .addResourceLocations( BackApplication.backEndUrl + "/resources/");
     }
 
     public static void main(String[] args) {

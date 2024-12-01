@@ -1,4 +1,4 @@
-package com.favorites.back.entities.assesment;
+package com.favorites.back.entities.assessment;
 
 import java.util.List;
 import java.util.Optional;
