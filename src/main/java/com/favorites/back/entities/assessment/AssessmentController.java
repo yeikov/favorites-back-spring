@@ -1,4 +1,4 @@
-package com.favorites.back.entities.assesment;
+package com.favorites.back.entities.assessment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -28,7 +28,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.BackApplication;
 import com.favorites.back.Media;
-import com.favorites.back.entities.assesment.AssessmentRepository;
+import com.favorites.back.entities.assessment.AssessmentRepository;
 
 @RestController
 @RequestMapping(path = BackApplication.backEndUrl + "/viewers")

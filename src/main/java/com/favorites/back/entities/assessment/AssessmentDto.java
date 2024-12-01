@@ -1,4 +1,4 @@
-package com.favorites.back.entities.assesment;
+package com.favorites.back.entities.assessment;
 
 public class AssessmentDto {
 	
