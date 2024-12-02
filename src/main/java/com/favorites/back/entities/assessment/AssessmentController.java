@@ -27,6 +27,7 @@ import com.favorites.back.entities.viewer.ViewerNotFoundException;
 import com.favorites.back.entities.viewer.ViewerRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = BackApplication.backEndUrl + "/assessments")
 public class AssessmentController {
 

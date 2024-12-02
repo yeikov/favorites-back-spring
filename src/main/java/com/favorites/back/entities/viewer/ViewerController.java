@@ -31,6 +31,7 @@ import com.favorites.back.Media;
 import com.favorites.back.entities.assessment.AssessmentRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = BackApplication.backEndUrl + "/viewers")
 public class ViewerController {
 
