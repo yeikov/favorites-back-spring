@@ -43,7 +43,6 @@ public class ViewerController {
 	@Autowired
 	private AssessmentRepository assessmentRepository;
 
-	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
 	private ResponseEntity<List<Viewer>> findAll(Pageable pageable) {
 		Page<Viewer> page = viewerRepository.findAll(
@@ -64,12 +63,10 @@ public class ViewerController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-
 	}
 
 	@CrossOrigin
-	@PostMapping
-	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
+	@PostMapping private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
 
 		try {
 			Viewer _newViewer = viewerRepository.save(newViewer);
