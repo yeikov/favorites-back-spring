@@ -14,6 +14,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.viewer.Viewer;
 import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentDto;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 
@@ -53,7 +54,14 @@ class AssessmentTest {
 		restTemplate.postForEntity(path + "/registries", newRegistryB, Void.class);
 		restTemplate.postForEntity(path + "/registries", newRegistryC, Void.class);
 	}
+ 
+	@Test
+	void shouldReturnNotAllowedWhenAssessmentsListIsRequested() {
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments", String.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
 
+	}
+	
 	@Test
 	void shouldNotReturnAAssessmentWithAnUnknownId() {
 		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/1000",
@@ -62,52 +70,34 @@ class AssessmentTest {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 		assertThat(response.getBody()).isBlank();
 	}
-/* 
-	@Test
-	@DirtiesContext
-	void shouldReturnAAssessmentLocationWhenDataIsSaved() {
-
-		//Viewer newViewerA = restTemplate.getForEntity(path + "/viewers/1", Viewer.class).getBody();
-		//Registry newRegistyA = restTemplate.getForEntity(path + "/registries/1", Registry.class).getBody();
-
-		ResponseEntity<Viewer> responseViewer = restTemplate.getForEntity(path + "/viewers/1", Viewer.class);
-		Viewer documentViewerContext = responseViewer.getBody();
-
-		ResponseEntity<Registry> responseRegistry = restTemplate.getForEntity(path + "/registries/1", Registry.class);
-		Registry documentRegistryContext = responseRegistry.getBody();
-		
-		//ResponseEntity<Registry> responseRegistry = restTemplate.getForEntity(path + "/registries/1", Registry.class);
-		//DocumentContext documentRegistryContext = JsonPath.parse(responseRegistry.getBody());
-		//Registry _registry = new Registry();
-//
-		//_registry.setId(documentRegistryContext.read("$.id"));
-		//_registry.setTitle(documentRegistryContext.read("$.title"));
-		//_registry.setAuthor(documentRegistryContext.read("$.author"));
-		//_registry.setMedia(documentRegistryContext.read("$.media"));
-		//_registry.setProductionDate(documentRegistryContext.read("$.productionDate"));
-
-
-		Assessment newAssessment = new Assessment(documentViewerContext, documentRegistryContext, 5, 6, "Some notes");
-
-		ResponseEntity<String> response = restTemplate.postForEntity(path + "/assessments", 
-				newAssessment, String.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat(response.getHeaders().getLocation()).isNotNull();
-		
-	} */
- 
 
 	@Test
 	@DirtiesContext
-	void shouldCreateANewAssessment() {
+	void shouldCreateANewAssessmentAndReturnItAndItsLocation() {
 
-		Viewer newViewerA = restTemplate.getForEntity(path + "/viewers/1", Viewer.class).getBody();
-		Registry newRegistyA = restTemplate.getForEntity(path + "/registrie/1", Registry.class).getBody();
+		Viewer getViewer = restTemplate.getForEntity(path + "/viewers/1", Viewer.class).getBody();
 
-		Assessment newAssessment = new Assessment(newViewerA, newRegistyA, 5, 6, "Some notes");
+		ResponseEntity<String> responseRegistry = restTemplate.getForEntity(path + "/registries/1", String.class);
+		DocumentContext documentRegistryContext = JsonPath.parse(responseRegistry.getBody());
+		Registry getRegistry = new Registry();
+		Integer index = documentRegistryContext.read("$.id");
+		String date = documentRegistryContext.read("$.productionDate");
 
-		ResponseEntity<Void> createResponse = restTemplate.postForEntity(path + "/assessments",
-				newAssessment, Void.class);
+		getRegistry.setId((long) index);
+		getRegistry.setTitle(documentRegistryContext.read("$.title"));
+		getRegistry.setAuthor(documentRegistryContext.read("$.author"));
+		getRegistry.setMedia(documentRegistryContext.read("$.media"));
+		getRegistry.setProductionDate(LocalDate.parse(date));
+
+		AssessmentDto newAssessmentDto = new AssessmentDto();
+		newAssessmentDto.setViewerId(getViewer.getId());
+		newAssessmentDto.setRegistryId(getRegistry.getId());
+		newAssessmentDto.setFavorite(0);
+		newAssessmentDto.setRecommend(5);
+		newAssessmentDto.setNotes("great");
+
+		ResponseEntity<String> createResponse = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDto, String.class);
 		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
 		URI locationOfNewAssessment = createResponse.getHeaders().getLocation();
@@ -116,40 +106,118 @@ class AssessmentTest {
 
 		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
 		Number id = documentContext.read("$.id");
-		String name = documentContext.read("$.name");
+		int favorite = documentContext.read("$.favorite");
 
 		assertThat(id).isNotNull();
-		assertThat(name).isEqualTo("Yamagata");
+		assertThat(favorite).isEqualTo(0);
 	}
-	
-/* 
+
 	@Test
-	void shouldReturnAllAssessmentsWhenListIsRequested() {
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments", String.class);
+	
+	@DirtiesContext
+	void shouldReturnAllAssessmentsOfAViewer() {
+
+		AssessmentDto newAssessmentDtoA = new AssessmentDto();
+		newAssessmentDtoA.setViewerId(1L);
+		newAssessmentDtoA.setRegistryId(1L);
+		newAssessmentDtoA.setFavorite(5);
+		newAssessmentDtoA.setRecommend(4);
+		newAssessmentDtoA.setNotes("reg 1");
+
+		AssessmentDto newAssessmentDtoB = new AssessmentDto();
+		newAssessmentDtoB.setViewerId(1L);
+		newAssessmentDtoB.setRegistryId(2L);
+		newAssessmentDtoB.setFavorite(2);
+		newAssessmentDtoB.setRecommend(2);
+		newAssessmentDtoB.setNotes("reg 2");
+
+		AssessmentDto newAssessmentDtoC = new AssessmentDto();
+		newAssessmentDtoC.setViewerId(1L);
+		newAssessmentDtoC.setRegistryId(3L);
+		newAssessmentDtoC.setFavorite(5);
+		newAssessmentDtoC.setRecommend(4);
+		newAssessmentDtoC.setNotes("reg 3");
+
+		ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoA, String.class);
+		assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		
+
+		ResponseEntity<String> createResponseB = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoB, String.class);
+		assertThat(createResponseB.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		
+
+		ResponseEntity<String> createResponseC = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoC, String.class);
+		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+		
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/viewer/1", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
 		int assessmentCount = documentContext.read("$.length()");
 		assertThat(assessmentCount).isEqualTo(3);
 
-		JSONArray ids = documentContext.read("$..name");
-		assertThat(ids).containsExactlyInAnyOrder("Kay", "Tetsuo", "Kaneda");
+		JSONArray ids = documentContext.read("$..notes");
+		assertThat(ids).containsExactlyInAnyOrder("reg 1", "reg 2", "reg 3");
 
-		JSONArray amounts = documentContext.read("$..city");
-		assertThat(amounts).containsExactlyInAnyOrder("Tokio", "Tokio", "Tokio");
 	}
- */
-/* 
-	@Test
-	void shouldReturnAPageOfAssessments() {
 
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments?page=0&size=1&sort=id,asc",
-				String.class);
+	
+	@Test
+	
+	@DirtiesContext
+	void shouldReturnAllAssessmentsOfARegistry() {
+
+		AssessmentDto newAssessmentDtoA = new AssessmentDto();
+		newAssessmentDtoA.setViewerId(1L);
+		newAssessmentDtoA.setRegistryId(1L);
+		newAssessmentDtoA.setFavorite(5);
+		newAssessmentDtoA.setRecommend(4);
+		newAssessmentDtoA.setNotes("viewer 1");
+
+		AssessmentDto newAssessmentDtoB = new AssessmentDto();
+		newAssessmentDtoB.setViewerId(2L);
+		newAssessmentDtoB.setRegistryId(1L);
+		newAssessmentDtoB.setFavorite(2);
+		newAssessmentDtoB.setRecommend(2);
+		newAssessmentDtoB.setNotes("viewer 2");
+
+		AssessmentDto newAssessmentDtoC = new AssessmentDto();
+		newAssessmentDtoC.setViewerId(3L);
+		newAssessmentDtoC.setRegistryId(1L);
+		newAssessmentDtoC.setFavorite(5);
+		newAssessmentDtoC.setRecommend(4);
+		newAssessmentDtoC.setNotes("viewer 3");
+
+		ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoA, String.class);
+		assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		
+
+		ResponseEntity<String> createResponseB = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoB, String.class);
+		assertThat(createResponseB.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+		
+
+		ResponseEntity<String> createResponseC = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDtoC, String.class);
+		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+		
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/registry/1", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
-		JSONArray page = documentContext.read("$[*]");
-		assertThat(page.size()).isEqualTo(1);
+		int assessmentCount = documentContext.read("$.length()");
+		assertThat(assessmentCount).isEqualTo(3);
+
+		JSONArray ids = documentContext.read("$..notes");
+		assertThat(ids).containsExactlyInAnyOrder("viewer 1", "viewer 2", "viewer 3");
+
 	}
- */
+
+
 }

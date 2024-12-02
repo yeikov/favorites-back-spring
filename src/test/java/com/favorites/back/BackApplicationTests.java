@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentDto;
+import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.viewer.Viewer;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -40,6 +43,21 @@ class BackApplicationTests {
 		restTemplate.postForEntity(path + "/viewers", newViewerA, Void.class);
 		restTemplate.postForEntity(path + "/viewers", newViewerB, Void.class);
 		restTemplate.postForEntity(path + "/viewers", newViewerC, Void.class);
+
+		
+
+		Registry newRegistryA = new Registry("The Hobbit", "book", "J. R. R. Tolkien","1937" );
+		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo","1982" );
+		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo","1990" );
+		
+
+		restTemplate.postForEntity(path + "/registries", newRegistryA, Void.class);
+		restTemplate.postForEntity(path + "/registries", newRegistryB, Void.class);
+		restTemplate.postForEntity(path + "/registries", newRegistryC, Void.class);
+	
 	}
+
+
+	
 
 }

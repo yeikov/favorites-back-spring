@@ -25,6 +25,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.favorites.back.CommonUtilities;
 import com.favorites.back.entities.viewer.Viewer;
 import com.favorites.back.entities.viewer.ViewerNotFoundException;
+import com.favorites.back.entities.viewer.ViewerRepository;
 import com.favorites.back.BackApplication;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -36,8 +37,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = "http://localhost:4200")
 public class RegistryController {
 
-	@Autowired
-	private RegistryRepository registryRepository;
+	private final RegistryRepository registryRepository;
+
+	public RegistryController(RegistryRepository registryRepository){
+		this.registryRepository = registryRepository;
+	}
 
 
 	@GetMapping
@@ -51,8 +55,9 @@ public class RegistryController {
 
 	}
 
-	@GetMapping("/{id}")
-	ResponseEntity<Registry> one(@PathVariable Long id) {
+	@CrossOrigin
+	@GetMapping(path = "/{id}")
+	private ResponseEntity<Registry> one(@PathVariable Long id) {
 
 		Optional<Registry> registryOptional = registryRepository.findById(id);
 
