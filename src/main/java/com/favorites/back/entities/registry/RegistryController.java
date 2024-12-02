@@ -1,20 +1,31 @@
 package com.favorites.back.entities.registry;
 
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.CommonUtilities;
+import com.favorites.back.entities.viewer.Viewer;
+import com.favorites.back.entities.viewer.ViewerNotFoundException;
+import com.favorites.back.entities.viewer.ViewerRepository;
 import com.favorites.back.BackApplication;
 
 import org.springframework.web.bind.annotation.PutMapping;
@@ -22,39 +33,60 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(path = BackApplication.backEndUrl + "/registries")
-//@CrossOrigin(origins="http://localhost:4200", maxAge=3600)
+// @CrossOrigin(origins="http://localhost:4200", maxAge=3600)
 @CrossOrigin(origins = "http://localhost:4200")
 public class RegistryController {
 
-	@Autowired
-	private RegistryRepository registryRepository;
+	private final RegistryRepository registryRepository;
 
-	@CrossOrigin // (origins="http://localhost:4200")
+	public RegistryController(RegistryRepository registryRepository){
+		this.registryRepository = registryRepository;
+	}
+
+
 	@GetMapping
-	@ResponseBody
-	Iterable<Registry> all() {
-		return registryRepository.findAll();
-	}
-	@GetMapping("/{id}")
-	@ResponseBody
-	Registry one(@PathVariable Long id) {
+	private ResponseEntity<List<Registry>> findAll(Pageable pageable) {
+		Page<Registry> page = registryRepository.findAll(
+				PageRequest.of(pageable.getPageNumber(),
+						pageable.getPageSize(),
+						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "title"))));
 
-		return registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
+		return ResponseEntity.ok(page.getContent());
+
 	}
 
 	@CrossOrigin
+	@GetMapping(path = "/{id}")
+	private ResponseEntity<Registry> one(@PathVariable Long id) {
+
+		Optional<Registry> registryOptional = registryRepository.findById(id);
+
+		if (registryOptional.isPresent()) {
+			return ResponseEntity.ok(registryOptional.get());
+		} else {
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	
+	@SuppressWarnings("unchecked")
 	@PostMapping("/find")
-	@ResponseBody
-	Iterable<Registry> find(@RequestBody String title) {
-		return registryRepository.findAllByTitleIgnoreCaseContaining(title);
+	ResponseEntity <List<Registry>> find(@RequestBody String title, Pageable pageable) {
+		//return registryRepository.findAllByTitleIgnoreCaseContaining(title);
+		Page<Registry> page = (Page<Registry>) registryRepository.findAllByTitleIgnoreCaseContaining(title,
+				PageRequest.of(pageable.getPageNumber(),
+						pageable.getPageSize(),
+						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "productionDate"))));
+
+		return ResponseEntity.ok(page.getContent());
 	}
 
-	@CrossOrigin
+	
 	@PostMapping
-	@ResponseBody
-	Registry add(@RequestBody RegistryDto newRegistry) throws URISyntaxException {
+	ResponseEntity<Registry> save (@RequestBody RegistryDto newRegistry, UriComponentsBuilder ucb) throws URISyntaxException {
 
-		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(), newRegistry.getMedia(), newRegistry.getAuthor(),
+		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(), 
+		newRegistry.getMedia(), newRegistry.getAuthor(),
 				CommonUtilities.year2LocalDate(newRegistry.getYear()));
 
 		if (sondaRegistro == null) {
@@ -65,7 +97,15 @@ public class RegistryController {
 			sondaRegistro.setMedia(newRegistry.getMedia());
 			sondaRegistro.setProductionDate(CommonUtilities.year2LocalDate(newRegistry.getYear()));
 
-			return registryRepository.save(sondaRegistro);
+			try {
+				
+				Registry _newRegistry = registryRepository.save(sondaRegistro);
+				URI locationOfNewRegistry = ucb.path("/favorites/registries/{id}").buildAndExpand(_newRegistry.getId()).toUri();
+				
+				return ResponseEntity.created(locationOfNewRegistry).body(_newRegistry);
+			} catch (Exception e) {
+				return ResponseEntity.badRequest().build();
+			}
 
 		} else {
 
@@ -75,35 +115,39 @@ public class RegistryController {
 
 	}
 
-	@CrossOrigin
+	
 	@PutMapping("/{id}")
-	@ResponseBody
-	Registry update(@PathVariable Long id, @RequestBody Registry newRegistry) {
+	ResponseEntity<Registry> update(@PathVariable Long id, @RequestBody Registry newRegistry) {
+	
+		try {
+			Registry _newRegistry = new Registry(
+				newRegistry.getTitle(), 
+				newRegistry.getMedia(),
+				newRegistry.getAuthor(),
+				newRegistry.getProductionDate().toString()
+			);
 
-		Registry updateRegistro = registryRepository.findById(id).map(registry -> {
-			registry.setTitle(newRegistry.getTitle());
-			registry.setProductionDate(newRegistry.getProductionDate());
-			registry.setAuthor(newRegistry.getAuthor());
-			registry.setMedia(newRegistry.getMedia());
-			return registryRepository.save(registry);
-		}).orElseGet(() -> {
-			newRegistry.setId(id);
-			return registryRepository.save(newRegistry);
-		});
-		if (updateRegistro == null) {
-			// entityModel = assembler.toModel(registryRepository.save(newRegistry));
-			new RegistryNotFoundException(null);
+			registryRepository.save(_newRegistry);
+			return ResponseEntity.ok(_newRegistry);
+
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
 		}
-		return registryRepository.save(newRegistry);
 
 	}
 
-	@CrossOrigin
+	
 	@DeleteMapping("/{id}")
-	@ResponseBody
-	Long delete(@PathVariable Long id) {
-		registryRepository.deleteById(id);
-		return id;
+	ResponseEntity<Registry> delete(@PathVariable Long id) throws Exception {
+		Registry deletedRegistry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
+
+		try {
+			registryRepository.deleteById(id);
+			return ResponseEntity.ok(deletedRegistry);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().build();
+		}
+
 	}
 
 	Registry existsRegistry(
@@ -122,21 +166,27 @@ public class RegistryController {
 		return response;
 	}
 
-	@CrossOrigin(origins = "http://localhost:4000")
-	@GetMapping("/topFavorite/{media}")
-	@ResponseBody
-	Iterable<Registry> findTopFavoritesByMedia(@PathVariable String media) {
 
-		return registryRepository.findTopFavoriteByMedia(media);
+
+	@GetMapping("/topFavorite/{media}")
+	ResponseEntity
+	<List<Registry>> findTopFavoritesByMedia(@PathVariable String media) {
+
+		List<Registry> topFavorites =  registryRepository.findTopFavoriteByMedia(media);
+
+		return ResponseEntity.ok(topFavorites);
+
 
 	}
 
-	@CrossOrigin
+	
 	@GetMapping("/topRecommend/{media}")
-	@ResponseBody
-	Iterable<Registry> findTopRecommendByMedia(@PathVariable String media) {
+	ResponseEntity
+	<List<Registry>> findTopRecommendByMedia(@PathVariable String media) {
 
-		return registryRepository.findTopRecommendByMedia(media);
+		List<Registry> topRecommend = registryRepository.findTopRecommendByMedia(media);
+		return ResponseEntity.ok(topRecommend);
+		
 
 	}
 

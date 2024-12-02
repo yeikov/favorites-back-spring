@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentDto;
+import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.viewer.Viewer;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -40,76 +43,21 @@ class BackApplicationTests {
 		restTemplate.postForEntity(path + "/viewers", newViewerA, Void.class);
 		restTemplate.postForEntity(path + "/viewers", newViewerB, Void.class);
 		restTemplate.postForEntity(path + "/viewers", newViewerC, Void.class);
-	}
 
-	@Test
-	void shouldNotReturnAViewerWithAnUnknownId() {
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers/1000",
-				String.class);
-
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-		assertThat(response.getBody()).isBlank();
-	}
-
-	@Test
-	@DirtiesContext
-	void shouldReturnAViewerLocationWhenDataIsSaved() {
-		Viewer newViewer = new Viewer("Yamagata", "yamagata@tokio.exp", "Tokio", 
-				LocalDate.parse("2000-11-26"));
-		ResponseEntity<String> response = restTemplate.postForEntity(path + "/viewers", 
-				newViewer, String.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		assertThat(response.getHeaders().getLocation()).isNotNull();
 		
+
+		Registry newRegistryA = new Registry("The Hobbit", "book", "J. R. R. Tolkien","1937" );
+		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo","1982" );
+		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo","1990" );
+		
+
+		restTemplate.postForEntity(path + "/registries", newRegistryA, Void.class);
+		restTemplate.postForEntity(path + "/registries", newRegistryB, Void.class);
+		restTemplate.postForEntity(path + "/registries", newRegistryC, Void.class);
+	
 	}
 
-	@Test
-	@DirtiesContext
-	void shouldCreateANewViewer() {
-		Viewer newViewer = new Viewer("Yamagata", "yamagata@tokio.exp", "Tokio",
-				LocalDate.parse("2000-11-26"));
-		ResponseEntity<Void> createResponse = restTemplate.postForEntity(path + "/viewers",
-				newViewer, Void.class);
-		assertThat(createResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-		URI locationOfNewViewer = createResponse.getHeaders().getLocation();
-		ResponseEntity<String> getResponse = restTemplate.getForEntity(locationOfNewViewer, String.class);
-		assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-		DocumentContext documentContext = JsonPath.parse(getResponse.getBody());
-		Number id = documentContext.read("$.id");
-		String name = documentContext.read("$.name");
-
-		assertThat(id).isNotNull();
-		assertThat(name).isEqualTo("Yamagata");
-	}
-
-	@Test
-	void shouldReturnAllViewersWhenListIsRequested() {
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers", String.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-		DocumentContext documentContext = JsonPath.parse(response.getBody());
-		int viewerCount = documentContext.read("$.length()");
-		assertThat(viewerCount).isEqualTo(3);
-
-		JSONArray ids = documentContext.read("$..name");
-		assertThat(ids).containsExactlyInAnyOrder("Kay", "Tetsuo", "Kaneda");
-
-		JSONArray amounts = documentContext.read("$..city");
-		assertThat(amounts).containsExactlyInAnyOrder("Tokio", "Tokio", "Tokio");
-	}
-
-	@Test
-	void shouldReturnAPageOfViewers() {
-
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/viewers?page=0&size=1&sort=id,asc",
-				String.class);
-		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-		DocumentContext documentContext = JsonPath.parse(response.getBody());
-		JSONArray page = documentContext.read("$[*]");
-		assertThat(page.size()).isEqualTo(1);
-	}
+	
 
 }

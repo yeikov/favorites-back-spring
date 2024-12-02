@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
 import com.favorites.back.CommonUtilities;
-import com.favorites.back.entities.assesment.Assessment;
+import com.favorites.back.entities.assessment.Assessment;
 
 @Entity
 public class Registry {

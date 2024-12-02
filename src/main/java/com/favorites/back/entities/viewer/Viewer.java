@@ -3,6 +3,8 @@ package com.favorites.back.entities.viewer;
 import java.time.LocalDate;
 import java.util.Set;
 
+import com.favorites.back.entities.assessment.Assessment;
+
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,9 +12,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-
-
-import com.favorites.back.entities.assesment.Assessment;
 
  
 @Entity

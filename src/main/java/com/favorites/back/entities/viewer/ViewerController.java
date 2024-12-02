@@ -28,9 +28,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.favorites.back.BackApplication;
 import com.favorites.back.Media;
-import com.favorites.back.entities.assesment.AssessmentRepository;
+import com.favorites.back.entities.assessment.AssessmentRepository;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping(path = BackApplication.backEndUrl + "/viewers")
 public class ViewerController {
 
@@ -43,7 +44,6 @@ public class ViewerController {
 	@Autowired
 	private AssessmentRepository assessmentRepository;
 
-	@CrossOrigin // (origins="http://localhost:4200")
 	@GetMapping
 	private ResponseEntity<List<Viewer>> findAll(Pageable pageable) {
 		Page<Viewer> page = viewerRepository.findAll(
@@ -64,12 +64,10 @@ public class ViewerController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-
 	}
 
 	@CrossOrigin
-	@PostMapping
-	private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
+	@PostMapping private ResponseEntity<Viewer> save(@RequestBody Viewer newViewer, UriComponentsBuilder ucb) throws Exception {
 
 		try {
 			Viewer _newViewer = viewerRepository.save(newViewer);

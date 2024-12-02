@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.favorites.back.entities.assesment.Assessment;
-import com.favorites.back.entities.assesment.AssessmentRepository;
+import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentRepository;
 import com.favorites.back.entities.registry.Registry;
 import com.favorites.back.entities.registry.RegistryController;
 import com.favorites.back.entities.registry.RegistryRepository;

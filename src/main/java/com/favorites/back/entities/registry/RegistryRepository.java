@@ -3,13 +3,15 @@ package com.favorites.back.entities.registry;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.h2.mvstore.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface RegistryRepository extends JpaRepository<Registry, Long>{
 
 	
-	public List <Registry> findAllByTitleIgnoreCaseContaining(String title);
+	public List <Registry> findAllByTitleIgnoreCaseContaining(String title, PageRequest pageRequest);
 
 
 	public List <Registry> findAllByTitleAndMediaAndAuthorAndProductionDate(String title, String media,String author, LocalDate year);
