@@ -199,9 +199,9 @@
                     name: 'assessments/',
                     method: 'POST',
                     description: 'New Registry',
-                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "viewerId": 1, "notes": "Highly recommended.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments',
-                    data: { viewerId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Muy recomendable' },
+                    data: { viewerId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Highly recommended' },
                     result: '...',
                 },
                 {
@@ -209,7 +209,7 @@
                     name: 'assessments/',
                     method: 'PUT',
                     description: 'Registry Update',
-                    curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
+                    curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "viewerId": 1, "notes": "Highly recommended.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '', favourite: '', recommend: '', notes: '' },
                     result: '...',
@@ -217,7 +217,7 @@
 
             ];
 
-            $scope.juegoDeDatosViewers = [];
+            $scope.mockData_Viewers = [];
 
             $scope.cities = [
                 'Barcelona',
@@ -344,16 +344,16 @@
             $scope.generatingViewers = function () {
 
                 $scope.viewersNames.forEach(nom => {
-                    $scope.cities.forEach(lugar => {
-                        $scope.juegoDeDatosViewers.push({ name: nom, city: lugar, eMail: nom.toLowerCase() + '@' + lugar.toLowerCase() + '.exp' })
+                    $scope.cities.forEach(city => {
+                        $scope.mockData_Viewers.push({ name: nom, city: city, eMail: nom.toLowerCase() + '@' + city.toLowerCase() + '.exp' })
                     })
                 })
 
-                $scope.juegoDeDatosViewers.forEach((element, index) => {
+                $scope.mockData_Viewers.forEach((element, index) => {
                     $scope.doRequest({ method: 'POST', url: $scope.backurl + '/favorites/viewers', data: element, result: '--' }).then((res) => {
 
                         element.id = res.data.id;
-                        if (index == ($scope.juegoDeDatosViewers.length - 1)) {
+                        if (index == ($scope.mockData_Viewers.length - 1)) {
                             $scope.viewersIn = true;
                             $scope.viewersLastId = res.data.id;
 
@@ -385,14 +385,14 @@
 
             //fill database 4/4 (valoraciones)
             $scope.generatesAssessments = function () {
-                let _totalValoraciones = $scope.mockData_registries_source.length * $scope.juegoDeDatosViewers.length;
+                let _totalValoraciones = $scope.mockData_registries_source.length * $scope.mockData_Viewers.length;
 
                 let ratings = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
                 console.log('Generating ' + _totalValoraciones + ' registries in db.');
-                
-                $scope.juegoDeDatosViewers.forEach(viewer => {
-    
+
+                $scope.mockData_Viewers.forEach(viewer => {
+
                     let indiceActuacion = Math.random() - .2;
 
                     //viewer assessments for registries
@@ -537,7 +537,7 @@
 
                         try {
                             let _len = res.data.length;
-                            if (_len && _len > 0){
+                            if (_len && _len > 0) {
                                 $scope.dbState = 'completed';
                             } else {
                                 $scope.dbState = 'initial';
@@ -573,7 +573,7 @@
     <div ng-app="myApp" ng-controller="myCtrl" class="container-fluid">
 
         <div class=container ng-if="connected && dbState=='completed'">
-<!--             <p>
+            <!--             <p>
                 <a href="http://localhost:9001/v2/api-docs"
                     style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
                     title=http://localhost:9001/v2/api-docs>http://localhost:9001/v2/api-docs</a>
@@ -590,7 +590,8 @@
                     <div class=card>
                         <h5 class="card-title" style="white-space: nowrap;text-overflow: ellipsis">
                             {{ endPoint.name }}
-                            <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{endPoint.method}})</span>
+                            <span
+                                style="opacity: 50%; font-style: italic; font-weight: bold;">({{endPoint.method}})</span>
                             <span
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0">{{endPoint.controller.toUpperCase()}}</span>
                         </h5>
@@ -652,12 +653,12 @@
                         <hr>
                         <div class=row>
                             <div class=col-6>
-
                                 <button class='btn btn-primary col-12'
                                     ng-click="changeDbState('completed')">Continue</button>
                             </div>
                             <div class=col-6>
-                                <button class='btn btn-success col-12' ng-click="generateData()">Create Test Data</button>
+                                <button class='btn btn-success col-12' ng-click="generateData()">Create Test
+                                    Data</button>
                             </div>
                         </div>
                     </div>
