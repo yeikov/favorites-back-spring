@@ -26,7 +26,7 @@
         div.card{
             padding:1rem
         }
-        .marginAbajo{
+        .marginBottom{
             margin: 0 0 1rem 0 
         }
         .result{
@@ -62,7 +62,7 @@
                     name: 'viewers',
                     link: $scope.backurl + '/favorites/viewers',
                     method: 'GET',
-                    description: 'Todos los usuarios',
+                    description: 'All Viewers',
                     url: $scope.backurl + '/favorites/viewers',
                     data: {},
                     result: '...',
@@ -73,7 +73,7 @@
                     name: 'viewers/{id}',
                     method: 'GET',
                     link: $scope.backurl + '/favorites/viewers/1',
-                    description: 'Un usuario a partir de su id',
+                    description: 'Viewer by Id',
                     url: $scope.backurl + '/favorites/viewers/',
                     data: { id: 1 },
                     result: '...',
@@ -83,7 +83,7 @@
                     controller: 'viewer Controller',
                     name: 'viewers/email',
                     method: 'POST',
-                    description: 'Un usuario a partir de su nombre',
+                    description: 'Viewer by Name',
                     url: $scope.backurl + '/favorites/viewers/email',
                     data: { eMail: 'john@london.exp' },
                     result: '...',
@@ -93,7 +93,7 @@
                     controller: 'viewer Controller',
                     name: 'viewers',
                     method: 'POST',
-                    description: 'Nuevo usuario',
+                    description: 'New Viewer',
                     curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/viewers -H "Content-Type:application/json" -d \'{"name": "john", "city":"London", "eMail": "johnMail"}\'',
                     url: $scope.backurl + '/favorites/viewers/',
                     data: { name: 'John', city: 'Barcelona', eMail: 'john@mail' },
@@ -104,7 +104,7 @@
                     controller: 'viewer Controller',
                     name: 'viewers/{id}',
                     method: 'PUT',
-                    description: 'Actualiza usuario',
+                    description: 'Viewer Update',
                     curl: 'curl -v -X PUT ' + $scope.backurl + '/favorites/viewers/1 -d \'{"name": "john", "city":"London", "eMail": "john@mail"}\'',
                     url: $scope.backurl + '/favorites/viewers/',
                     data: { id: '', name: '', city: '', eMail: '' },
@@ -114,18 +114,18 @@
                     controller: 'viewer Controller',
                     name: 'viewers/{id}',
                     method: 'DELETE',
-                    description: 'Borra usuario',
+                    description: 'Viewer Delete',
                     curl: 'curl -v -X DELETE ' + $scope.backurl + '/favorites/viewers/1',
                     url: $scope.backurl + '/favorites/viewers/',
                     data: { id: '' },
                     result: '...',
-                    //todo: '>> el usuario ha sido eliminado.'
+                    //todo: '>> Viewer has been deleted.'
                 },
                 {
                     controller: 'registry Controller',
                     name: 'registries',
                     method: 'GET',
-                    description: 'Todos los registros',
+                    description: 'List of Registries',
                     link: $scope.backurl + '/favorites/registries',
                     url: $scope.backurl + '/favorites/registries',
                     data: {},
@@ -135,7 +135,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'GET',
-                    description: 'Un registro a partir de su id',
+                    description: 'Registry by Id',
                     link: $scope.backurl + '/favorites/registries/1',
                     url: $scope.backurl + '/favorites/registries/',
                     data: { id: '1' },
@@ -146,7 +146,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'POST',
-                    description: 'Nuevo registro a partir de su titulo, tipo de medio, autor y año de produccion.',
+                    description: 'New Registry',
                     curl: 'curl -X POST ' + $scope.backurl + '/favorites/registries -d \'{ title: "The Hobbit", media: "book", author: "J. R. R. Tolkien", year: "1937" }\'',
                     url: $scope.backurl + '/favorites/registries',
                     data: { title: 'The Hobbit', media: 'book', author: 'J. R. R. Tolkien', year: '1937' },
@@ -156,7 +156,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'PUT',
-                    description: 'Modifica registro a partir de su id',
+                    description: 'Registry Update',
                     curl: 'curl -X PUT ' + $scope.backurl + '/favorites/registries/1 -d \'{title: "The Hobbit", media: "film saga", author: "Petter Jackson", "year": "2012"}\'',
                     url: $scope.backurl + '/favorites/registries/',
                     data: { id: '', title: '', media: '', author: '', year: '' },
@@ -167,7 +167,7 @@
                     controller: 'registry Controller',
                     name: 'registries/{id}',
                     method: 'DELETE',
-                    description: 'Elimina registro a partir de su id',
+                    description: 'Registry Delete',
                     link: $scope.backurl + '/favorites/registries/1',
                     url: $scope.backurl + '/favorites/registries/',
                     data: { id: '' },
@@ -178,7 +178,7 @@
                     controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/viewer/{id}',
                     method: 'GET',
-                    description: 'Lista de valoraciones de un usuario',
+                    description: 'Viewer Assessments List',
                     link: $scope.backurl + '/favorites/assessments/viewer/1',
                     url: $scope.backurl + '/favorites/assessments/viewer/',
                     data: { id: 1 },
@@ -188,7 +188,7 @@
                     controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/{id}',
                     method: 'GET',
-                    description: 'Una valoración a partir de su id',
+                    description: 'Assessment by Id',
                     link: $scope.backurl + '/favorites/assessments/1',
                     url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '1' },
@@ -198,7 +198,7 @@
                     controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/',
                     method: 'POST',
-                    description: 'Nueva valoración de un usuario para un registro. Parametros: registry, viewer,  fav -ranquing favorito (entero), rec -ranquing recomendable (entero)',
+                    description: 'New Registry',
                     curl: 'curl -v -X POST ' + $scope.backurl + '/favorites/assessments -H "Content-Type:application/json" -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments',
                     data: { viewerId: '2', registryId: '1', favorite: '4', recommend: '4', notes: 'Muy recomendable' },
@@ -208,7 +208,7 @@
                     controller: '(viewer_registry) assessment Controller Controller',
                     name: 'assessments/',
                     method: 'PUT',
-                    description: 'Actualiza valores de favorito y recomendable de un usuario para un registro. Parametros: registry (id), viewerId, (id), fav -ranquing favourite (entero), rec -ranquing recommend (entero)',
+                    description: 'Registry Update',
                     curl: 'curl ' + $scope.backurl + '/favorites/assessments/1 -d \'{"registryId": 79, "viewerId": 1, "notes": "Muy recomendable.", "favorite": 1, "recommend": 2}\'',
                     url: $scope.backurl + '/favorites/assessments/',
                     data: { id: '', favourite: '', recommend: '', notes: '' },
@@ -219,7 +219,7 @@
 
             $scope.juegoDeDatosViewers = [];
 
-            $scope.ciudades = [
+            $scope.cities = [
                 'Barcelona',
                 'London',
                 'Born',
@@ -231,7 +231,7 @@
                 */
             ];
 
-            $scope.nombres = [
+            $scope.viewersNames = [
                 'Juana',
                 'John',
                 'Johanes',
@@ -243,7 +243,7 @@
                 */
             ];
 
-            $scope.juegoDeDatos_fuentes = [
+            $scope.mockData_registries_source = [
 
                 { title: 'The Hobbit', media: 'book', author: 'J. R. R. Tolkien', year: '1937' },
                 { title: 'Il Nome della Rosa', media: 'book', author: 'Umberto Eco', year: '1980' },
@@ -285,23 +285,22 @@
                 */
             ];
 
-            $scope.juegoDeDatosRegistries = [];
+            $scope.registries_mock = [];
 
             $scope.viewersIn = false;
             $scope.viewersLastId = 0;
             $scope.registriesIn = false;
             $scope.assessmentsIn = false;
 
-            $scope.sondeaViewers = {
+            $scope.checkViewers = {
                 method: 'GET',
                 url: $scope.backurl + '/favorites/viewers',
                 data: {},
                 result: '...',
             }
 
-            // funciones
-
-            $scope.lanzaConsulta = (element) => {
+            // functions
+            $scope.doRequest = (element) => {
 
                 return $http({
                     method: element.method,
@@ -314,15 +313,15 @@
 
             };
 
-            $scope.lanzaConsultaSinData = (element) => {
+            $scope.doRequestEmpty = (element) => {
                 return $http({
                     method: element.method,
                     url: element.url
                 })
             }
 
-            $scope.testea = function (element) {
-                $scope.lanzaConsulta(element).then(
+            $scope.doCheck = function (element) {
+                $scope.doRequest(element).then(
                     (res) => { element.result = res.data },
                     (err) => { element.result = err.data.message }
                 )
@@ -334,49 +333,49 @@
             }
 
 
-            //se rellenan las tablas 1/4
-            $scope.rellenaDatos = function () {
+            //fill database 1/4
+            $scope.generateData = function () {
                 $scope.dbState = 'working';
-                $scope.rellenaUsuarios();
+                $scope.generatingViewers();
 
             }
 
-            //se rellenan las tablas 2/4 (usuarios)
-            $scope.rellenaUsuarios = function () {
+            //fill database 2/4 (viewers)
+            $scope.generatingViewers = function () {
 
-                $scope.nombres.forEach(nom => {
-                    $scope.ciudades.forEach(lugar => {
+                $scope.viewersNames.forEach(nom => {
+                    $scope.cities.forEach(lugar => {
                         $scope.juegoDeDatosViewers.push({ name: nom, city: lugar, eMail: nom.toLowerCase() + '@' + lugar.toLowerCase() + '.exp' })
                     })
                 })
 
                 $scope.juegoDeDatosViewers.forEach((element, index) => {
-                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/viewers', data: element, result: '--' }).then((res) => {
+                    $scope.doRequest({ method: 'POST', url: $scope.backurl + '/favorites/viewers', data: element, result: '--' }).then((res) => {
 
                         element.id = res.data.id;
                         if (index == ($scope.juegoDeDatosViewers.length - 1)) {
                             $scope.viewersIn = true;
                             $scope.viewersLastId = res.data.id;
 
-                            console.log('Generada la serie de usuarios en bbdd.');
+                            console.log('Viewers generated in db.');
 
-                            $scope.rellenaRegistros()
+                            $scope.generatesRegistries()
                         }
                     })
                 });
 
             }
 
-            ////se rellenan las tablas 3/4 (registros)
-            $scope.rellenaRegistros = function () {
-                $scope.juegoDeDatos_fuentes.forEach((element, index) => {
-                    $scope.lanzaConsulta({ method: 'POST', url: $scope.backurl + '/favorites/registries', data: element, result: '--' }).then((res) => {
+            //fill database 3/4 (registries)
+            $scope.generatesRegistries = function () {
+                $scope.mockData_registries_source.forEach((element, index) => {
+                    $scope.doRequest({ method: 'POST', url: $scope.backurl + '/favorites/registries', data: element, result: '--' }).then((res) => {
 
-                        $scope.juegoDeDatosRegistries.push({ id: res.data.id, title: res.data.title, media: res.data.media, author: res.data.author, year: res.data.productionDate });
-                        if (index == ($scope.juegoDeDatos_fuentes.length - 1)) {
+                        $scope.registries_mock.push({ id: res.data.id, title: res.data.title, media: res.data.media, author: res.data.author, year: res.data.productionDate });
+                        if (index == ($scope.mockData_registries_source.length - 1)) {
                             $scope.registriesIn = true;
-                            console.log('Guardados los ' + $scope.juegoDeDatos_fuentes.length + ' registros de obras en bbdd.');
-                            $scope.rellenaValoraciones();
+                            console.log('Saved ' + $scope.mockData_registries_source.length + ' registries in db.');
+                            $scope.generatesAssessments();
                         }
 
                     })
@@ -384,64 +383,62 @@
                 });
             }
 
-            //se rellenan las tablas 4/4 (valoraciones)
-            $scope.rellenaValoraciones = function () {
-                let _totalValoraciones = $scope.juegoDeDatos_fuentes.length * $scope.juegoDeDatosViewers.length;
+            //fill database 4/4 (valoraciones)
+            $scope.generatesAssessments = function () {
+                let _totalValoraciones = $scope.mockData_registries_source.length * $scope.juegoDeDatosViewers.length;
 
-                let notas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+                let ratings = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
-
-                console.log('Generando ' + _totalValoraciones + ' valoraciones de las obras en bbdd.');
-
+                console.log('Generating ' + _totalValoraciones + ' registries in db.');
                 
-                $scope.juegoDeDatosViewers.forEach(usuario => {
+                $scope.juegoDeDatosViewers.forEach(viewer => {
     
                     let indiceActuacion = Math.random() - .2;
 
-                    //cada usuario valorará entre 0 y todos los registros
-                    let registrosAValorar = [];
+                    //viewer assessments for registries
+                    let registriesToAssessment = [];
 
-                    for (let r in $scope.juegoDeDatosRegistries) {
-                        if (Math.random() > indiceActuacion)// para cada usuario un valor de .0 a 1.0 que reduce las posiblidades de se inserten casos a valorar 
-                            registrosAValorar.push(r);
+                    for (let r in $scope.registries_mock) {
+                        if (Math.random() > indiceActuacion)// for each user a value from .0 to 1.0 that reduces the possibilities of inserting cases to be evaluated 
+                            registriesToAssessment.push(r);
                     }//[1,5,11,20]
 
 
-                    let notasFilm = [];
-                    let notasBook = [];
-                    let notasSerie = [];
-                    let notasComic = [];
-                    let notasAlbum = [];
+                    let ratingsFilm = [];
+                    let ratingsBook = [];
+                    let ratingsSerie = [];
+                    let ratingsComic = [];
+                    let ratingsAlbum = [];
 
-                    let notasFilmR = [];
-                    let notasBookR = [];
-                    let notasSerieR = [];
-                    let notasComicR = [];
-                    let notasAlbumR = [];
+                    let ratingsFilmR = [];
+                    let ratingsBookR = [];
+                    let ratingsSerieR = [];
+                    let ratingsComicR = [];
+                    let ratingsAlbumR = [];
 
                     function puntua(media) {
                         if (media == 'film')
-                            return notasFilm.shift();
+                            return ratingsFilm.shift();
                         if (media == 'book')
-                            return notasBook.shift();
+                            return ratingsBook.shift();
                         if (media == 'serie')
-                            return notasSerie.shift();
+                            return ratingsSerie.shift();
                         if (media == 'comic')
-                            return notasComic.shift();
+                            return ratingsComic.shift();
                         if (media == 'album')
-                            return notasAlbum.shift();
+                            return ratingsAlbum.shift();
                     }
                     function puntuaR(media) {
                         if (media == 'film')
-                            return notasFilmR.shift();
+                            return ratingsFilmR.shift();
                         if (media == 'book')
-                            return notasBookR.shift();
+                            return ratingsBookR.shift();
                         if (media == 'serie')
-                            return notasSerieR.shift();
+                            return ratingsSerieR.shift();
                         if (media == 'comic')
-                            return notasComicR.shift();
+                            return ratingsComicR.shift();
                         if (media == 'album')
-                            return notasAlbumR.shift();
+                            return ratingsAlbumR.shift();
                     }
 
                     let f = 0;
@@ -450,83 +447,79 @@
                     let c = 0;
                     let a = 0;
 
-                    for (let n of registrosAValorar) {
-                        //rellena con [1, 2, 3, 4 ...]
+                    for (let n of registriesToAssessment) {
+                        //sets [1, 2, 3, 4 ...]
 
-                        let registro = $scope.juegoDeDatosRegistries[n];
+                        let registry = $scope.registries_mock[n];
 
-
-
-                        if (registro.media == 'film') {
-                            notasFilm.push(f);
-                            notasFilmR.push(f);
+                        if (registry.media == 'film') {
+                            ratingsFilm.push(f);
+                            ratingsFilmR.push(f);
                             f++;
                         }
-                        if (registro.media == 'book') {
-                            notasBook.push(b);
-                            notasBookR.push(b);
+                        if (registry.media == 'book') {
+                            ratingsBook.push(b);
+                            ratingsBookR.push(b);
                             b++;
                         }
-                        if (registro.media == 'serie') {
-                            notasSerie.push(s);
-                            notasSerieR.push(s);
+                        if (registry.media == 'serie') {
+                            ratingsSerie.push(s);
+                            ratingsSerieR.push(s);
                             s++;
                         }
-                        if (registro.media == 'comic') {
-                            notasComic.push(c);
-                            notasComicR.push(c);
+                        if (registry.media == 'comic') {
+                            ratingsComic.push(c);
+                            ratingsComicR.push(c);
                             c++;
                         }
-                        if (registro.media == 'album') {
-                            notasAlbum.push(a);
-                            notasAlbumR.push(a);
+                        if (registry.media == 'album') {
+                            ratingsAlbum.push(a);
+                            ratingsAlbumR.push(a);
                             a++;
                         }
 
                     }
 
-                    notasFilm.sort(() => { return (Math.random() - 0.5) });
-                    notasBook.sort(() => { return (Math.random() - 0.5) });
-                    notasSerie.sort(() => { return (Math.random() - 0.5) });
-                    notasComic.sort(() => { return (Math.random() - 0.5) });
-                    notasAlbum.sort(() => { return (Math.random() - 0.5) });
+                    ratingsFilm.sort(() => { return (Math.random() - 0.5) });
+                    ratingsBook.sort(() => { return (Math.random() - 0.5) });
+                    ratingsSerie.sort(() => { return (Math.random() - 0.5) });
+                    ratingsComic.sort(() => { return (Math.random() - 0.5) });
+                    ratingsAlbum.sort(() => { return (Math.random() - 0.5) });
 
-                    notasFilmR.sort(() => { return (Math.random() - 0.5) });
-                    notasBookR.sort(() => { return (Math.random() - 0.5) });
-                    notasSerieR.sort(() => { return (Math.random() - 0.5) });
-                    notasComicR.sort(() => { return (Math.random() - 0.5) });
-                    notasAlbumR.sort(() => { return (Math.random() - 0.5) });
+                    ratingsFilmR.sort(() => { return (Math.random() - 0.5) });
+                    ratingsBookR.sort(() => { return (Math.random() - 0.5) });
+                    ratingsSerieR.sort(() => { return (Math.random() - 0.5) });
+                    ratingsComicR.sort(() => { return (Math.random() - 0.5) });
+                    ratingsAlbumR.sort(() => { return (Math.random() - 0.5) });
 
-                    //reordena [3, 2, 4, 1]
+                    //order [3, 2, 4, 1]
 
-                    for (let n of registrosAValorar) {
+                    for (let n of registriesToAssessment) {
 
+                        let registry = $scope.registries_mock[n];
 
-                        let registro = $scope.juegoDeDatosRegistries[n];
+                        if (registry != undefined) {
 
-                        if (registro != undefined) {
-
-                            $scope.lanzaConsulta({
+                            $scope.doRequest({
                                 method: 'POST', url: $scope.backurl + '/favorites/assessments',
                                 data: {
-                                    registryId: registro.id,
-                                    viewerId: usuario.id,
-                                    favorite: puntua(registro.media),
-                                    recommend: puntuaR(registro.media),
+                                    registryId: registry.id,
+                                    viewerId: viewer.id,
+                                    favorite: puntua(registry.media),
+                                    recommend: puntuaR(registry.media),
                                     notes: 'Great!'
                                 }
                             }).then((res) => {
 
                                 if (res.data.viewer.id >= $scope.viewersLastId && $scope.dbState != 'completed') {
-                                    console.log("finalizado");
+                                    console.log("completed");
                                     $scope.dbState = 'completed';
                                 }
                             })
 
                         } else {
-                            console.log('registro undefined');
+                            console.log('Registry Undefined');
                         }
-                        
                     }
 
                 });
@@ -534,17 +527,17 @@
             }
 
 
-            //comprueba si hay conexion y si hay juego de datos. si no, se ofrece la acción de inicar las tablas
-            $scope.sondeaTabla = function (element) {
+            //Checks if there is a connection and if there is a data set. If not, the action to initialize the tables is offered.
+            $scope.checksTable = function (element) {
 
-                $scope.lanzaConsultaSinData(element).then(
+                $scope.doRequestEmpty(element).then(
                     (res) => {
                         //        console.log(res);
                         $scope.connected = true;
 
                         try {
-                            let sondeo = res.data.length;
-                            if (sondeo && sondeo > 0){
+                            let _len = res.data.length;
+                            if (_len && _len > 0){
                                 $scope.dbState = 'completed';
                             } else {
                                 $scope.dbState = 'initial';
@@ -558,7 +551,7 @@
 
                     },
                     (err) => {
-                        console.log('no hay conexion? err: ', err);
+                        console.log('No Data? err: ', err);
                         if (err.status == -1) {
                             element.result = 'status -1';
                         } else {
@@ -568,7 +561,7 @@
                 )
             }
 
-            $scope.sondeaTabla($scope.sondeaViewers);
+            $scope.checksTable($scope.checkViewers);
 
         });
 
@@ -580,7 +573,7 @@
     <div ng-app="myApp" ng-controller="myCtrl" class="container-fluid">
 
         <div class=container ng-if="connected && dbState=='completed'">
-            <p>
+<!--             <p>
                 <a href="http://localhost:9001/v2/api-docs"
                     style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
                     title=http://localhost:9001/v2/api-docs>http://localhost:9001/v2/api-docs</a>
@@ -590,45 +583,45 @@
                     style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
                     title=http://localhost:9001/swagger-ui.html>http://localhost:9001/swagger-ui.html</a>
             </p>
-
-            <div ng-repeat="caso in endPoints" class=row>
-                <h2>{{caso.nom}}</h2>
+ -->
+            <div ng-repeat="endPoint in endPoints" class=row>
+                <h2>{{endPoint.nom}}</h2>
                 <div class=col-12>
                     <div class=card>
                         <h5 class="card-title" style="white-space: nowrap;text-overflow: ellipsis">
-                            {{ caso.name }}
-                            <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{caso.method}})</span>
+                            {{ endPoint.name }}
+                            <span style="opacity: 50%; font-style: italic; font-weight: bold;">({{endPoint.method}})</span>
                             <span
-                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0">{{caso.controller.toUpperCase()}}</span>
+                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0">{{endPoint.controller.toUpperCase()}}</span>
                         </h5>
                         <p>
                             <img src="{{ iconoDefault }}" alt="[i]"
                                 style="width: 12px; height: 12px; clear: right; float:left;margin:.5rem .5rem 0 0">
 
-                            <a href="{{caso.link}}"
+                            <a href="{{endPoint.link}}"
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0"
-                                title={{caso.link}}>{{caso.link}}</a>
+                                title={{endPoint.link}}>{{endPoint.link}}</a>
 
-                            <a ng-if='caso.link' href="{{caso.link}}"
+                            <a ng-if='endPoint.link' href="{{endPoint.link}}"
                                 style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; clear: right; float:right; margin:0"
-                                title={{caso.link}} target="_blanck">new window</a>
-                            <a ng-if="caso.curl"
-                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0; color: green">{{caso.curl}}</a>
+                                title={{endPoint.link}} target="_blanck">new window</a>
+                            <a ng-if="endPoint.curl"
+                                style="white-space: nowrap; overflow:hidden; text-overflow: ellipsis; margin:0; color: green">{{endPoint.curl}}</a>
                         </p>
-                        <div class=marginAbajo>{{ caso.description }}</div>
+                        <div class=marginBottom>{{ endPoint.description }}</div>
 
                         <div class="row">
-                            <div ng-repeat='(key, value) in caso.data' class='marginAbajo col-4'
+                            <div ng-repeat='(key, value) in endPoint.data' class='marginBottom col-4'
                                 style='overflow: hidden; display: inline;'>
-                                {{key}}: <input ng-model='caso.data[key]' style="width: auto; float: right;" />
+                                {{key}}: <input ng-model='endPoint.data[key]' style="width: auto; float: right;" />
                             </div>
                         </div>
 
-                        <input class='btn btn-outline-secondary marginAbajo' type="button" ng-click="testea(caso)"
+                        <input class='btn btn-outline-secondary marginBottom' type="button" ng-click="doCheck(endPoint)"
                             value="test"></input>
-                        <code>{{caso.result}}</code>
+                        <code>{{endPoint.result}}</code>
 
-                        <p ng-if=caso.todo class=todo>TODO: {{ caso.todo }}</p>
+                        <p ng-if=endPoint.todo class=todo>TODO: {{ endPoint.todo }}</p>
 
                     </div>
                 </div>
@@ -641,31 +634,30 @@
                 <div class=col-12>
                     <div class=card>
                         <code>
-                            No se puede conectar con  {{backurl}}
+                            No connection with {{backurl}}
                         </code>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Si no hay datos de usuarios o registros -->
+        <!-- if no viewers or registries -->
         <div class=container ng-if="connected && dbState=='initial'">
             <div class=row>
                 <div class=col-12>
                     <div class=card>
                         <code>
-                            La base de datos parece vacía.
+                            Empty db?
                         </code>
                         <hr>
                         <div class=row>
                             <div class=col-6>
 
                                 <button class='btn btn-primary col-12'
-                                    ng-click="changeDbState('completed')">Continuar</button>
+                                    ng-click="changeDbState('completed')">Continue</button>
                             </div>
                             <div class=col-6>
-                                <button class='btn btn-success col-12' ng-click="rellenaDatos()">Crear datos de
-                                    prueba</button>
+                                <button class='btn btn-success col-12' ng-click="generateData()">Create Test Data</button>
                             </div>
                         </div>
                     </div>
@@ -678,7 +670,7 @@
                 <div class=col-12>
                     <div class=card>
                         <code>
-                            Procediento...
+                            Working...
                         </code>
                     </div>
                 </div>
