@@ -39,10 +39,9 @@ public class RegistryController {
 
 	private final RegistryRepository registryRepository;
 
-	public RegistryController(RegistryRepository registryRepository){
+	public RegistryController(RegistryRepository registryRepository) {
 		this.registryRepository = registryRepository;
 	}
-
 
 	@GetMapping
 	private ResponseEntity<List<Registry>> findAll(Pageable pageable) {
@@ -68,12 +67,10 @@ public class RegistryController {
 		}
 	}
 
-	
-	@SuppressWarnings("unchecked")
 	@PostMapping("/find")
-	ResponseEntity <List<Registry>> find(@RequestBody String title, Pageable pageable) {
-		//return registryRepository.findAllByTitleIgnoreCaseContaining(title);
-		Page<Registry> page = (Page<Registry>) registryRepository.findAllByTitleIgnoreCaseContaining(title,
+	ResponseEntity<List<Registry>> find(@RequestBody String title, Pageable pageable) {
+		Page<Registry> page = registryRepository.findAllByTitleIgnoreCaseContaining(
+				title,
 				PageRequest.of(pageable.getPageNumber(),
 						pageable.getPageSize(),
 						pageable.getSortOr(Sort.by(Sort.Direction.DESC, "productionDate"))));
@@ -81,12 +78,12 @@ public class RegistryController {
 		return ResponseEntity.ok(page.getContent());
 	}
 
-	
 	@PostMapping
-	ResponseEntity<Registry> save (@RequestBody RegistryDto newRegistry, UriComponentsBuilder ucb) throws URISyntaxException {
+	ResponseEntity<Registry> save(@RequestBody RegistryDto newRegistry, UriComponentsBuilder ucb)
+			throws URISyntaxException {
 
-		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(), 
-		newRegistry.getMedia(), newRegistry.getAuthor(),
+		Registry sondaRegistro = existsRegistry(newRegistry.getTitle(),
+				newRegistry.getMedia(), newRegistry.getAuthor(),
 				CommonUtilities.year2LocalDate(newRegistry.getYear()));
 
 		if (sondaRegistro == null) {
@@ -98,10 +95,11 @@ public class RegistryController {
 			sondaRegistro.setProductionDate(CommonUtilities.year2LocalDate(newRegistry.getYear()));
 
 			try {
-				
+
 				Registry _newRegistry = registryRepository.save(sondaRegistro);
-				URI locationOfNewRegistry = ucb.path("/favorites/registries/{id}").buildAndExpand(_newRegistry.getId()).toUri();
-				
+				URI locationOfNewRegistry = ucb.path("/favorites/registries/{id}").buildAndExpand(_newRegistry.getId())
+						.toUri();
+
 				return ResponseEntity.created(locationOfNewRegistry).body(_newRegistry);
 			} catch (Exception e) {
 				return ResponseEntity.badRequest().build();
@@ -115,17 +113,15 @@ public class RegistryController {
 
 	}
 
-	
 	@PutMapping("/{id}")
 	ResponseEntity<Registry> update(@PathVariable Long id, @RequestBody Registry newRegistry) {
-	
+
 		try {
 			Registry _newRegistry = new Registry(
-				newRegistry.getTitle(), 
-				newRegistry.getMedia(),
-				newRegistry.getAuthor(),
-				newRegistry.getProductionDate().toString()
-			);
+					newRegistry.getTitle(),
+					newRegistry.getMedia(),
+					newRegistry.getAuthor(),
+					newRegistry.getProductionDate().toString());
 
 			registryRepository.save(_newRegistry);
 			return ResponseEntity.ok(_newRegistry);
@@ -136,7 +132,6 @@ public class RegistryController {
 
 	}
 
-	
 	@DeleteMapping("/{id}")
 	ResponseEntity<Registry> delete(@PathVariable Long id) throws Exception {
 		Registry deletedRegistry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
@@ -166,27 +161,20 @@ public class RegistryController {
 		return response;
 	}
 
-
-
 	@GetMapping("/topFavorite/{media}")
-	ResponseEntity
-	<List<Registry>> findTopFavoritesByMedia(@PathVariable String media) {
+	ResponseEntity<List<Registry>> findTopFavoritesByMedia(@PathVariable String media) {
 
-		List<Registry> topFavorites =  registryRepository.findTopFavoriteByMedia(media);
+		List<Registry> topFavorites = registryRepository.findTopFavoriteByMedia(media);
 
 		return ResponseEntity.ok(topFavorites);
 
-
 	}
 
-	
 	@GetMapping("/topRecommend/{media}")
-	ResponseEntity
-	<List<Registry>> findTopRecommendByMedia(@PathVariable String media) {
+	ResponseEntity<List<Registry>> findTopRecommendByMedia(@PathVariable String media) {
 
 		List<Registry> topRecommend = registryRepository.findTopRecommendByMedia(media);
 		return ResponseEntity.ok(topRecommend);
-		
 
 	}
 
