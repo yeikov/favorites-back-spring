@@ -153,7 +153,7 @@ class AssessmentTest {
 		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
 		
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/viewer/1", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/viewer/1?page=0&size=10&sort=registeredAt,asc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -207,11 +207,11 @@ class AssessmentTest {
 		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
 		
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/registry/1", String.class);
+		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/registry/1?page=0&size=10&sort=registeredAt,asc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
-		int assessmentCount = documentContext.read("$.length()");
+		int assessmentCount = documentContext.read("$.content.length()");
 		assertThat(assessmentCount).isEqualTo(3);
 
 		JSONArray ids = documentContext.read("$..notes");

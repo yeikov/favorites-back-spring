@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -130,12 +134,19 @@ public class AssessmentController {
 
 	
 	@GetMapping("registry/{id}")
-	public ResponseEntity <List<Assessment>> allByRegistry(@PathVariable Long id) {
+	public ResponseEntity <Page<Assessment>> allByRegistry(@PathVariable Long id, Pageable pageable) {
 
 		try {
 			Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
-			List<Assessment> assessmentsViewer = viewer_registryRepository.findAllByRegistry(registry);
-			return ResponseEntity.ok(assessmentsViewer);
+
+			Page<Assessment> page = viewer_registryRepository.findAllByRegistry(
+				registry,
+				PageRequest.of(pageable.getPageNumber(),
+					pageable.getPageSize(),
+					pageable.getSortOr(Sort.by(Sort.Direction.DESC, "registeredAt"))
+					)
+				);
+			return ResponseEntity.ok(page);
 			
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
