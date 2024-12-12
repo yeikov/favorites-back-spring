@@ -15,6 +15,8 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
 
 	public List<Assessment> findAllByViewer(Viewer viewer);
 
+	public Page<Assessment> findAllByViewer(Viewer viewer, Pageable pageable);
+
 	public Page<Assessment> findAllByRegistry(Registry registry, Pageable pageable);
 
 	public Iterable<Assessment> findAllByViewerAndRegistry(Viewer viewer, Registry registry);

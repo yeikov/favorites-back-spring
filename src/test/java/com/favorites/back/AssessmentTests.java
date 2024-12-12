@@ -115,7 +115,7 @@ class AssessmentTest {
 	@Test
 	
 	@DirtiesContext
-	void shouldReturnAllAssessmentsOfAViewer() {
+	void shouldReturnPaginatedAssessmentsOfAViewer() {
 
 		AssessmentDto newAssessmentDtoA = new AssessmentDto();
 		newAssessmentDtoA.setViewerId(1L);
@@ -157,7 +157,7 @@ class AssessmentTest {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
-		int assessmentCount = documentContext.read("$.length()");
+		int assessmentCount = documentContext.read("$.content.length()");
 		assertThat(assessmentCount).isEqualTo(3);
 
 		JSONArray ids = documentContext.read("$..notes");
@@ -169,7 +169,7 @@ class AssessmentTest {
 	@Test
 	
 	@DirtiesContext
-	void shouldReturnAllAssessmentsOfARegistry() {
+	void shouldReturnPaginatedAssessmentsOfARegistry() {
 
 		AssessmentDto newAssessmentDtoA = new AssessmentDto();
 		newAssessmentDtoA.setViewerId(1L);

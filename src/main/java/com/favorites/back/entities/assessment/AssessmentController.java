@@ -43,10 +43,9 @@ public class AssessmentController {
 	@Autowired
 	private RegistryRepository registryRepository;
 
-	
 	@GetMapping("/{id}")
-	public ResponseEntity <Assessment> one(@PathVariable Long id) {
-		
+	public ResponseEntity<Assessment> one(@PathVariable Long id) {
+
 		Optional<Assessment> assessmentOptional = viewer_registryRepository.findById(id);
 
 		if (assessmentOptional.isPresent()) {
@@ -57,9 +56,8 @@ public class AssessmentController {
 
 	}
 
-	
 	@PostMapping
-	public ResponseEntity <Assessment> save(@RequestBody AssessmentDto dto, UriComponentsBuilder ucb) {
+	public ResponseEntity<Assessment> save(@RequestBody AssessmentDto dto, UriComponentsBuilder ucb) {
 
 		Viewer viewer = viewerRepository.findById(dto.getViewerId())
 				.orElseThrow(() -> new ViewerNotFoundException(dto.getViewerId())); // .orElse(null);
@@ -73,20 +71,21 @@ public class AssessmentController {
 
 		try {
 			Assessment _newAssessment = viewer_registryRepository.save(newAssessment);
-			URI locationOfNewAssessment = ucb.path("/favorites/assessments/{id}").buildAndExpand(_newAssessment.getId()).toUri();
+			URI locationOfNewAssessment = ucb.path("/favorites/assessments/{id}").buildAndExpand(_newAssessment.getId())
+					.toUri();
 			return ResponseEntity.created(locationOfNewAssessment).body(_newAssessment);
-			
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
-	
 	@PutMapping("/{id}")
-	ResponseEntity <Assessment> update(@PathVariable Long id, @RequestBody Assessment valoration) {
+	ResponseEntity<Assessment> update(@PathVariable Long id, @RequestBody Assessment valoration) {
 
-		Assessment _assessment = viewer_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
+		Assessment _assessment = viewer_registryRepository.findById(id)
+				.orElseThrow(() -> new AssessmentNotFoundException(id));
 
 		_assessment.setFavorite(valoration.getFavorite());
 		_assessment.setRecommend(valoration.getRecommend());
@@ -102,11 +101,11 @@ public class AssessmentController {
 		}
 	}
 
-	
 	@DeleteMapping("/{id}")
-	public ResponseEntity <Long> delete(@PathVariable Long id) throws Exception{
+	public ResponseEntity<Long> delete(@PathVariable Long id) throws Exception {
 
-		Assessment deletedAssessment = viewer_registryRepository.findById(id).orElseThrow(() -> new AssessmentNotFoundException(id));
+		Assessment deletedAssessment = viewer_registryRepository.findById(id)
+				.orElseThrow(() -> new AssessmentNotFoundException(id));
 
 		try {
 			viewer_registryRepository.deleteById(id);
@@ -114,68 +113,67 @@ public class AssessmentController {
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
-		
+
 	}
 
-	
 	@GetMapping("/viewer/{id}")
-	public ResponseEntity <List<Assessment>> allByViewer(@PathVariable Long id) {
+	public ResponseEntity<Page<Assessment>> allByViewer(@PathVariable Long id, Pageable pageable) {
 
 		try {
 			Viewer viewer = viewerRepository.findById(id).orElseThrow(() -> new ViewerNotFoundException(id));
-			List<Assessment> assessmentsViewer = viewer_registryRepository.findAllByViewer(viewer);
-			return ResponseEntity.ok(assessmentsViewer);
-			
+
+			Page<Assessment> page = viewer_registryRepository.findAllByViewer(
+					viewer,
+					PageRequest.of(pageable.getPageNumber(),
+							pageable.getPageSize(),
+							pageable.getSortOr(Sort.by(Sort.Direction.DESC, "registeredAt"))));
+			return ResponseEntity.ok(page);
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
-	
 	@GetMapping("registry/{id}")
-	public ResponseEntity <Page<Assessment>> allByRegistry(@PathVariable Long id, Pageable pageable) {
+	public ResponseEntity<Page<Assessment>> allByRegistry(@PathVariable Long id, Pageable pageable) {
 
 		try {
 			Registry registry = registryRepository.findById(id).orElseThrow(() -> new RegistryNotFoundException(id));
 
 			Page<Assessment> page = viewer_registryRepository.findAllByRegistry(
-				registry,
-				PageRequest.of(pageable.getPageNumber(),
-					pageable.getPageSize(),
-					pageable.getSortOr(Sort.by(Sort.Direction.DESC, "registeredAt"))
-					)
-				);
+					registry,
+					PageRequest.of(pageable.getPageNumber(),
+							pageable.getPageSize(),
+							pageable.getSortOr(Sort.by(Sort.Direction.DESC, "registeredAt"))));
 			return ResponseEntity.ok(page);
-			
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
-	
 	@GetMapping("media/{media}")
-	public ResponseEntity <List<Assessment>> allByMedia(@PathVariable String media) {
+	public ResponseEntity<List<Assessment>> allByMedia(@PathVariable String media) {
 
 		try {
 			List<Assessment> assessmentsMedia = viewer_registryRepository.findM(media);
 			return ResponseEntity.ok(assessmentsMedia);
-			
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
 
 	}
 
-	
 	@GetMapping("viewer/{id}/{media}")
-	public ResponseEntity <List<Assessment>> allViewerByMedia(@PathVariable Long id, @PathVariable String media) {
+	public ResponseEntity<List<Assessment>> allViewerByMedia(@PathVariable Long id, @PathVariable String media) {
 
 		try {
 			List<Assessment> assessmentsViewerMedia = viewer_registryRepository.findUM(id, media);
 			return ResponseEntity.ok(assessmentsViewerMedia);
-			
+
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
