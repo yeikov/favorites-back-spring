@@ -28,10 +28,18 @@ public class Registry {
 
 	private String author;
 
+	private Long mentions;
+	private double favoriteSum;
+	
+	private double recommendSum;
+
 	@OneToMany(mappedBy = "registry")
 	private Set<Assessment> registrations;
 
 	public Registry() {
+		this.setMentions(0L);
+		this.setFavoriteSum(0.0);
+		this.setRecommendSum(0.0);
 	};
 
 	public Registry(String title, String media, String author, String year) {
@@ -39,6 +47,9 @@ public class Registry {
 		this.title = title;
 		this.media = media;
 		this.author = author;
+		this.setMentions(0L);
+		this.setFavoriteSum(0.0);
+		this.setRecommendSum(0.0);
 		try {
 			this.productionDate = CommonUtilities.year2LocalDate(Integer.parseInt(year));
 
@@ -88,8 +99,33 @@ public class Registry {
 		this.author = author;
 	}
 
-	public int getRegistrations() {
+ 	public int getRegistrations() {
 		return this.registrations == null ? 0 : this.registrations.size();
+	}
+ 
+
+	public Long getMentions() {
+		return mentions;
+	}
+
+	public void setMentions(Long mentions) {
+		this.mentions = mentions;
+	}
+
+	public double getFavoriteSum() {
+		return favoriteSum;
+	}
+
+	public void setFavoriteSum(double favoriteSum) {
+		this.favoriteSum = favoriteSum;
+	}
+
+	public double getRecommendSum() {
+		return recommendSum;
+	}
+
+	public void setRecommendSum(double recommendSum) {
+		this.recommendSum = recommendSum;
 	}
 
 }
