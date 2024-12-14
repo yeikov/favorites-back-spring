@@ -115,5 +115,6 @@ class RegistryTests {
 		JSONArray page = documentContext.read("$[*]");
 		assertThat(page.size()).isEqualTo(1);
 	}
+	
 
 }

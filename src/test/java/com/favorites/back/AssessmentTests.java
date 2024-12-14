@@ -16,6 +16,7 @@ import com.favorites.back.entities.registry.RegistryRepository;
 import com.favorites.back.entities.viewer.Viewer;
 import com.favorites.back.entities.viewer.ViewerRepository;
 import com.favorites.back.entities.assessment.Assessment;
+import com.favorites.back.entities.assessment.AssessmentController;
 import com.favorites.back.entities.assessment.AssessmentDto;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
@@ -30,12 +31,14 @@ class AssessmentTest {
 
 	private String path = BackApplication.backEndUrl;
 
-	@Autowired
-	private ViewerRepository viewerRepository;
-
-	@Autowired
-	private RegistryRepository registryRepository;
-
+	/*
+	 * @Autowired
+	 * private ViewerRepository viewerRepository;
+	 * 
+	 * @Autowired
+	 * private RegistryRepository registryRepository;
+	 * 
+	 */
 	@Autowired
 	TestRestTemplate restTemplate;
 
@@ -43,7 +46,6 @@ class AssessmentTest {
 	void setUp() {
 		// schema & data sql's not workin ...
 
-		
 		Viewer newViewerA = new Viewer("Kay", "kay@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
 		Viewer newViewerB = new Viewer("Tetsuo", "tetsuo@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
 		Viewer newViewerC = new Viewer("Kaneda", "kaneda@tokio.exp", "Tokio", LocalDate.parse("2000-11-26"));
@@ -52,24 +54,22 @@ class AssessmentTest {
 		restTemplate.postForEntity(path + "/viewers", newViewerB, Void.class);
 		restTemplate.postForEntity(path + "/viewers", newViewerC, Void.class);
 
-
-		Registry newRegistryA = new Registry("The Hobbit", "book", "J. R. R. Tolkien","1937" );
-		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo","1982" );
-		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo","1990" );
-		
+		Registry newRegistryA = new Registry("The Hobbit", "book", "J. R. R. Tolkien", "1937");
+		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo", "1982");
+		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo", "1990");
 
 		restTemplate.postForEntity(path + "/registries", newRegistryA, Void.class);
 		restTemplate.postForEntity(path + "/registries", newRegistryB, Void.class);
 		restTemplate.postForEntity(path + "/registries", newRegistryC, Void.class);
 	}
- 
+
 	@Test
 	void shouldReturnNotAllowedWhenAssessmentsListIsRequested() {
 		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.METHOD_NOT_ALLOWED);
 
 	}
-	
+
 	@Test
 	void shouldNotReturnAAssessmentWithAnUnknownId() {
 		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/1000",
@@ -121,7 +121,7 @@ class AssessmentTest {
 	}
 
 	@Test
-	
+
 	@DirtiesContext
 	void shouldReturnPaginatedAssessmentsOfAViewer() {
 
@@ -149,19 +149,17 @@ class AssessmentTest {
 		ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoA, String.class);
 		assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		
 
 		ResponseEntity<String> createResponseB = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoB, String.class);
 		assertThat(createResponseB.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		
 
 		ResponseEntity<String> createResponseC = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoC, String.class);
 		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-		
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/viewer/1?page=0&size=10&sort=registeredAt,asc", String.class);
+		ResponseEntity<String> response = restTemplate
+				.getForEntity(path + "/assessments/viewer/1?page=0&size=10&sort=registeredAt,asc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -173,7 +171,6 @@ class AssessmentTest {
 
 	}
 
-	
 	@Test
 	@DirtiesContext
 	void shouldReturnPaginatedAssessmentsOfARegistry() {
@@ -202,19 +199,17 @@ class AssessmentTest {
 		ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoA, String.class);
 		assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		
 
 		ResponseEntity<String> createResponseB = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoB, String.class);
 		assertThat(createResponseB.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		
 
 		ResponseEntity<String> createResponseC = restTemplate.postForEntity(path + "/assessments",
 				newAssessmentDtoC, String.class);
 		assertThat(createResponseC.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-		
-		ResponseEntity<String> response = restTemplate.getForEntity(path + "/assessments/registry/1?page=0&size=10&sort=registeredAt,asc", String.class);
+		ResponseEntity<String> response = restTemplate
+				.getForEntity(path + "/assessments/registry/1?page=0&size=10&sort=registeredAt,asc", String.class);
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -230,8 +225,7 @@ class AssessmentTest {
 	@DirtiesContext
 	void shouldUpdateRegistryStatisticsOnAddDeleteOrUpdateAssessmentsOfThisRegistry() {
 
-
-		//Step 1 F 5.0 -> 5.0
+		// Step 1 F 5.0 -> 5.0
 		AssessmentDto newAssessmentDtoA = new AssessmentDto();
 		newAssessmentDtoA.setViewerId(1L);
 		newAssessmentDtoA.setRegistryId(1L);
@@ -240,8 +234,7 @@ class AssessmentTest {
 		newAssessmentDtoA.setNotes("viewer 1");
 
 		ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
-		newAssessmentDtoA, String.class);
-
+				newAssessmentDtoA, String.class);
 
 		assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -252,10 +245,9 @@ class AssessmentTest {
 		DocumentContext documentContext = JsonPath.parse(getResponseA.getBody());
 		Number favoriteSumStep1 = documentContext.read("$.favoriteSum");
 
-
 		assertThat(favoriteSumStep1).isEqualTo(5.0);
 
-		//Step 2 F 5.0 & F 5.0 -> 5.0
+		// Step 2 F 5.0 & F 5.0 -> 5.0
 		AssessmentDto newAssessmentDtoB = new AssessmentDto();
 		newAssessmentDtoB.setViewerId(2L);
 		newAssessmentDtoB.setRegistryId(1L);
@@ -264,8 +256,7 @@ class AssessmentTest {
 		newAssessmentDtoB.setNotes("viewer 2");
 
 		ResponseEntity<String> createResponseB = restTemplate.postForEntity(path + "/assessments",
-		newAssessmentDtoB, String.class);
-
+				newAssessmentDtoB, String.class);
 
 		assertThat(createResponseB.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
@@ -276,55 +267,55 @@ class AssessmentTest {
 		documentContext = JsonPath.parse(getResponseB.getBody());
 		Number favoriteSumStep2 = documentContext.read("$.favoriteSum");
 
-
 		assertThat(favoriteSumStep2).isEqualTo(5.0);
 
-		//Step 3 Update b  5.0 & F 0 -> 2.5
+		// Step 3 Update b 5.0 & F 0 -> 2.5
 
-		//not working
-		/* 
-		ResponseEntity<String> getResponseForAssessment2 = restTemplate.getForEntity(path + "/assessments/2", String.class);
-		assertThat(getResponseForAssessment2.getStatusCode()).isEqualTo(HttpStatus.OK);
-		documentContext = JsonPath.parse(getResponseForAssessment2.getBody());
+		// not working
+		/*
+		 * ResponseEntity<String> getResponseForAssessment2 =
+		 * restTemplate.getForEntity(path + "/assessments/2", String.class);
+		 * assertThat(getResponseForAssessment2.getStatusCode()).isEqualTo(HttpStatus.OK
+		 * );
+		 * documentContext = JsonPath.parse(getResponseForAssessment2.getBody());
+		 * 
+		 * favoriteSumStep2 = documentContext.read("$.favorite");
+		 * assertThat(favoriteSumStep2).isEqualTo(5);
+		 * 
+		 * Assessment updateAssessment = new Assessment();
+		 * 
+		 * updateAssessment.setId(1L);
+		 * updateAssessment.setRegistry(registryRepository.findById(1L).orElseThrow());
+		 * updateAssessment.setViewer(viewerRepository.findById(1L).orElseThrow());
+		 * //updateAssessment.setViewer(documentContext.read("$.viewer"));
+		 * 
+		 * updateAssessment.setFavorite(0);
+		 * updateAssessment.setRecommend(0);
+		 * updateAssessment.setNotes("changed - viewer 1");
+		 * 
+		 * 
+		 * ResponseEntity<String> createResponseB_updated =
+		 * restTemplate.postForEntity(path + "/assessments/2",
+		 * updateAssessment, String.class);
+		 * 
+		 * 
+		 * assertThat(createResponseB_updated.getStatusCode()).isEqualTo(HttpStatus.OK);
+		 * 
+		 * ResponseEntity<String> getResponseB_Updated = restTemplate.getForEntity(path
+		 * + "/registries/1", String.class);
+		 * 
+		 * assertThat(getResponseB_Updated.getStatusCode()).isEqualTo(HttpStatus.OK);
+		 * 
+		 * documentContext = JsonPath.parse(getResponseB_Updated.getBody());
+		 * Number favoriteSumStep3 = documentContext.read("$.favoriteSum");
+		 * 
+		 * 
+		 * assertThat(favoriteSumStep3).isEqualTo(2.5);
+		 */
 
-		favoriteSumStep2 = documentContext.read("$.favorite");
-		assertThat(favoriteSumStep2).isEqualTo(5);
+		// Step 4 Delete assessment 2. F 5.0 -> 5.0
 
-		Assessment updateAssessment = new Assessment();
-		 
-		updateAssessment.setId(1L);
-		updateAssessment.setRegistry(registryRepository.findById(1L).orElseThrow());
-		updateAssessment.setViewer(viewerRepository.findById(1L).orElseThrow()); 
-		//updateAssessment.setViewer(documentContext.read("$.viewer")); 
-		
-		updateAssessment.setFavorite(0);
-		updateAssessment.setRecommend(0);
-		updateAssessment.setNotes("changed - viewer 1");
-		
-
-		ResponseEntity<String> createResponseB_updated = restTemplate.postForEntity(path + "/assessments/2",
-		updateAssessment, String.class);
-
-
-		assertThat(createResponseB_updated.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-		ResponseEntity<String> getResponseB_Updated = restTemplate.getForEntity(path + "/registries/1", String.class);
-
-		assertThat(getResponseB_Updated.getStatusCode()).isEqualTo(HttpStatus.OK);
-
-		documentContext = JsonPath.parse(getResponseB_Updated.getBody());
-		Number favoriteSumStep3 = documentContext.read("$.favoriteSum");
-
-
-		assertThat(favoriteSumStep3).isEqualTo(2.5); 
-		*/
-
-
-		
-		//Step 4 Delete assessment 2. F 5.0 -> 5.0
-		
- 		restTemplate.delete(path + "/assessments/2");
-
+		restTemplate.delete(path + "/assessments/2");
 
 		ResponseEntity<String> getResponseD = restTemplate.getForEntity(path + "/registries/1", String.class);
 
@@ -333,10 +324,9 @@ class AssessmentTest {
 		documentContext = JsonPath.parse(getResponseB.getBody());
 		Number favoriteSumStep4 = documentContext.read("$.favoriteSum");
 
+		assertThat(favoriteSumStep4).isEqualTo(5.0);
 
-		assertThat(favoriteSumStep4).isEqualTo(5.0); 
-
-		//Step 5 Add Second assessment again. F 5.0 F 0.0 -> 2.5
+		// Step 5 Add Second assessment again. F 5.0 F 0.0 -> 2.5
 
 		AssessmentDto newAssessmentDtoE = new AssessmentDto();
 		newAssessmentDtoE.setViewerId(2L);
@@ -346,23 +336,17 @@ class AssessmentTest {
 		newAssessmentDtoE.setNotes("viewer 2");
 
 		ResponseEntity<String> createResponseE = restTemplate.postForEntity(path + "/assessments",
-		newAssessmentDtoE, String.class);
+				newAssessmentDtoE, String.class);
 		assertThat(createResponseE.getStatusCode()).isEqualTo(HttpStatus.CREATED);
-		
+
 		ResponseEntity<String> getResponseE = restTemplate.getForEntity(path + "/registries/1", String.class);
 		assertThat(getResponseE.getStatusCode()).isEqualTo(HttpStatus.OK);
 
 		documentContext = JsonPath.parse(getResponseE.getBody());
 		Number favoriteSumStep5 = documentContext.read("$.favoriteSum");
-		assertThat(favoriteSumStep5).isEqualTo(2.5); 
+		assertThat(favoriteSumStep5).isEqualTo(2.5);
 
 	}
-
-
-	/* @Test
-	void f_updateRegistryStatisticsOperationtests() {
-		
-	} */
 
 
 }
