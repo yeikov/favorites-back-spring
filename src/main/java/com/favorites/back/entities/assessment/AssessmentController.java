@@ -56,23 +56,52 @@ public class AssessmentController {
 
 	}
 
+	private void updateRegistryStatistics(Registry registryInitial,
+			int addOrSubstractMentionValue,
+			int addOrSubstractFavoriteValue,
+			int addOrSubstractRecommendValue) {
+		Registry registryUpdated =  new Registry();
+		registryUpdated.setId(registryInitial.getId());
+		registryUpdated.setTitle(registryInitial.getTitle());
+		registryUpdated.setAuthor(registryInitial.getAuthor());
+		registryUpdated.setProductionDate(registryInitial.getProductionDate());
+		registryUpdated.setMedia(registryInitial.getMedia());
+
+		registryUpdated.setMentions(registryInitial.getMentions() + addOrSubstractMentionValue);
+		registryUpdated
+				.setFavoriteSum(
+						((registryInitial.getFavoriteSum() * registryInitial.getMentions()
+								+ addOrSubstractFavoriteValue))
+								/ registryUpdated.getMentions());
+		registryUpdated
+				.setRecommendSum(
+						((registryInitial.getRecommendSum() * registryInitial.getMentions()
+								+ addOrSubstractRecommendValue))
+								/ registryUpdated.getMentions());
+
+		registryRepository.save(registryUpdated);
+
+	}
+
 	@PostMapping
 	public ResponseEntity<Assessment> save(@RequestBody AssessmentDto dto, UriComponentsBuilder ucb) {
 
 		Viewer viewer = viewerRepository.findById(dto.getViewerId())
 				.orElseThrow(() -> new ViewerNotFoundException(dto.getViewerId())); // .orElse(null);
-		Registry reg = registryRepository.findById(dto.getRegistryId())
+		Registry registry = registryRepository.findById(dto.getRegistryId())
 				.orElseThrow(() -> new RegistryNotFoundException(dto.getRegistryId()));
-		int favo = dto.getFavorite();
-		int recom = dto.getRecommend();
+		int favorite = dto.getFavorite();
+		int recommend = dto.getRecommend();
 		String notes = dto.getNotes();
 
-		Assessment newAssessment = new Assessment(viewer, reg, favo, recom, notes);
+		Assessment newAssessment = new Assessment(viewer, registry, favorite, recommend, notes);
 
 		try {
 			Assessment _newAssessment = viewer_registryRepository.save(newAssessment);
 			URI locationOfNewAssessment = ucb.path("/favorites/assessments/{id}").buildAndExpand(_newAssessment.getId())
 					.toUri();
+			// STATISTICS STUF
+			updateRegistryStatistics(registry, +1, favorite, recommend);
 			return ResponseEntity.created(locationOfNewAssessment).body(_newAssessment);
 
 		} catch (Exception e) {
@@ -86,14 +115,22 @@ public class AssessmentController {
 
 		Assessment _assessment = viewer_registryRepository.findById(id)
 				.orElseThrow(() -> new AssessmentNotFoundException(id));
+		Assessment memo_assessment = new Assessment();
+
+		memo_assessment.setFavorite(_assessment.getFavorite());
+		memo_assessment.setRecommend(_assessment.getRecommend());
 
 		_assessment.setFavorite(valoration.getFavorite());
 		_assessment.setRecommend(valoration.getRecommend());
 		_assessment.setNotes(valoration.getNotes());
 
 		try {
-
 			Assessment newAssessment = viewer_registryRepository.save(_assessment);
+
+			// STATISTICS STUF
+			updateRegistryStatistics(_assessment.getRegistry(), 0,
+					_assessment.getFavorite() - memo_assessment.getFavorite(),
+					_assessment.getRecommend() - memo_assessment.getRecommend());
 			return ResponseEntity.ok(newAssessment);
 
 		} catch (Exception e) {
@@ -104,12 +141,18 @@ public class AssessmentController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Long> delete(@PathVariable Long id) throws Exception {
 
-		Assessment deletedAssessment = viewer_registryRepository.findById(id)
+		Assessment assessmentToDelete = viewer_registryRepository.findById(id)
 				.orElseThrow(() -> new AssessmentNotFoundException(id));
 
 		try {
 			viewer_registryRepository.deleteById(id);
-			return ResponseEntity.ok().body(deletedAssessment.getId());
+
+			// STATISTICS STUF
+			updateRegistryStatistics(assessmentToDelete.getRegistry(),
+					-1,
+					assessmentToDelete.getFavorite() * -1,
+					assessmentToDelete.getRecommend() * -1);
+			return ResponseEntity.ok().body(assessmentToDelete.getId());
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}
