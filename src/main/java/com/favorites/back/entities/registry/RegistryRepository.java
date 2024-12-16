@@ -16,11 +16,11 @@ public interface RegistryRepository extends JpaRepository<Registry, Long>{
 
 	public List <Registry> findAllByTitleAndMediaAndAuthorAndProductionDate(String title, String media,String author, LocalDate year);
 
- 	@Query(value = "SELECT DISTINCT id, title, author, media, production_date, favorite_sum, mentions, recommend_sum, FROM (SELECT r.id, r.title, r.author, r.media, r.production_date, r.favorite_sum, r.mentions, r.recommend_sum, a.registry_id, a.favorite FROM registry AS r INNER JOIN assessment AS a ON r.id = a.registry_id AND r.media = :media GROUP BY r.title, a.id ORDER BY a.favorite DESC) AS dt LIMIT 8;",
+ 	@Query(value = "SELECT r.id, r.title, r.author, r.media, r.production_date, r.favorite_sum, r.mentions, r.recommend_sum, FROM registry AS r WHERE r.media = :media ORDER BY r.favorite_sum DESC LIMIT 8;",
 			nativeQuery = true)
 	public List <Registry> findTopFavoriteByMedia(String media);
-	
-	@Query(value = "SELECT DISTINCT id, title, author, media, production_date, favorite_sum, mentions, recommend_sum, FROM (SELECT r.id, r.title, r.author, r.media, r.production_date, r.favorite_sum, r.mentions, r.recommend_sum, a.registry_id, a.recommend FROM registry AS r INNER JOIN assessment AS a ON r.id = a.registry_id AND r.media = :media GROUP BY r.title, a.id ORDER BY a.recommend DESC) AS dt LIMIT 8;",
+
+	@Query(value = "SELECT r.id, r.title, r.author, r.media, r.production_date, r.favorite_sum, r.mentions, r.recommend_sum, FROM registry AS r WHERE r.media = :media ORDER BY r.recommend_sum DESC LIMIT 8;",
 			nativeQuery = true)
 	public List <Registry> findTopRecommendByMedia(String media);
 	

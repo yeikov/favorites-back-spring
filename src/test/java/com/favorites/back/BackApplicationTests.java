@@ -46,18 +46,59 @@ class BackApplicationTests {
 
 		
 
-		Registry newRegistryA = new Registry("The Hobbit", "book", "J. R. R. Tolkien","1937" );
-		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo","1982" );
-		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo","1990" );
+		//add registries of the same media
+		Registry newRegistryA = new Registry("Memories", "comic", "Katsuhiro Ōtomo", "1995");
+		Registry newRegistryB = new Registry("Akira", "comic", "Katsuhiro Ōtomo", "1982");
+		Registry newRegistryC = new Registry("The legend of mother sarah", "comic", "Katsuhiro Ōtomo", "1990");
+		Registry newRegistryD = new Registry("L\'Incal", "comic", "Moebius, Jodorowsky", "1981");
+		
 		
 
 		restTemplate.postForEntity(path + "/registries", newRegistryA, Void.class);
 		restTemplate.postForEntity(path + "/registries", newRegistryB, Void.class);
 		restTemplate.postForEntity(path + "/registries", newRegistryC, Void.class);
+		restTemplate.postForEntity(path + "/registries", newRegistryD, Void.class);
 	
 	}
 
-
 	
+	@Test
+	@DirtiesContext
+	void topFavoritesReturnsTheMostValuedTenFavoritesInOrder() {
+		long[] viewersIndexs = { 1L, 2L, 3L };
+		long[] registriesIndexs = { 1L, 2L, 3L, 4L};
+
+
+		//add assessments (3 x 4) 
+		AssessmentDto newAssessmentDto = new AssessmentDto();
+
+
+		for (long viewer_i : viewersIndexs) {
+			for (long registry_i : registriesIndexs) {
+				newAssessmentDto.setViewerId(viewer_i);
+				newAssessmentDto.setRegistryId(registry_i);
+				newAssessmentDto.setFavorite((int) viewer_i + 5);
+				newAssessmentDto.setRecommend(9 - (int) viewer_i);
+				newAssessmentDto.setNotes("viewer" + viewer_i);
+				
+				ResponseEntity<String> createResponseA = restTemplate.postForEntity(path + "/assessments",
+				newAssessmentDto, String.class);
+				assertThat(createResponseA.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+			}
+		}
+
+		//list of assessments of a media with different viewers
+		ResponseEntity<String> findMediaResponse = restTemplate.getForEntity(path + "/assessments/media/comic", String.class);
+
+		assertThat(findMediaResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		DocumentContext documentContext = JsonPath.parse(findMediaResponse.getBody());
+		Number findMediaResult = documentContext.read("$.length()");
+		assertThat(findMediaResult).isEqualTo(8);
+		
+		JSONArray ids = documentContext.read("$..favorite");
+		assertThat(ids).containsOnly(8, 7);
+
+	}
 
 }

@@ -32,6 +32,3 @@ public interface AssessmentRepository extends JpaRepository<Assessment, Long> {
 	@Query(value = "SELECT a.* FROM assessment AS a INNER JOIN registry AS r ON a.registry_id=r.id AND a.viewer_id=:viewerId AND r.media=:media ORDER BY a.favorite DESC;", nativeQuery = true)
 	public List<Assessment> findUM(Long viewerId, String media);
 }
-// "SELECT a.*, r.media, r.author, r.title, r.id as od FROM assessment AS a
-// INNER JOIN registry AS r ON a.registry_id=r.id AND a.viewer_id=:viewerId AND
-// r.media=':media' ORDER BY a.favorite DESC;",
